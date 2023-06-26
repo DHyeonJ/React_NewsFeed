@@ -51,7 +51,7 @@ const Menu = styled.span`
 `;
 
 const StLink = styled(Link)`
-  margin-left: 20px;
+  margin-left: 70px;
   color: #ffffff;
 `;
 

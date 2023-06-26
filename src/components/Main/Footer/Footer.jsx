@@ -19,4 +19,6 @@ export default Footer;
 
 const FInfo = styled.div`
   text-align: center;
+  /* position: fixed;
+  bottom: 0; */
 `;
