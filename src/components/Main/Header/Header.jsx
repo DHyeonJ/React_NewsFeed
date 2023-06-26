@@ -16,7 +16,7 @@ function Header() {
         <ProfileImg></ProfileImg>
         <Login>
           <LoginLink to="/">회원가입</LoginLink>
-          <LoginLink to="/">Login</LoginLink>
+          <LoginLink to="/login">Login</LoginLink>
         </Login>
       </MyProfile>
     </HeaderBG>
