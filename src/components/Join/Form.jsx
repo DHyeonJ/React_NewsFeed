@@ -84,9 +84,6 @@ function Form() {
     e.preventDefault();
 
     /// 비밀번호 확인
-    /*if () {
-        /// 이메일 중복검사(DB의 이메일과 중복되면 setFailMsg("이미 존재하는 이메일 입니다."))
-    }*/
     if (userPw !== confirmPw) {
       setFailMsg('비밀번호가 일치하지 않습니다.');
     } else if (!regex.test(userEmail)) {
@@ -107,47 +104,31 @@ function Form() {
     }
   };
 
-  const onChange = event => {
-    const {
-      target: { name, value }
-    } = event;
-    if (name === 'email') {
-      setUserEmail(value);
-    } else if (name === 'password') {
-      setUserPw(value);
-    } else if (name === 'name') {
-      setUserName(value);
-    }
-  };
-
   return (
     <FormContainer onSubmit={e => onClickJoinHandler(e)}>
       <Logo src={LogoImagSrc}></Logo>
 
       <StInput
         value={userEmail}
-        onChange={onChange}
+        onChange={e => setUserEmail(e.target.value)}
         type="email"
         required
         placeholder="이메일"
-        name="email"
       ></StInput>
       <StInput
         value={userName}
-        onChange={onChange}
+        onChange={e => setUserName(e.target.value)}
         type="text"
         required
         placeholder="이름"
-        name="name"
       />
       <StInput
         type="password"
         value={userPw}
-        onChange={onChange}
         minLength="8"
         required
+        onChange={e => setUserPw(e.target.value)}
         placeholder="비밀번호"
-        name="password"
       />
       <StInput
         type="password"
