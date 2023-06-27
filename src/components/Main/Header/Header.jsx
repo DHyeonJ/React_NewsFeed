@@ -2,8 +2,22 @@ import React from 'react';
 import { styled } from 'styled-components';
 import LogoImgSrc from '../../../assets/logo.png';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../../redux/modules/user';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../../firebase';
 
 function Header() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => {
+    return state.user;
+  });
+  // console.log(user);
+  const logoutHandler = async () => {
+    await signOut(auth);
+    dispatch(logoutUser());
+  }
+
   return (
     <HeaderBG>
       <Logo src={LogoImgSrc}></Logo>
@@ -15,8 +29,15 @@ function Header() {
       <MyProfile>
         <ProfileImg></ProfileImg>
         <Login>
-          <LoginLink to="/">회원가입</LoginLink>
-          <LoginLink to="/login">Login</LoginLink>
+          {user.isLogin ? (
+            // 
+            <div onClick={logoutHandler}>로그아웃</div>
+          ) : (
+            <>
+              <LoginLink to="/">회원가입</LoginLink>
+              <LoginLink to="/login">Login</LoginLink>
+            </>
+          )}
         </Login>
       </MyProfile>
     </HeaderBG>
@@ -43,7 +64,7 @@ const Logo = styled.img`
 `;
 
 const Menu = styled.span`
-  font-size: 25px;
+  font-size: 20px;
   display: flex;
   color: #ffffff;
   justify-content: center;
