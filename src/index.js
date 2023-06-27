@@ -2,7 +2,6 @@ import React from 'react';
 import './index.css';
 import './reset.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from './redux/config/configStore';
@@ -13,5 +12,3 @@ root.render(
     <App />
   </Provider>
 );
-
-reportWebVitals();
