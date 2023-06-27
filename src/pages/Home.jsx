@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from './Header/Header';
-import Body from './Body/Body';
-import Footer from './Footer/Footer';
+import Header from '../components/Main/Header/Header';
+import Body from '../components/Main/Body/Body';
+import Footer from '../components/Main/Footer/Footer';
 import { styled } from 'styled-components';
 
 function Home() {
