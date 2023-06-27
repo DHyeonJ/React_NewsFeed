@@ -4,7 +4,7 @@ import Footer from '../components/Main/Footer/Footer';
 import Login from '../components/Login/Login';
 import Layout from '../components/Layout/Layout';
 
-function login() {
+function LoginPage() {
   return (
     <>
       <Header />
@@ -16,4 +16,4 @@ function login() {
   );
 }
 
-export default login;
+export default LoginPage;
