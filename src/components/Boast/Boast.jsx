@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import InputImgSrc from '../../assets/pet.png'
+import InputImgSrc from '../../assets/pet.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 function Boast() {
+  const [posts, setPosts] = useState([]);
+  console.log(posts);
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
@@ -17,6 +21,23 @@ function Boast() {
       navigate('/postWrite');
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const q = query(collection(db, 'posts'));
+      const quertSnapShot = await getDocs(q);
+      const initialPosts = [];
+      quertSnapShot.forEach(doc => {
+        const post = {
+          id: doc.id,
+          ...doc.data()
+        };
+        initialPosts.push(post);
+      });
+      setPosts(initialPosts);
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <Search>
