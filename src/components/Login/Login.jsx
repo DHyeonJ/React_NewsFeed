@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Main/Header/Header';
+import { Logo } from '../Join/Form';
+import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/modules/user';
+import Footer from '../Main/Footer/Footer';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,8 +20,9 @@ const Login = () => {
     if (name === 'email') setEmail(value);
     if (name === 'password') setPassword(value);
   };
-  // useEffect(() => {
-  // }, [])
+  const goToJoin = () => {
+    navigate('/join');
+  };
 
   const onSubmitHandler = async e => {
     e.preventDefault();
@@ -50,7 +54,8 @@ const Login = () => {
       <Header></Header>
       <main>
         <StyledLoginWrapper>
-          <div>
+          <StyledInnerWrapper>
+            <Logo src={LogoImagSrc}></Logo>
             <StyledLoginForm onSubmit={onSubmitHandler}>
               <StyledInput
                 type="text"
@@ -68,15 +73,18 @@ const Login = () => {
               />
               <StyledButtonWrapper>
                 <StyledButton>로그인</StyledButton>
-                <StyledButton>회원가입</StyledButton>
+                <StyledButton type="button" onClick={goToJoin}>
+                  회원가입
+                </StyledButton>
               </StyledButtonWrapper>
             </StyledLoginForm>
             <StyledSocialLoginForm onSubmit={onSubmitHandler}>
               <StyledButton>구글로 로그인</StyledButton>
               <StyledButton>깃허브로 로그인</StyledButton>
             </StyledSocialLoginForm>
-          </div>
+          </StyledInnerWrapper>
         </StyledLoginWrapper>
+        <Footer />
       </main>
     </>
   );
@@ -92,6 +100,11 @@ const StyledLoginWrapper = styled.div`
   height: calc(100vh - 100px);
   margin: 0 auto;
   border: 1px solid;
+`;
+const StyledInnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const StyledLoginForm = styled.form`
   display: flex;
@@ -130,5 +143,6 @@ const StyledSocialLoginForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  width: 100%;
   margin-top: 40px;
 `;
