@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from '../../Main/Header/Header';
-import Footer from '../../Main/Footer/Footer';
+import Header from '../components/Main/Header/Header';
+import Footer from '../components/Main/Footer/Footer';
 import { styled } from 'styled-components';
-import InputImgSrc from '../../../assets/pet.png';
+import InputImgSrc from '../assets/pet.png';
 import { Link } from 'react-router-dom';
 
 function Boast() {

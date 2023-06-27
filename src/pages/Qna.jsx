@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../Main/Header/Header';
-import Footer from '../../Main/Footer/Footer';
+import Header from '../components/Main/Header/Header';
+import Footer from '../components/Main/Footer/Footer';
 import { styled } from 'styled-components';
-import Pagination from '../Pagination/Pagination';
+import Pagination from '../components/Pagination/Pagination';
 
 function Qna() {
   const [contentInfo, setContentInfo] = useState([

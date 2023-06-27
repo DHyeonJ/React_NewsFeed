@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from '../components/Login/Login';
+import Login from '../pages/Login';
 import Home from '../pages/Home';
-import Boast from '../components/Board/Boast/Boast';
-import Qna from '../components/Board/QnA/Qna';
+import Boast from '../pages/Boast';
+import Qna from '../pages/Qna';
 import Join from '../pages/Join';
 import PostWrite from '../pages/PostWrite';
 
