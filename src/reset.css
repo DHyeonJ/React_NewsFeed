@@ -1,3 +1,4 @@
+
 html,
 body,
 div,
@@ -122,6 +123,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 * {
   box-sizing: border-box;
   list-style: none;
@@ -145,10 +147,11 @@ button {
   padding: 0;
   border-radius: 0;
   font-size: 16px;
-  outline: 0;
+  border: 1px solid;
   vertical-align: middle;
 }
 img {
   border: 0;
   vertical-align: middle;
 }
+
