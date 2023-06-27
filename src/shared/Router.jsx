@@ -5,6 +5,7 @@ import Boast from '../pages/Boast';
 import Qna from '../pages/Qna';
 import Join from '../pages/Join';
 import PostWrite from '../pages/PostWrite';
+import UserPage from '../pages/UserPage';
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
         <Route path="/boast" element={<Boast />} />
         <Route path="/qna" element={<Qna />} />
         <Route path="/postWrite" element={<PostWrite />} />
+        <Route path="/userpage" element={<UserPage />} />
       </Routes>
     </BrowserRouter>
   );
