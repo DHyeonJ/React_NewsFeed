@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const FormContainer = styled.form`
   width: 1200px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 40px;
   height: 1080px;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@ const JoinButton = styled.button`
   width: 400px;
   height: 45px;
   border-radius: 10px;
-  background-color: #c5d8d1;
+  background-color: #12263a;
   cursor: pointer;
   border: none;
   color: white;
