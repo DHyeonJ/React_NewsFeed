@@ -1,12 +1,19 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from '../components/Login/Login';
+import Home from '../components/Main/Home';
+import Boast from '../components/Board/Boast/Boast';
+import Qna from '../components/Board/QnA/Qna';
 import Join from '../pages/Join';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" />
-        <Route path="/" element={<Join />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/boast" element={<Boast />} />
+        <Route path="/qna" element={<Qna />} />
       </Routes>
     </BrowserRouter>
   );
