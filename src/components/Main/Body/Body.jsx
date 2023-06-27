@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../../assets/pet.png';
+import { Link } from 'react-router-dom';
 
 function Body() {
   return (
@@ -12,8 +13,10 @@ function Body() {
       <article>
         <StSection>
           <StContent>
-            <DivImg>이미지</DivImg>
-            <StTitle>제목</StTitle>
+            <Link to="/detailPage">
+              <DivImg>이미지</DivImg>
+              <StTitle>제목</StTitle>
+            </Link>
           </StContent>
         </StSection>
         <StSection></StSection>

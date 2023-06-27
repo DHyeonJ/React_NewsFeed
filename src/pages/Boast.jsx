@@ -19,11 +19,13 @@ function Boast() {
         </PostWrite>
         <FeedContainer>
           <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
+            <Link to="/detailPage">
+              <PostImg>이미지</PostImg>
+              <PostInfo>
+                <PostWriter>작성자</PostWriter>
+                <p>글 제목</p>
+              </PostInfo>
+            </Link>
           </BoastPost>
           <BoastPost>
             <PostImg>이미지</PostImg>
