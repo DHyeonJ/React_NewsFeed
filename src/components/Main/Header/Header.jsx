@@ -16,7 +16,7 @@ function Header() {
   const logoutHandler = async () => {
     await signOut(auth);
     dispatch(logoutUser());
-  }
+  };
 
   return (
     <HeaderBG>
@@ -30,7 +30,7 @@ function Header() {
         <ProfileImg></ProfileImg>
         <Login>
           {user.isLogin ? (
-            // 
+            //
             <div onClick={logoutHandler}>로그아웃</div>
           ) : (
             <>
