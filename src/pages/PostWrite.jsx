@@ -7,44 +7,71 @@ function PostWrite() {
     <>
       <Header />
       <StLayout>
-        <StInputTitle>
-          <form>
-            <StSelect>
-              <option>자랑게시판</option>
-              <option>질문게시판</option>
-            </StSelect>
-            <StInput placeholder="제목을 입력하세요"></StInput>
-          </form>
-        </StInputTitle>
-        <div>
-          <textarea placeholder="내용을 입력하세요" rows="50" cols="117"></textarea>
-        </div>
-        <input type="file"></input>
-        <div>
-          <button>작성하기</button>
-          <button>작성하기</button>
-        </div>
+        <StForm>
+          <StSelect>
+            <option>자랑게시판</option>
+            <option>질문게시판</option>
+          </StSelect>
+          <StInput placeholder="제목을 입력하세요"></StInput>
+        </StForm>
+        <textarea placeholder="내용을 입력하세요" rows="30" cols="118"></textarea>
+        <PostBottom>
+          <AddImg type="file"></AddImg>
+          <ButtonArea>
+            <Button>작성하기</Button>
+            <Button>취소하기</Button>
+          </ButtonArea>
+        </PostBottom>
       </StLayout>
     </>
   );
 }
 
 export default PostWrite;
-const StInputTitle = styled.div`
+const ButtonArea = styled.div`
+  margin-left: 100px;
+`;
+const Button = styled.button`
+  width: 100px;
+  height: 40px;
+  margin-left: 10px;
+  background-color: #12263a;
+  color: white;
+  border-radius: 5px;
+`;
+
+const PostBottom = styled.div`
+  margin-top: 50px;
+  margin-bottom: 150px;
+  width: 1150px;
   display: flex;
-  width: 1200px;
-  height: 103px;
+  flex-direction: row;
+  justify-content: space-between;
+  /* align-items: center; */
+`;
+
+const AddImg = styled.input`
+  width: 700px;
+  height: 40px;
+`;
+
+const StForm = styled.form`
+  display: flex;
+  flex-direction: row;
+  width: 1150px;
+  height: 80px;
 `;
 const StSelect = styled.select`
   width: 200px;
   height: 60px;
 `;
 const StInput = styled.input`
-  width: 1000px;
+  width: 100%;
   height: 60px;
 `;
 
 const StLayout = styled.div`
+  margin-top: 80px;
   width: 100%;
   height: 100%;
   display: flex;
