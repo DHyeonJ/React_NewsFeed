@@ -2,32 +2,35 @@ import React from 'react';
 import Header from '../components/Main/Header/Header';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import Layout from '../components/Layout/Layout';
 
 function PostWrite() {
   const navigate = useNavigate();
   const cancelWrite = () => {
     navigate(-1);
-  }
+  };
   return (
     <>
       <Header />
-      <StLayout>
-        <StForm>
-          <StSelect>
-            <option>자랑게시판</option>
-            <option>질문게시판</option>
-          </StSelect>
-          <StInput placeholder="제목을 입력하세요"></StInput>
-        </StForm>
-        <StyledTextarea placeholder="내용을 입력하세요" rows="30" cols="118"></StyledTextarea>
-        <PostBottom>
-          <AddImg type="file"></AddImg>
-          <ButtonArea>
-            <Button>작성하기</Button>
-            <Button onClick={cancelWrite}>취소하기</Button>
-          </ButtonArea>
-        </PostBottom>
-      </StLayout>
+      <Layout>
+        <StLayout>
+          <StForm>
+            <StSelect>
+              <option>자랑게시판</option>
+              <option>질문게시판</option>
+            </StSelect>
+            <StInput placeholder="제목을 입력하세요"></StInput>
+          </StForm>
+          <StyledTextarea placeholder="내용을 입력하세요" rows="30" cols="118"></StyledTextarea>
+          <PostBottom>
+            <AddImg type="file"></AddImg>
+            <ButtonArea>
+              <Button>작성하기</Button>
+              <Button onClick={cancelWrite}>취소하기</Button>
+            </ButtonArea>
+          </PostBottom>
+        </StLayout>
+      </Layout>
     </>
   );
 }
@@ -72,7 +75,7 @@ const StSelect = styled.select`
 `;
 const StyledTextarea = styled.textarea`
   width: 100%;
-`
+`;
 const StInput = styled.input`
   width: 100%;
   height: 60px;

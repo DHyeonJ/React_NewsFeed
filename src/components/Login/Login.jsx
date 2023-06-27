@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../Main/Header/Header';
+import React, { useState } from 'react';
 import { Logo } from '../Join/Form';
 import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
@@ -8,7 +7,6 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/modules/user';
-import Footer from '../Main/Footer/Footer';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -51,39 +49,35 @@ const Login = () => {
   };
   return (
     <>
-      <Header></Header>
-      <main>
-        <StyledLoginWrapper>
-          <StyledInnerWrapper>
-            <Logo src={LogoImagSrc}></Logo>
-            <StyledLoginForm onSubmit={onSubmitHandler}>
-              <StyledInput
-                type="text"
-                name="email"
-                placeholder="이메일"
-                value={email}
-                onChange={onChangeHandler}
-              />
-              <StyledInput
-                type="password"
-                name="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={onChangeHandler}
-              />
-              <StyledButtonWrapper>
-                <StyledButton>로그인</StyledButton>
-              </StyledButtonWrapper>
-            </StyledLoginForm>
-            <StyledSocialLoginForm onSubmit={onSubmitHandler}>
-              <StyledButton>구글로 로그인</StyledButton>
-              <StyledButton>깃허브로 로그인</StyledButton>
-              <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
-            </StyledSocialLoginForm>
-          </StyledInnerWrapper>
-        </StyledLoginWrapper>
-        <Footer />
-      </main>
+      <StyledLoginWrapper>
+        <StyledInnerWrapper>
+          <Logo src={LogoImagSrc}></Logo>
+          <StyledLoginForm onSubmit={onSubmitHandler}>
+            <StyledInput
+              type="text"
+              name="email"
+              placeholder="이메일"
+              value={email}
+              onChange={onChangeHandler}
+            />
+            <StyledInput
+              type="password"
+              name="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={onChangeHandler}
+            />
+            <StyledButtonWrapper>
+              <StyledButton>로그인</StyledButton>
+            </StyledButtonWrapper>
+          </StyledLoginForm>
+          <StyledSocialLoginForm onSubmit={onSubmitHandler}>
+            <StyledButton>구글로 로그인</StyledButton>
+            <StyledButton>깃허브로 로그인</StyledButton>
+            <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
+          </StyledSocialLoginForm>
+        </StyledInnerWrapper>
+      </StyledLoginWrapper>
     </>
   );
 };
@@ -93,10 +87,6 @@ export default Login;
 const StyledLoginWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: 1200px;
-  height: calc(100vh - 100px);
-  margin: 0 auto;
-  border: 1px solid;
 `;
 export const StyledInnerWrapper = styled.div`
   display: flex;

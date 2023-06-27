@@ -1,19 +1,19 @@
 import React from 'react';
 import Header from '../components/Main/Header/Header';
 import Footer from '../components/Main/Footer/Footer';
-import Form from '../components/Join/Form';
+import Login from '../components/Login/Login';
 import Layout from '../components/Layout/Layout';
 
-function join() {
+function login() {
   return (
     <>
-      <Header></Header>
+      <Header />
       <Layout>
-        <Form />
+        <Login />
       </Layout>
       <Footer></Footer>
     </>
   );
 }
 
-export default join;
+export default login;
