@@ -34,7 +34,7 @@ function Header() {
             <div onClick={logoutHandler}>로그아웃</div>
           ) : (
             <>
-              <LoginLink to="/">회원가입</LoginLink>
+              <LoginLink to="/join">회원가입</LoginLink>
               <LoginLink to="/login">Login</LoginLink>
             </>
           )}
