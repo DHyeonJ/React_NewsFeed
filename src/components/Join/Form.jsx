@@ -50,7 +50,7 @@ const JoinButton = styled.button`
   margin-top: 15px;
   margin-bottom: 15px;
 `;
-const Logo = styled.img`
+export const Logo = styled.img`
   width: 100px;
   height: 100px;
   margin-left: 60px;
