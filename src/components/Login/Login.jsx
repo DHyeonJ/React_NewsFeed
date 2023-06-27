@@ -73,14 +73,12 @@ const Login = () => {
               />
               <StyledButtonWrapper>
                 <StyledButton>로그인</StyledButton>
-                <StyledButton type="button" onClick={goToJoin}>
-                  회원가입
-                </StyledButton>
               </StyledButtonWrapper>
             </StyledLoginForm>
             <StyledSocialLoginForm onSubmit={onSubmitHandler}>
               <StyledButton>구글로 로그인</StyledButton>
               <StyledButton>깃허브로 로그인</StyledButton>
+              <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
             </StyledSocialLoginForm>
           </StyledInnerWrapper>
         </StyledLoginWrapper>
@@ -95,16 +93,16 @@ export default Login;
 const StyledLoginWrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 1200px;
   height: calc(100vh - 100px);
   margin: 0 auto;
   border: 1px solid;
 `;
-const StyledInnerWrapper = styled.div`
+export const StyledInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 100px;
 `;
 const StyledLoginForm = styled.form`
   display: flex;
@@ -112,37 +110,54 @@ const StyledLoginForm = styled.form`
   gap: 20px;
   width: 440px;
   padding: 20px;
-  border: 1px solid;
+  border: 2px solid #12263a;
   border-radius: 12px;
 `;
 const StyledInput = styled.input`
   width: 400px;
   height: 40px;
+  font-size: 18px;
   padding: 3px 20px;
+  border: 1px solid #12263a;
   border-radius: 8px;
+  outline: none;
+  &:focus {
+    border: 2px solid #f8db5c;
+  }
+  &::placeholder {
+    opacity: 0.4;
+  }
 `;
 const StyledButton = styled.button`
   cursor: pointer;
   width: 100%;
   height: 40px;
   color: #fff;
-  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 800;
+  border-radius: 10px;
+  outline: none;
   background-color: #12263a;
   &:hover {
-    color: #12263a;
+    color: #f8db5c;
     font-weight: 600;
-    background-color: #06bcc1;
+  }
+  &:focus {
+    color: #f8db5c;
   }
 `;
 const StyledButtonWrapper = styled.div`
   display: flex;
   gap: 20px;
 `;
-const StyledSocialLoginForm = styled.form`
+export const StyledSocialLoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   width: 100%;
   margin-top: 40px;
+`;
+const StyledGoToJoin = styled.p`
+  cursor: pointer;
 `;
