@@ -1,13 +1,14 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import LogoImgSrc from '../../../assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../../redux/modules/user';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../firebase';
 
 function Header() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(state => {
     return state.user;
@@ -16,6 +17,7 @@ function Header() {
   const logoutHandler = async () => {
     await signOut(auth);
     dispatch(logoutUser());
+    navigate('/');
   };
 
   return (
@@ -39,7 +41,7 @@ function Header() {
         <Login>
           {user.isLogin ? (
             //
-            <div onClick={logoutHandler}>로그아웃</div>
+            <StyledLogOut onClick={logoutHandler}>로그아웃</StyledLogOut>
           ) : (
             <>
               <LoginLink to="/login">Login</LoginLink>
@@ -74,7 +76,7 @@ const Logo = styled.img`
 const StyledNav = styled.nav`
   display: flex;
   align-items: center;
-`
+`;
 
 const Menu = styled.ul`
   display: flex;
@@ -82,7 +84,7 @@ const Menu = styled.ul`
   align-items: center;
   gap: 70px;
   color: #fff;
-  `;
+`;
 
 const StLink = styled(Link)`
   color: #fff;
@@ -92,6 +94,15 @@ const StLink = styled(Link)`
     font-weight: 500;
   }
 `;
+
+const StyledLogOut = styled.p`
+  cursor: pointer;
+  font-size: 16px;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 500;
+  }
+`
 
 const Login = styled.span`
   font-size: 20px;
@@ -118,12 +129,13 @@ const LoginLink = styled(Link)`
 
 const MyProfile = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 `;
 
 const ProfileImg = styled.div`
+  cursor: pointer;
   width: 50px;
   height: 50px;
   border-radius: 50%;

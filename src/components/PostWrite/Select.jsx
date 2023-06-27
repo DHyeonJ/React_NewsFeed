@@ -3,17 +3,24 @@ import { styled } from 'styled-components';
 
 const Select = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(0);
   const isOpenHandler = () => {
     setIsOpen(true);
   };
+  
   const selectOption = ({ target }) => {
     target.value === 1 ? setValue('자랑 게시판') : setValue('질문 게시판');
     setIsOpen(false);
   };
   return (
     <>
-      <StSelect onClick={isOpenHandler} onBlur={() => setIsOpen(false)} type="button">
+      <StSelect
+        onClick={isOpenHandler}
+        onBlur={() => setIsOpen(false)}
+        name="category"
+        type="button"
+        value={value}
+      >
         {value ? value : '게시판 선택'}
       </StSelect>
       {isOpen && (
@@ -61,12 +68,12 @@ const StyledOptoin = styled.li`
   height: 40px;
   background-color: #fff;
   &:hover {
-    background-color: #C5D8D1;
+    background-color: #c5d8d1;
   }
-  &:first-child{
+  &:first-child {
     border-radius: 8px 8px 0 0;
   }
-  &:last-child{
+  &:last-child {
     border-radius: 0 0 8px 8px;
   }
 `;
@@ -78,7 +85,7 @@ const StSelect = styled.button`
   border: 0.5px solid #dcdcdc;
   border-radius: 8px;
   background-color: #fff;
-  &:hover{
-    background-color: #C5D8D1;
+  &:hover {
+    background-color: #c5d8d1;
   }
 `;
