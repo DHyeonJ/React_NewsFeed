@@ -53,7 +53,7 @@ function Header() {
 }
 
 export default Header;
-const HeaderBG = styled.div`
+const HeaderBG = styled.header`
   background-color: #12263a;
   width: 100%;
   height: 80px;
