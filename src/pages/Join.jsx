@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Header from '../components/Main/Header/Header';
 import Form from '../components/Join/Form';
 import { styled } from 'styled-components';
 
@@ -12,6 +12,7 @@ const StContainer = styled.div`
 function join() {
   return (
     <>
+      <Header></Header>
       <StContainer>
         <Form />
       </StContainer>
