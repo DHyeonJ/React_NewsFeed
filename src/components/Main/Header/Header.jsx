@@ -21,11 +21,19 @@ function Header() {
   return (
     <HeaderBG>
       <Logo src={LogoImgSrc}></Logo>
-      <Menu>
-        <StLink to="/">Home</StLink>
-        <StLink to="/boast">자랑게시판</StLink>
-        <StLink to="/qna">질문게시판</StLink>
-      </Menu>
+      <StyledNav>
+        <Menu>
+          <li>
+            <StLink to="/">Home</StLink>
+          </li>
+          <li>
+            <StLink to="/boast">자랑게시판</StLink>
+          </li>
+          <li>
+            <StLink to="/qna">질문게시판</StLink>
+          </li>
+        </Menu>
+      </StyledNav>
       <MyProfile>
         <ProfileImg></ProfileImg>
         <Login>
@@ -34,8 +42,8 @@ function Header() {
             <div onClick={logoutHandler}>로그아웃</div>
           ) : (
             <>
-              <LoginLink to="/join">회원가입</LoginLink>
               <LoginLink to="/login">Login</LoginLink>
+              <LoginLink to="/join">회원가입</LoginLink>
             </>
           )}
         </Login>
@@ -63,23 +71,32 @@ const Logo = styled.img`
   align-items: center;
 `;
 
-const Menu = styled.span`
-  font-size: 20px;
+const StyledNav = styled.nav`
   display: flex;
-  color: #ffffff;
+  align-items: center;
+`
+
+const Menu = styled.ul`
+  display: flex;
   justify-content: center;
   align-items: center;
-`;
+  gap: 70px;
+  color: #fff;
+  `;
 
 const StLink = styled(Link)`
-  margin-left: 70px;
-  color: #ffffff;
+  color: #fff;
+  font-size: 18px;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 500;
+  }
 `;
 
 const Login = styled.span`
   font-size: 20px;
   display: flex;
-  color: #ffffff;
+  color: #fff;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -92,7 +109,11 @@ const Login = styled.span`
 const LoginLink = styled(Link)`
   margin-left: 15px;
   font-size: 15px;
-  color: #ffffff;
+  color: #fff;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 500;
+  }
 `;
 
 const MyProfile = styled.div`
