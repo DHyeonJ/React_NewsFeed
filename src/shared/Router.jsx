@@ -3,6 +3,7 @@ import Login from '../components/Login/Login';
 import Home from '../components/Main/Home';
 import Boast from '../components/Board/Boast/Boast';
 import Qna from '../components/Board/QnA/Qna';
+
 const Router = () => {
   return (
     <BrowserRouter>

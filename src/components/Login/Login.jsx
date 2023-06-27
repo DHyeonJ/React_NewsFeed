@@ -1,21 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Header from '../Main/Header/Header';
 import { styled } from 'styled-components';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../redux/modules/user';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onChangeHandler = ({ target }) => {
     const { name, value } = target;
     if (name === 'email') setEmail(value);
     if (name === 'password') setPassword(value);
   };
+  // useEffect(() => {
+  // }, [])
 
   const onSubmitHandler = async e => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      alert('환영합니다');
+      dispatch(loginUser({ email, password }));
+      navigate('/');
     } catch (error) {
       const { code } = error;
       switch (code) {
@@ -36,15 +47,7 @@ const Login = () => {
   };
   return (
     <>
-      <div
-        style={{
-          width: '100%',
-          height: '80px',
-          border: '1px solid'
-        }}
-      >
-        HEADER
-      </div>
+      <Header></Header>
       <main>
         <StyledLoginWrapper>
           <div>
