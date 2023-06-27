@@ -7,9 +7,9 @@ function Layout({ children }) {
 
 export default Layout;
 
-const Container = styled.div`
+const Container = styled.main`
   width: 1200px;
   margin: 0 auto;
-  height: 1080px;
+  /* height: 1080px; */
   border: 1px solid;
 `;
