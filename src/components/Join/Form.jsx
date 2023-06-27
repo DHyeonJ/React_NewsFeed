@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const FormContainer = styled.form`
   width: 1200px;
@@ -75,6 +78,8 @@ function Form() {
   const [failMsg, setFailMsg] = useState('');
   let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
+  const navigate = useNavigate();
+
   const onClickJoinHandler = function (e) {
     e.preventDefault();
 
@@ -88,6 +93,30 @@ function Form() {
       setFailMsg('유효한 이메일을 입력해주세요');
     } else {
       //DB에 저장, 로그인페이지로 이동
+      createUserWithEmailAndPassword(auth, userEmail, userPw)
+        .then(userCredential => {
+          // 회원가입 성공시
+          navigate('/login');
+        })
+        .catch(error => {
+          // 회원가입 실패시
+          if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
+            setFailMsg('이미 존재하는 이메일입니다.');
+          }
+        });
+    }
+  };
+
+  const onChange = event => {
+    const {
+      target: { name, value }
+    } = event;
+    if (name === 'email') {
+      setUserEmail(value);
+    } else if (name === 'password') {
+      setUserPw(value);
+    } else if (name === 'name') {
+      setUserName(value);
     }
   };
 
@@ -97,25 +126,28 @@ function Form() {
 
       <StInput
         value={userEmail}
-        onChange={e => setUserEmail(e.target.value)}
+        onChange={onChange}
         type="email"
         required
         placeholder="이메일"
+        name="email"
       ></StInput>
       <StInput
         value={userName}
-        onChange={e => setUserName(e.target.value)}
+        onChange={onChange}
         type="text"
         required
         placeholder="이름"
+        name="name"
       />
       <StInput
         type="password"
         value={userPw}
-        onChange={e => setUserPw(e.target.value)}
+        onChange={onChange}
         minLength="8"
         required
         placeholder="비밀번호"
+        name="password"
       />
       <StInput
         type="password"
