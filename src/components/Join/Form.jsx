@@ -6,6 +6,9 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useEffect } from 'react';
 
 const FormContainer = styled.div`
   width: 1200px;
@@ -93,9 +96,12 @@ function Form() {
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userPw, setUserPw] = useState('');
+  const [profileImg, setProfileImg] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const [failMsg, setFailMsg] = useState('');
   let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  const [users, setUsers] = useState('');
 
   const navigate = useNavigate();
 
@@ -111,8 +117,22 @@ function Form() {
       //DB에 저장, 로그인페이지로 이동
       createUserWithEmailAndPassword(auth, userEmail, userPw)
         .then(userCredential => {
+          userCredential.user.updateProfile({
+            displayName: userName
+          });
           // 회원가입 성공시
           navigate('/login');
+          console.log('user', userCredential);
+
+          const newUser = { userEmail, userName, userPw, profileImg, uid: userCredential.user.uid };
+
+          const collectionRef = collection(db, 'users');
+          const { id } = addDoc(collectionRef, newUser);
+
+          setUsers(prev => {
+            return [...users, { ...newUser, id }];
+          });
+          console.log('newUser =>', newUser);
         })
         .catch(error => {
           // 회원가입 실패시

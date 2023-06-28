@@ -20,6 +20,10 @@ function Header() {
     navigate('/');
   };
 
+  const HandleProfile = () => {
+    navigate('/userpage');
+  };
+
   return (
     <HeaderBG>
       <Logo src={LogoImgSrc}></Logo>
@@ -37,7 +41,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg></ProfileImg>
+        <ProfileImg onClick={HandleProfile}></ProfileImg>
         <Login>
           {user.isLogin ? (
             //
@@ -102,7 +106,7 @@ const StyledLogOut = styled.p`
     color: #f8db5c;
     font-weight: 500;
   }
-`
+`;
 
 const Login = styled.span`
   font-size: 20px;
