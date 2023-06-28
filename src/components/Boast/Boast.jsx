@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../../firebase';
 
 function Boast() {
-  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
   });
+  const posts = useSelector((state) => state.postDatas);
   const goToWrite = () => {
     if (user.isLogin === false) {
       alert('로그인이 필요합니다');
@@ -20,23 +18,6 @@ function Boast() {
       navigate('/postWrite');
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, 'posts'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
-      });
-      setPosts(initialPosts);
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <>
@@ -149,7 +130,7 @@ const StLayout = styled.div`
 
 const FeedContainer = styled.div`
   width: 1200px;
-  /* height: 840px; */
+  min-height: 840px;
   background-color: #12263a;
   display: flex;
   flex-direction: row;

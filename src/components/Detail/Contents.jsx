@@ -1,18 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import pet2 from '../../assets/pet2.png';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../../firebase';
+import loading from '../../assets/loadingW.png';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Contents() {
-  window.scrollTo(0,0);
-  const posts = useSelector((state) => state.postDatas);
+  window.scrollTo(0, 0);
+  const posts = useSelector(state => state.postDatas);
   const param = useParams();
-  const post = posts.find((doc) => {
+  const post = posts.find(doc => {
     return doc.id === param.id;
-  })
+  });
+
+  if (post === undefined) {
+    return (
+      <Section>
+        <TitleWrapper>
+          <Writer></Writer>
+          <Title></Title>
+        </TitleWrapper>
+        <ContentWrapper style={{display: 'flex', justifyContent: 'center'}}>
+          <img src={loading} width='250px' height='230px' paddingTop='40px' />
+        </ContentWrapper>
+        <Img src={pet2}></Img>
+      </Section>
+    );
+  }
+
   return (
     <>
       <Section>
@@ -52,7 +67,7 @@ const TitleWrapper = styled.div`
 `;
 const Writer = styled.span`
   margin: 0 20px;
-`
+`;
 const Title = styled.h3`
   font-size: 22px;
   font-weight: 600;
@@ -69,7 +84,7 @@ const ContentWrapper = styled.div`
 const ContentImg = styled.img`
   max-width: 300px;
   margin-bottom: 20px;
-`
+`;
 
 const Section = styled.section`
   position: relative;
