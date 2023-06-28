@@ -8,7 +8,6 @@ import { db } from '../../firebase';
 
 function Boast() {
   const [posts, setPosts] = useState([]);
-  console.log(posts);
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
