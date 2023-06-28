@@ -117,9 +117,6 @@ function Form() {
       //DB에 저장, 로그인페이지로 이동
       createUserWithEmailAndPassword(auth, userEmail, userPw)
         .then(userCredential => {
-          userCredential.user.updateProfile({
-            displayName: userName
-          });
           // 회원가입 성공시
           navigate('/login');
           console.log('user', userCredential);

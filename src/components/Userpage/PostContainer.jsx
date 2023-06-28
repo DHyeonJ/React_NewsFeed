@@ -7,13 +7,11 @@ import { auth } from '../../firebase';
 
 function PostContainer() {
   const [users, setUsers] = useState([]);
+  const myUser = users.find(user => user.userEmail === auth.currentUser.email);
 
-  // id, 비밀번호 가져오기
-  // const user = useSelector(state => {
-  //   return state;
-  // });
-  // console.log('user => ', user);
+  const postDatas = useSelector(state => state.postDatas);
 
+  // firebase에 새로운 데이터 저장하기
   useEffect(() => {
     const fetchData = async () => {
       // collection 이름이 users인 collection의 모든 document를 가져옵니다.
@@ -30,11 +28,6 @@ function PostContainer() {
     fetchData();
   }, []);
 
-  const myUser = users.find(user => user.userEmail === auth.currentUser.email);
-  console.log('현재 로그인한 유저', myUser);
-  console.log('auth', auth);
-  // console.log('테스트', myUser.userName);
-
   return (
     <>
       <div
@@ -43,8 +36,14 @@ function PostContainer() {
           padding: '10px'
         }}
       >
-        {/* <p>{myUser.userPw}</p>
-        <p>{myUser.userEmail}</p> */}
+        {users.length === 0 ? (
+          <div></div>
+        ) : (
+          <div>
+            <p>{myUser.userName}</p>
+            <p>{myUser.userEmail}</p>
+          </div>
+        )}
       </div>
       <div
         style={{
@@ -54,6 +53,26 @@ function PostContainer() {
       >
         <p>작성한 글 목록</p>
       </div>
+      {postDatas.map(data => {
+        if (data.userEmail === auth.currentUser.email && data.category === '질문 게시판') {
+          return (
+            <div key={data.id}>
+              <h3>질문 게시판</h3>
+              <p>{data.title}</p>
+              <p>{data.content}</p>
+              <p>{data.img}</p>
+            </div>
+          );
+        } else if (data.userEmail === auth.currentUser.email && data.category === '자랑 게시판') {
+          return (
+            <div key={data.id}>
+              <h3>자랑 게시판</h3>
+              <p>{data.title}</p>
+              <p>{data.content}</p>
+            </div>
+          );
+        }
+      })}
     </>
   );
 }
