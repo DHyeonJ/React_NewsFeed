@@ -17,16 +17,16 @@ function Header() {
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState('');
 
-  if (user.isLogin) {
-    const userEmail = auth.currentUser;
-    console.log(userEmail);
-    // const imageRef = ref(storage, `prfileImg/${userEmail}`);
-    // const getImageUrl = async () => {
-    //   const url = await getDownloadURL(imageRef);
-    //   return url;
-    // };
-    // console.log(getImageUrl());
-  }
+  // if (user.isLogin) {
+  //   const userEmail = auth.currentUser;
+  //   console.log(userEmail);
+  // const imageRef = ref(storage, `prfileImg/${userEmail}`);
+  // const getImageUrl = async () => {
+  //   const url = await getDownloadURL(imageRef);
+  //   return url;
+  // };
+  // console.log(getImageUrl());
+  // }
 
   // console.log(user);
   const logoutHandler = async () => {
