@@ -5,6 +5,7 @@ import BoastPage from '../pages/Boast';
 import Join from '../pages/Join';
 import PostWrite from '../pages/PostWrite';
 import DetailPage from '../pages/DetailPage';
+import QnaPage from '../pages/Qna';
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
         <Route path="/join" element={<Join />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/boast" element={<BoastPage />} />
+        <Route path="/Qna" element={<QnaPage />} />
         <Route path="/postWrite" element={<PostWrite />} />
         <Route path="/detailPage/:id" element={<DetailPage />} />
       </Routes>
