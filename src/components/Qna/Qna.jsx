@@ -6,18 +6,20 @@ import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../../firebase';
 
 function Qna() {
   const posts = useSelector(state => state.postDatas);
-  const [currentPage, setCurrentPage] = useState(0);
-  // posts가 보일 최대한의 갯수
-  // const limit = 10;
-  // const offset = (page - 1) * limit;
+  // 현재페이지
+  const [currentPage, setCurrentPage] = useState(1);
+  // 한 페이지에서 보일 posts 갯수
+  const limit = 10;
+  // (현재페이지에서 - 1 ) * limit  = 0
+  const offset = (currentPage - 1) * limit;
+  const totalPage = Math.floor(posts.length / limit);
 
-  const handlePageChange = () => {
-    setCurrentPage(currentPage);
+  // const useEffect
+  const handlePageChange = item => {
+    setCurrentPage(item.selected + 1);
   };
   const navigate = useNavigate();
   const user = useSelector(state => {
@@ -79,19 +81,19 @@ function Qna() {
                       <td>{post.userEmail}</td>
                       <td>{post.title}</td>
                       <td>홍길동</td>
-                      <td>2023.01.20</td>
+                      <td>{post.date}</td>
                       <td>3</td>
                     </tr>
                   );
-                })}
+                })
+                .slice(offset, offset + 10)}
             </tbody>
           </Table>
         </BoardArea>
         <RPaginate
           previousLabel={<FontAwesomeIcon icon={faAngleLeft} />}
           nextLabel={<FontAwesomeIcon icon={faAngleRight} />}
-          // pageCount={Math.ceil(items.length / itemsPerPage)}
-          pageCount={10}
+          pageCount={totalPage}
           pageRangeDisplayed={3}
           marginPagesDisplayed={3}
           onPageChange={handlePageChange}
