@@ -58,7 +58,7 @@ function Boast() {
                 <BoastPost
                   key={post.id}
                   onClick={() => {
-                    return navigate('/detailPage/:id');
+                    return navigate(`/detailPage/${post.id}`);
                   }}
                 >
                   <PostImg>{post.img}</PostImg>
@@ -149,14 +149,14 @@ const StLayout = styled.div`
 
 const FeedContainer = styled.div`
   width: 1200px;
-  height: 840px;
+  /* height: 840px; */
   background-color: #12263a;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
+  padding: 20px;
 `;
 
 const Search = styled.div`

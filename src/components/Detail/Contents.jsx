@@ -3,22 +3,16 @@ import { styled } from 'styled-components';
 import pet2 from '../../assets/pet2.png';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Contents() {
-  const [post, setPost] = useState({});
-  const id = 'R3DTRxjegeZSVWVbP6fe';
-  useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, 'posts'));
-      const quertSnapShot = await getDocs(q);
-      quertSnapShot.forEach(doc => {
-        if (id === doc.id) setPost({ ...doc.data() });
-      });
-    };
-
-    fetchData();
-  }, []);
-  console.log(post);
+  window.scrollTo(0,0);
+  const posts = useSelector((state) => state.postDatas);
+  const param = useParams();
+  const post = posts.find((doc) => {
+    return doc.id === param.id;
+  })
   return (
     <>
       <Section>
