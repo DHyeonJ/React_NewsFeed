@@ -4,12 +4,10 @@ import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db, storage } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../../firebase';
 import { useEffect } from 'react';
 
 const FormContainer = styled.div`
