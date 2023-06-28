@@ -22,8 +22,7 @@ function PostWrite() {
   const onSubmitHandler = async e => {
     e.preventDefault();
     const { category = 0, title = 1, content = 2, img = 3 } = e.target;
-    console.log(category.value, title.value, content.value, img.value);
-    if (category.value === 0) {
+    if (category.value === '0') {
       alert('카테고리를 선택해 주세요');
       return false;
     } else if (title.value === '') {

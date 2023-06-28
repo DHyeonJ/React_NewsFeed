@@ -39,8 +39,10 @@ function App() {
         };
         initialUsers.push(post);
       });
-
-      const result = initialUsers.find(user => user.uid == uid);
+      const result = initialUsers.find(user => user.uid === uid);
+      if(result === undefined){
+        return null
+      }
       return result.profileImg;
     };
     onAuthStateChanged(auth, async state => {
