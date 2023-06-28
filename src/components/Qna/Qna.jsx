@@ -10,7 +10,7 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 function Qna() {
-  const [posts, setPosts] = useState([]);
+  const posts = useSelector(state => state.postDatas);
   const [currentPage, setCurrentPage] = useState(0);
   // posts가 보일 최대한의 갯수
   // const limit = 10;
@@ -31,23 +31,6 @@ function Qna() {
       navigate('/postWrite');
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, 'posts'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
-      });
-      setPosts(initialPosts);
-    };
-
-    fetchData();
-  }, []);
   return (
     <>
       <QSearch>
@@ -88,8 +71,9 @@ function Qna() {
                   return (
                     <tr
                       onClick={() => {
-                        return navigate('/detailPage/:id');
+                        return navigate(`/detailPage/${post.id}`);
                       }}
+                      style={{ cursor: 'pointer' }}
                     >
                       <td>1</td>
                       <td>{post.userEmail}</td>
