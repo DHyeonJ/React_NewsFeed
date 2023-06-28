@@ -23,7 +23,7 @@ function Header() {
   return (
     <HeaderBG>
       <h1>
-        <Logo src={LogoImgSrc}></Logo>
+        <Logo src={LogoImgSrc} onClick={() => navigate('/')}></Logo>
       </h1>
       <StyledNav>
         <Menu>
@@ -135,7 +135,7 @@ const LoginLink = styled(Link)`
 `;
 const WaitLogin = styled.img`
   width: 20px;
-`
+`;
 
 const MyProfile = styled.div`
   display: flex;
