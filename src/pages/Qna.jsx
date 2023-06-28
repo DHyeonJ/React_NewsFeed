@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Main/Header/Header';
 import Footer from '../components/Main/Footer/Footer';
 import { styled } from 'styled-components';
-import Pagination from '../components/Pagination/Pagination';
+// import Pagination from '../components/Pagination/Pagination';
 
 function Qna() {
   const [contentInfo, setContentInfo] = useState([
@@ -81,7 +81,7 @@ function Qna() {
         </Table>
       </BoardArea>
       <div>
-        <Pagination limit={limit} page={page} totalPosts={contentInfo.length} setPage={setPage} />
+        {/* <Pagination limit={limit} page={page} totalPosts={contentInfo.length} setPage={setPage} /> */}
       </div>
       <Footer />
     </>
@@ -125,9 +125,9 @@ const InfoArea = styled.tr`
   border: 1px solid #12263a;
 `;
 
-const ReactPagination = styled(Pagination).attrs`
-  border: 1px solid #12263a;
-  width: 100px;
-  height: 100px;
-`;
+// const ReactPagination = styled(Pagination).attrs`
+//   border: 1px solid #12263a;
+//   width: 100px;
+//   height: 100px;
+// `;
 const Posts = styled.div``;

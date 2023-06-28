@@ -3,7 +3,9 @@ import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { auth, db, storage } from '../../firebase';
+import { addDoc, collection } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
 
@@ -99,7 +101,7 @@ function Form() {
 
   const navigate = useNavigate();
 
-  const onClickJoinHandler = function (e) {
+  const onClickJoinHandler = async e => {
     e.preventDefault();
 
     /// 비밀번호 확인
@@ -109,19 +111,26 @@ function Form() {
       setFailMsg('유효한 이메일을 입력해주세요');
     } else {
       //DB에 저장, 로그인페이지로 이동
-      createUserWithEmailAndPassword(auth, userEmail, userPw)
-        .then(userCredential => {
-          navigate('/login');
-        })
-        .then(() => {
-          const usersRef = collection(db, 'users');
-        })
-        .catch(error => {
-          // 회원가입 실패시
-          if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
-            setFailMsg('이미 존재하는 이메일입니다.');
-          }
-        });
+
+      try {
+        await createUserWithEmailAndPassword(auth, userEmail, userPw);
+        const imageRef = ref(storage, `prfileImg/defaultImg.png`);
+        const downloadURL = await getDownloadURL(imageRef);
+        navigate('/login');
+        const newUser = {
+          userEmail,
+          userName,
+          uid: auth.currentUser.uid,
+          profileImg: downloadURL
+        };
+        const usersRef = collection(db, 'users');
+        addDoc(usersRef, newUser);
+      } catch (error) {
+        // 회원가입 실패시
+        if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
+          setFailMsg('이미 존재하는 이메일입니다.');
+        }
+      }
     }
   };
 

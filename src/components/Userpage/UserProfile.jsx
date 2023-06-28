@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import PostContainer from './PostContainer';
+import { ref, uploadBytes } from 'firebase/storage';
+import { storage, auth } from '../../firebase';
 
 const ProfileImg = styled.div`
   width: 240px;
@@ -15,14 +17,19 @@ const FileInput = styled.input`
 `;
 
 function UserProfile() {
-  const [profileImg, setProfileImg] = useState()
+  const [profileImg, setProfileImg] = useState(null);
 
-  const handleImgUpload = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
+  useEffect(() => {
+    const updateImg = async () => {
+      const imageRef = ref(storage, `prfileImg/${auth.currentUser.email}`);
+      await uploadBytes(imageRef, profileImg);
+    };
+    if (profileImg !== null) updateImg();
+  }, [profileImg]);
 
-    reader.onload =
-  }
+  const handleImgUpload = event => {
+    setProfileImg(event.target.files[0]);
+  };
   return (
     <div>
       <ProfileImg />

@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import LogoImgSrc from '../../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../../redux/modules/user';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../../firebase';
+import { auth, storage } from '../../../firebase';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [imageUrl, setImageUrl] = useState('');
   const user = useSelector(state => {
     return state.user;
   });
+
+  if (user.isLogin) {
+    const userEmail = auth.currentUser;
+    console.log(userEmail);
+    // const imageRef = ref(storage, `prfileImg/${userEmail}`);
+    // const getImageUrl = async () => {
+    //   const url = await getDownloadURL(imageRef);
+    //   return url;
+    // };
+    // console.log(getImageUrl());
+  }
+
   // console.log(user);
   const logoutHandler = async () => {
     await signOut(auth);
@@ -102,7 +116,7 @@ const StyledLogOut = styled.p`
     color: #f8db5c;
     font-weight: 500;
   }
-`
+`;
 
 const Login = styled.span`
   font-size: 20px;
