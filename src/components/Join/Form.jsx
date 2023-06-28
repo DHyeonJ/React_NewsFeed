@@ -4,10 +4,11 @@ import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db, storage } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { useEffect } from 'react';
 
 const FormContainer = styled.div`
   width: 1200px;
@@ -95,9 +96,12 @@ function Form() {
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userPw, setUserPw] = useState('');
+  const [profileImg, setProfileImg] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const [failMsg, setFailMsg] = useState('');
   let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  const [users, setUsers] = useState('');
 
   const navigate = useNavigate();
 

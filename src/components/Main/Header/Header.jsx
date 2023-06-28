@@ -48,6 +48,7 @@ function Header() {
     dispatch(logoutUser());
     navigate('/');
   };
+
   console.log('유저정보 =>', user, '게시글 정보 =>', postDatas);
   return (
     <HeaderBG>
