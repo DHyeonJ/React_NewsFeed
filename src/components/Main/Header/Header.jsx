@@ -1,13 +1,14 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import LogoImgSrc from '../../../assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../../redux/modules/user';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../firebase';
 
 function Header() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(state => {
     return state.user;
@@ -16,26 +17,35 @@ function Header() {
   const logoutHandler = async () => {
     await signOut(auth);
     dispatch(logoutUser());
-  }
+    navigate('/');
+  };
 
   return (
     <HeaderBG>
       <Logo src={LogoImgSrc}></Logo>
-      <Menu>
-        <StLink to="/">Home</StLink>
-        <StLink to="/boast">자랑게시판</StLink>
-        <StLink to="/qna">질문게시판</StLink>
-      </Menu>
+      <StyledNav>
+        <Menu>
+          <li>
+            <StLink to="/">Home</StLink>
+          </li>
+          <li>
+            <StLink to="/boast">자랑게시판</StLink>
+          </li>
+          <li>
+            <StLink to="/qna">질문게시판</StLink>
+          </li>
+        </Menu>
+      </StyledNav>
       <MyProfile>
         <ProfileImg></ProfileImg>
         <Login>
           {user.isLogin ? (
-            // 
-            <div onClick={logoutHandler}>로그아웃</div>
+            //
+            <StyledLogOut onClick={logoutHandler}>로그아웃</StyledLogOut>
           ) : (
             <>
-              <LoginLink to="/">회원가입</LoginLink>
               <LoginLink to="/login">Login</LoginLink>
+              <LoginLink to="/join">회원가입</LoginLink>
             </>
           )}
         </Login>
@@ -45,7 +55,7 @@ function Header() {
 }
 
 export default Header;
-const HeaderBG = styled.div`
+const HeaderBG = styled.header`
   background-color: #12263a;
   width: 100%;
   height: 80px;
@@ -63,23 +73,41 @@ const Logo = styled.img`
   align-items: center;
 `;
 
-const Menu = styled.span`
-  font-size: 20px;
+const StyledNav = styled.nav`
   display: flex;
-  color: #ffffff;
-  justify-content: center;
   align-items: center;
 `;
 
-const StLink = styled(Link)`
-  margin-left: 70px;
-  color: #ffffff;
+const Menu = styled.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+  color: #fff;
 `;
+
+const StLink = styled(Link)`
+  color: #fff;
+  font-size: 18px;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 500;
+  }
+`;
+
+const StyledLogOut = styled.p`
+  cursor: pointer;
+  font-size: 16px;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 500;
+  }
+`
 
 const Login = styled.span`
   font-size: 20px;
   display: flex;
-  color: #ffffff;
+  color: #fff;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -92,17 +120,22 @@ const Login = styled.span`
 const LoginLink = styled(Link)`
   margin-left: 15px;
   font-size: 15px;
-  color: #ffffff;
+  color: #fff;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 500;
+  }
 `;
 
 const MyProfile = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 `;
 
 const ProfileImg = styled.div`
+  cursor: pointer;
   width: 50px;
   height: 50px;
   border-radius: 50%;

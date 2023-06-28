@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../../assets/pet.png';
+import { Link } from 'react-router-dom';
 
 function Body() {
   return (
@@ -12,8 +13,10 @@ function Body() {
       <article>
         <StSection>
           <StContent>
-            <DivImg>이미지</DivImg>
-            <StTitle>제목</StTitle>
+            <Link to="/detailPage">
+              <DivImg>이미지</DivImg>
+              <StTitle>제목</StTitle>
+            </Link>
           </StContent>
         </StSection>
         <StSection></StSection>
@@ -72,7 +75,6 @@ const Input = styled.img`
 `;
 
 const Keyword = styled.input`
-  border: 3px solid#f4d1ae;
   border-radius: 15px;
   width: 560px;
   height: 60px;
@@ -80,6 +82,8 @@ const Keyword = styled.input`
   margin-left: 5px;
   padding-left: 10px;
   text-align: center;
+  font-size: 22px;
+  border: 3px solid#f4d1ae;
 `;
 
 const StSection = styled.section`

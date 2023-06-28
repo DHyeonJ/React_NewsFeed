@@ -5,25 +5,39 @@ import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
+import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   width: 1200px;
   margin: 0 auto;
-  margin-top: 100px;
   height: 1080px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid;
+`;
+
+const StForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 440px;
+  padding: 20px;
+  border: 2px solid #12263a;
+  border-radius: 12px;
+  box-shadow: rgba(18, 38, 58, 0.3) 0px 1px 3px 0px, rgba(18, 38, 58, 0.1) 0px 1px 2px 0px;
 `;
 
 const StInput = styled.input`
-  width: 460px;
+  width: 400px;
   height: 40px;
-  font-size: 20px;
-  margin-bottom: 15px;
-  border: 1px solid gray;
+  font-size: 18px;
+  padding: 3px 20px;
+  border: 1px solid #12263a;
   border-radius: 8px;
   outline: none;
+  box-shadow: rgba(18, 38, 58, 0.1) 0px 1px 3px 0px, rgba(18, 38, 58, 0.06) 0px 1px 2px 0px;
   &:focus {
     border: 2px solid #f8db5c;
   }
@@ -39,18 +53,23 @@ const StLink = styled(Link)`
 
 const JoinButton = styled.button`
   width: 400px;
-  height: 45px;
+  height: 40px;
   border-radius: 10px;
-  background-color: #c5d8d1;
+  background-color: #12263a;
   cursor: pointer;
-  border: none;
-  color: white;
-  font-size: 20px;
+  outline: none;
+  color: #fff;
+  font-size: 18px;
   font-weight: 800;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 600;
+  }
+  &:focus {
+    color: #f8db5c;
+  }
 `;
-const Logo = styled.img`
+export const Logo = styled.img`
   width: 100px;
   height: 100px;
   margin-left: 60px;
@@ -60,13 +79,13 @@ const Logo = styled.img`
   margin-left: 0px;
 `;
 
-const Sthr = styled.hr`
-  width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 15px 0px;
-`;
+// const Sthr = styled.hr`
+//   width: 100%;
+//   border: 1px solid rgba(0, 0, 0, 0.1);
+//   margin: 15px 0px;
+// `;
 
-const WarningMsg = styled.h1`
+const WarningMsg = styled.h3`
   color: red;
 `;
 
@@ -105,43 +124,47 @@ function Form() {
   };
 
   return (
-    <FormContainer onSubmit={e => onClickJoinHandler(e)}>
-      <Logo src={LogoImagSrc}></Logo>
-
-      <StInput
-        value={userEmail}
-        onChange={e => setUserEmail(e.target.value)}
-        type="email"
-        required
-        placeholder="이메일"
-      ></StInput>
-      <StInput
-        value={userName}
-        onChange={e => setUserName(e.target.value)}
-        type="text"
-        required
-        placeholder="이름"
-      />
-      <StInput
-        type="password"
-        value={userPw}
-        minLength="8"
-        required
-        onChange={e => setUserPw(e.target.value)}
-        placeholder="비밀번호"
-      />
-      <StInput
-        type="password"
-        value={confirmPw}
-        required
-        onChange={e => setConfirmPw(e.target.value)}
-        placeholder="비밀번호 확인"
-      />
-      <WarningMsg>{failMsg}</WarningMsg>
-      <JoinButton type="submit">회원가입</JoinButton>
-      <Sthr></Sthr>
-      <JoinButton>구글 아이디로 로그인</JoinButton>
-      <StLink to="/login">로그인하기</StLink>
+    <FormContainer>
+      <StyledInnerWrapper>
+        <Logo src={LogoImagSrc}></Logo>
+        <StForm onSubmit={e => onClickJoinHandler(e)}>
+          <StInput
+            value={userEmail}
+            onChange={e => setUserEmail(e.target.value)}
+            type="email"
+            required
+            placeholder="이메일"
+          ></StInput>
+          <StInput
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+            type="text"
+            required
+            placeholder="이름"
+          />
+          <StInput
+            type="password"
+            value={userPw}
+            minLength="8"
+            required
+            onChange={e => setUserPw(e.target.value)}
+            placeholder="비밀번호"
+          />
+          <StInput
+            type="password"
+            value={confirmPw}
+            required
+            onChange={e => setConfirmPw(e.target.value)}
+            placeholder="비밀번호 확인"
+          />
+          {failMsg && <WarningMsg>{failMsg}</WarningMsg>}
+          <JoinButton type="submit">회원가입</JoinButton>
+        </StForm>
+        <StyledSocialLoginForm>
+          <JoinButton>구글 아이디로 회원가입</JoinButton>
+          <StLink to="/login">로그인하기</StLink>
+        </StyledSocialLoginForm>
+      </StyledInnerWrapper>
     </FormContainer>
   );
 }
