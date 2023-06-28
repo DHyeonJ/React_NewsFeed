@@ -2,24 +2,63 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Select from './Select';
+import { useSelector } from 'react-redux';
+import { db } from '../../firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 function PostWrite() {
   const [fileName, setFileName] = useState('');
+  const user = useSelector(state => {
+    return state.user;
+  });
   const navigate = useNavigate();
   const cancelWrite = () => {
     navigate(-1);
   };
-  const fileHandler = ({ target }) => {
+  const fileHandler = async ({ target }) => {
     const name = target.value.split('/').pop().split('\\').pop();
     setFileName(name);
   };
+  const onSubmitHandler = async e => {
+    e.preventDefault();
+    const { category = 0, title = 1, content = 2, img = 3 } = e.target;
+    console.log(category.value, title.value, content.value, img.value);
+    if (category.value === 0) {
+      alert('카테고리를 선택해 주세요');
+      return false;
+    } else if (title.value === '') {
+      alert('제목을 입력해 주세요');
+      return false;
+    } else if (content.value === '') {
+      alert('내용을 입력해 주세요');
+      return false;
+    }
+
+    const newPost = {
+      category: category.value,
+      title: title.value,
+      content: content.value,
+      date: Date.now(),
+      img: img.value,
+      userEmail: user.email
+    };
+    const collectionRef = collection(db, 'posts');
+    await addDoc(collectionRef, newPost);
+    navigate(-1);
+  };
+
   return (
-    <StForm>
+    <StForm onSubmit={onSubmitHandler}>
       <FormHeader>
         <Select />
-        <StInput placeholder="제목을 입력하세요"></StInput>
+        <StInput placeholder="제목을 입력하세요" name="title"></StInput>
       </FormHeader>
-      <StyledTextarea placeholder="내용을 입력하세요" rows="30" cols="118"></StyledTextarea>
+      <StyledTextarea
+        placeholder="내용을 입력하세요"
+        name="content"
+        rows="30"
+        cols="118"
+      ></StyledTextarea>
       <FormBottom>
         <FileField>
           <FileLabel>
@@ -27,6 +66,7 @@ function PostWrite() {
             <input
               type="file"
               accept="image/gif, image/jpeg, image/png"
+              name="img"
               style={{ display: 'none' }}
               onChange={fileHandler}
             />
@@ -34,7 +74,7 @@ function PostWrite() {
           <File>{fileName}</File>
         </FileField>
         <ButtonArea>
-          <Button>작성하기</Button>
+          <Button type="submit">작성하기</Button>
           <Button onClick={cancelWrite} type="button">
             취소하기
           </Button>
