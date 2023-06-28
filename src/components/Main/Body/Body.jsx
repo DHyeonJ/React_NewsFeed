@@ -4,6 +4,7 @@ import InputImgSrc from '../../../assets/pet.png';
 import { Link } from 'react-router-dom';
 
 function Body() {
+  
   return (
     <BArea>
       <Search>

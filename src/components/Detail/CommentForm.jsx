@@ -3,10 +3,12 @@ import { styled } from 'styled-components';
 
 function Form() {
   return (
-    <CommentForm>
-      <CommentInput placeholder="댓글을 입력하세요"></CommentInput>
-      <CommentBtn>입력</CommentBtn>
-    </CommentForm>
+    <section>
+      <CommentForm>
+        <CommentInput placeholder="댓글을 입력하세요"></CommentInput>
+        <CommentBtn>입력</CommentBtn>
+      </CommentForm>
+    </section>
   );
 }
 
