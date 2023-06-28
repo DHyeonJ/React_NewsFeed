@@ -13,20 +13,32 @@ function Header() {
   const { user, postDatas } = useSelector(state => {
     return state;
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState('');
+  const defaultImg = '../../../assets/defaultImg.png';
 
-  // if (user.isLogin) {
-  //   const userEmail = auth.currentUser;
-  //   console.log(userEmail);
-  // const imageRef = ref(storage, `prfileImg/${userEmail}`);
-  // const getImageUrl = async () => {
-  //   const url = await getDownloadURL(imageRef);
-  //   return url;
-  // };
-  // console.log(getImageUrl());
-  // }
+  //currentUser.email이 path가 된다.
+  //path를 입력받아 해당되는 이미지를 불러오는 함수를 만든다
+  //useEffect속에서 받아온 path를 함수에 넣어 호출한다.
+
+  const getImageUrl = async imagePath => {
+    const imageRef = ref(storage, `profileImg/${imagePath}`);
+    const url = await getDownloadURL(imageRef);
+    return url;
+  };
+
+  /* useEffect(() => {
+    if (user.isLogin == 'member') {
+      const fetchImageUrl = async () => {
+        const imagePath = auth.currentUser.email;
+        const url = await getImageUrl(imagePath);
+        setImageUrl(url);
+      };
+      fetchImageUrl();
+    }
+  }, [user.isLogin]);*/
 
   // console.log(user);
   const logoutHandler = async () => {
@@ -54,7 +66,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg></ProfileImg>
+        <ProfileImg imageurl={imageUrl} defaultimg={defaultImg}></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>
@@ -164,6 +176,8 @@ const ProfileImg = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  /* background-img:; */
   border: 2px solid white;
+  background-image: url(${props => (props.image == '' ? props.defaultimg : props.imageurl)});
+  background-size: cover;
+  background-position: center;
 `;

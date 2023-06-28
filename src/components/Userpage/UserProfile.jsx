@@ -21,7 +21,7 @@ function UserProfile() {
 
   useEffect(() => {
     const updateImg = async () => {
-      const imageRef = ref(storage, `prfileImg/${auth.currentUser.email}`);
+      const imageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
       await uploadBytes(imageRef, profileImg);
     };
     if (profileImg !== null) updateImg();

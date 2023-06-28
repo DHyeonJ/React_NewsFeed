@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db, storage } from '../../firebase';
 import { addDoc, collection } from 'firebase/firestore';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
 
@@ -114,14 +114,12 @@ function Form() {
 
       try {
         await createUserWithEmailAndPassword(auth, userEmail, userPw);
-        const imageRef = ref(storage, `prfileImg/defaultImg.png`);
-        const downloadURL = await getDownloadURL(imageRef);
         navigate('/login');
         const newUser = {
           userEmail,
           userName,
           uid: auth.currentUser.uid,
-          profileImg: downloadURL
+          photoUrl: ''
         };
         const usersRef = collection(db, 'users');
         addDoc(usersRef, newUser);
