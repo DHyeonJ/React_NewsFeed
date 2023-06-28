@@ -3,7 +3,9 @@ import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { auth, db, storage } from '../../firebase';
+import { addDoc, collection } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
@@ -105,7 +107,7 @@ function Form() {
 
   const navigate = useNavigate();
 
-  const onClickJoinHandler = function (e) {
+  const onClickJoinHandler = async e => {
     e.preventDefault();
 
     /// 비밀번호 확인
@@ -115,28 +117,24 @@ function Form() {
       setFailMsg('유효한 이메일을 입력해주세요');
     } else {
       //DB에 저장, 로그인페이지로 이동
-      createUserWithEmailAndPassword(auth, userEmail, userPw)
-        .then(userCredential => {
-          // 회원가입 성공시
-          navigate('/login');
-          console.log('user', userCredential);
 
-          const newUser = { userEmail, userName, userPw, profileImg, uid: userCredential.user.uid };
-
-          const collectionRef = collection(db, 'users');
-          const { id } = addDoc(collectionRef, newUser);
-
-          setUsers(prev => {
-            return [...users, { ...newUser, id }];
-          });
-          console.log('newUser =>', newUser);
-        })
-        .catch(error => {
-          // 회원가입 실패시
-          if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
-            setFailMsg('이미 존재하는 이메일입니다.');
-          }
-        });
+      try {
+        await createUserWithEmailAndPassword(auth, userEmail, userPw);
+        navigate('/login');
+        const newUser = {
+          userEmail,
+          userName,
+          uid: auth.currentUser.uid,
+          photoUrl: ''
+        };
+        const usersRef = collection(db, 'users');
+        addDoc(usersRef, newUser);
+      } catch (error) {
+        // 회원가입 실패시
+        if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
+          setFailMsg('이미 존재하는 이메일입니다.');
+        }
+      }
     }
   };
 

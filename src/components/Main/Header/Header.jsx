@@ -1,34 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import LogoImgSrc from '../../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../../redux/modules/user';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../../firebase';
+import { auth, storage } from '../../../firebase';
+import { getDownloadURL, ref } from 'firebase/storage';
 import time from '../../../assets/time.png';
 
 function Header() {
   const { user, postDatas } = useSelector(state => {
     return state;
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [imageUrl, setImageUrl] = useState('');
+  const defaultImg = '../../../assets/defaultImg.png';
+
+  //currentUser.email이 path가 된다.
+  //path를 입력받아 해당되는 이미지를 불러오는 함수를 만든다
+  //useEffect속에서 받아온 path를 함수에 넣어 호출한다.
+
+  const getImageUrl = async imagePath => {
+    const imageRef = ref(storage, `profileImg/${imagePath}`);
+    const url = await getDownloadURL(imageRef);
+    return url;
+  };
+
+  /* useEffect(() => {
+    if (user.isLogin == 'member') {
+      const fetchImageUrl = async () => {
+        const imagePath = auth.currentUser.email;
+        const url = await getImageUrl(imagePath);
+        setImageUrl(url);
+      };
+      fetchImageUrl();
+    }
+  }, [user.isLogin]);*/
+
+  // console.log(user);
   const logoutHandler = async () => {
     await signOut(auth);
     dispatch(logoutUser());
     navigate('/');
   };
 
-  const HandleProfile = () => {
-    navigate('/userpage');
-  };
-
   console.log('유저정보 =>', user, '게시글 정보 =>', postDatas);
   return (
     <HeaderBG>
       <h1>
-        <Logo src={LogoImgSrc}></Logo>
+        <Logo src={LogoImgSrc} onClick={() => navigate('/')}></Logo>
       </h1>
       <StyledNav>
         <Menu>
@@ -44,7 +67,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg onClick={HandleProfile}></ProfileImg>
+        <ProfileImg imageurl={imageUrl} defaultimg={defaultImg}></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>
@@ -154,6 +177,8 @@ const ProfileImg = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  /* background-img:; */
   border: 2px solid white;
+  background-image: url(${props => (props.image == '' ? props.defaultimg : props.imageurl)});
+  background-size: cover;
+  background-position: center;
 `;
