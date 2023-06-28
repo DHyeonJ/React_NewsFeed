@@ -50,7 +50,7 @@ function Header() {
   return (
     <HeaderBG>
       <h1>
-        <Logo src={LogoImgSrc}></Logo>
+        <Logo src={LogoImgSrc} onClick={() => navigate('/')}></Logo>
       </h1>
       <StyledNav>
         <Menu>
