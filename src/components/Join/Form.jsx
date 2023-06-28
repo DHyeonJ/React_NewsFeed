@@ -111,8 +111,10 @@ function Form() {
       //DB에 저장, 로그인페이지로 이동
       createUserWithEmailAndPassword(auth, userEmail, userPw)
         .then(userCredential => {
-          // 회원가입 성공시
           navigate('/login');
+        })
+        .then(() => {
+          const usersRef = collection(db, 'users');
         })
         .catch(error => {
           // 회원가입 실패시
