@@ -37,7 +37,7 @@ function Boast() {
 
     fetchData();
   }, []);
-  console.log(posts);
+
   return (
     <>
       <Search>
@@ -49,36 +49,28 @@ function Boast() {
           <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
         </PostWrite>
         <FeedContainer>
-          <BoastPost>
-            <Link to="/detailPage">
-              <PostImg>이미지</PostImg>
-              <PostInfo>
-                <PostWriter>작성자</PostWriter>
-                <p>글 제목</p>
-              </PostInfo>
-            </Link>
-          </BoastPost>
-          <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
-          </BoastPost>
-          <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
-          </BoastPost>
-          <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
-          </BoastPost>
+          {posts
+            .filter(post => {
+              return post.category == '자랑 게시판';
+            })
+            .map(post => {
+              return (
+                <BoastPost
+                  key={post.id}
+                  onClick={() => {
+                    return navigate('/detailPage/:id');
+                  }}
+                >
+                  <PostImg>{post.img}</PostImg>
+                  <PostInfo>
+                    <PostTitleBox>
+                      <PostWriter>{post.userEmail}</PostWriter>
+                    </PostTitleBox>
+                    <PostTitle>{post.title}</PostTitle>
+                  </PostInfo>
+                </BoastPost>
+              );
+            })}
         </FeedContainer>
       </StLayout>
     </>
@@ -86,6 +78,14 @@ function Boast() {
 }
 
 export default Boast;
+const PostTitleBox = styled.div`
+  width: 150px;
+`;
+const PostTitle = styled.p`
+  font-size: 20px;
+  margin-left: 20px;
+  color: black;
+`;
 const PostWrite = styled.div`
   display: flex;
   flex-direction: row-reverse;
@@ -123,10 +123,11 @@ const PostInfo = styled.div`
   align-items: center;
 `;
 const PostWriter = styled.p`
-  width: 120px;
-  height: 50px;
+  /* width: 120px;
+  height: 50px; */
   border-right: 2px solid #12263a;
   text-align: center;
+  color: black;
 `;
 
 const BoastPost = styled.div`
