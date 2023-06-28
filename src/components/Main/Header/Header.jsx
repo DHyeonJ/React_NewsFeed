@@ -14,6 +14,8 @@ function Header() {
     return state;
   });
 
+  console.log(user);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState('');
