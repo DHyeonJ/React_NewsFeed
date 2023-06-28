@@ -33,6 +33,7 @@ function PostWrite() {
       alert('내용을 입력해 주세요');
       return false;
     }
+    
 
     const newPost = {
       category: category.value,

@@ -1,15 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import pet2 from '../../assets/pet2.png';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 function Contents() {
+  const [post, setPost] = useState({});
+  const id = 'R3DTRxjegeZSVWVbP6fe';
+  useEffect(() => {
+    const fetchData = async () => {
+      const q = query(collection(db, 'posts'));
+      const quertSnapShot = await getDocs(q);
+      quertSnapShot.forEach(doc => {
+        if (id === doc.id) setPost({ ...doc.data() });
+      });
+    };
+
+    fetchData();
+  }, []);
+  console.log(post);
   return (
     <>
       <Section>
-        <Title>
-          <h3>제목</h3>
-        </Title>
-        <Content>내용</Content>
+        <TitleWrapper>
+          <Writer>{post.userEmail}</Writer>
+          <Title>{post.title}</Title>
+        </TitleWrapper>
+        <ContentWrapper>
+          {!post.img && (
+            <ContentImg src="https://modo-phinf.pstatic.net/20161227_17/1482824657944M2RjC_JPEG/mosaJxz9vM.jpeg?type=w720"></ContentImg>
+          )}
+          <p>{post.content}</p>
+        </ContentWrapper>
         <Img src={pet2}></Img>
       </Section>
     </>
@@ -18,25 +40,42 @@ function Contents() {
 
 export default Contents;
 const Img = styled.img`
+  pointer-events: none;
   width: 100px;
   height: 200px;
   position: absolute;
-  top: 0;
+  top: 110px;
   right: -63px;
 `;
-
-const Title = styled.div`
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
   height: 50px;
-  border: 1px solid #12263a;
   margin-top: 40px;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
-const Content = styled.div`
+const Writer = styled.span`
+  margin: 0 20px;
+`
+const Title = styled.h3`
+  font-size: 22px;
+  font-weight: 600;
+  margin-left: 20px;
+`;
+const ContentWrapper = styled.div`
   width: 100%;
-  height: 282px;
-  border: 1px solid #12263a;
-  margin-top: 40px;
+  min-height: 400px;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
+const ContentImg = styled.img`
+  max-width: 300px;
+  margin-bottom: 20px;
+`
 
 const Section = styled.section`
   position: relative;
