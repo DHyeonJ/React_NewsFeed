@@ -8,7 +8,12 @@ import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
-
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
 const FormContainer = styled.div`
   width: 1200px;
   margin: 0 auto;
@@ -100,6 +105,13 @@ function Form() {
   let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const navigate = useNavigate();
+  /* const googleSignIn = async () => {
+    try {
+      const providerGoogle = new GoogleAuthProvider();
+      navigate('/');
+      await signInWithPopup(auth, providerGoogle);
+    } catch {}
+  };*/
 
   const onClickJoinHandler = async e => {
     e.preventDefault();

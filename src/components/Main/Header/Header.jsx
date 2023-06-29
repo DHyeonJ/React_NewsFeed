@@ -10,37 +10,35 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import time from '../../../assets/time.png';
 
 function Header() {
-  const { user, postDatas } = useSelector(state => {
-    return state;
-  });
-
-  console.log(user);
-
+  const user = useSelector(state => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [imageUrl, setImageUrl] = useState('');
-  const defaultImg = '../../../assets/defaultImg.png';
+  const defaultImgUrl = '../../../assets/defaultImg.png';
+  const [imgRender, setImgRender] = useState(user.photoURL);
 
   //currentUser.email이 path가 된다.
   //path를 입력받아 해당되는 이미지를 불러오는 함수를 만든다
   //useEffect속에서 받아온 path를 함수에 넣어 호출한다.
 
-  const getImageUrl = async imagePath => {
-    const imageRef = ref(storage, `profileImg/${imagePath}`);
-    const url = await getDownloadURL(imageRef);
-    return url;
-  };
+  // const getImageUrl = async imagePath => {
+  //   const imageRef = ref(storage, `profileImg/${imagePath}`);
+  //   const url = await getDownloadURL(imageRef);
+  //   return url;
+  // };
 
-  /* useEffect(() => {
-    if (user.isLogin == 'member') {
-      const fetchImageUrl = async () => {
-        const imagePath = auth.currentUser.email;
-        const url = await getImageUrl(imagePath);
-        setImageUrl(url);
-      };
-      fetchImageUrl();
-    }
-  }, [user.isLogin]);*/
+  // useEffect(() => {
+  //   if (user.isLogin == 'member') {
+  //     const fetchImageUrl = async () => {
+  //       const imagePath = auth.currentUser.email;
+  //       const url = await getImageUrl(imagePath);
+  //       setImageUrl(url);
+  //     };
+  //     fetchImageUrl();
+  //   }
+  // }, [user.isLogin]);
+  useEffect(() => {
+    setImgRender(user.photoURL);
+  }, [imgRender]);
 
   // console.log(user);
   const logoutHandler = async () => {
@@ -48,7 +46,7 @@ function Header() {
     dispatch(logoutUser());
     navigate('/');
   };
-  console.log('유저정보 =>', user, '게시글 정보 =>', postDatas);
+  console.log('유저정보 =>', user, '게시글 정보 =>');
   return (
     <HeaderBG>
       <h1>
@@ -68,7 +66,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg imageurl={imageUrl} defaultimg={defaultImg}></ProfileImg>
+        <ProfileImg userimgurl={imgRender} defaultimgurl={defaultImgUrl}></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>
@@ -179,7 +177,8 @@ const ProfileImg = styled.div`
   height: 50px;
   border-radius: 50%;
   border: 2px solid white;
-  background-image: url(${props => (props.image == '' ? props.defaultimg : props.imageurl)});
+  /* background-image: url(${props => props.userimgurl ?? '../../../assets/defaultImg.png'}); */
+  background-image: url(${props => props.userimgurl});
   background-size: cover;
   background-position: center;
 `;
