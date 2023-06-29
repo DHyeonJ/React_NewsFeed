@@ -138,7 +138,8 @@ function Form() {
           userEmail,
           userName,
           uid: auth.currentUser.uid,
-          photoUrl: ''
+          photoUrl: '',
+          userPw
         };
         const usersRef = collection(db, 'users');
         addDoc(usersRef, newUser);

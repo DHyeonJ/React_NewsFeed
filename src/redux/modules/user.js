@@ -42,7 +42,7 @@ const user = (state = initialState, action) => {
   switch (action.type) {
     case USER_INFO:
       return {
-        ...state,
+        password: action.payload.userPw,
         isLogin: action.payload.isLogin,
         uid: action.payload.uid,
         email: action.payload.email,
