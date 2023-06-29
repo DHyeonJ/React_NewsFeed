@@ -63,7 +63,8 @@ function App() {
             photoURL: result.photoUrl,
             uid,
             docId: result.id,
-            isLogin: 'member'
+            isLogin: 'member',
+            userPw: result.userPw
           })
         );
       } else {
