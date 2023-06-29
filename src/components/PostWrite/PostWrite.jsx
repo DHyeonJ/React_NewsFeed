@@ -5,7 +5,6 @@ import Select from './Select';
 import { useSelector } from 'react-redux';
 import { db } from '../../firebase';
 import { addDoc, collection } from 'firebase/firestore';
-
 function PostWrite() {
   const [fileName, setFileName] = useState('');
   const user = useSelector(state => {
@@ -22,8 +21,7 @@ function PostWrite() {
   const onSubmitHandler = async e => {
     e.preventDefault();
     const { category = 0, title = 1, content = 2, img = 3 } = e.target;
-    console.log(category.value, title.value, content.value, img.value);
-    if (category.value === 0) {
+    if (category.value === '0') {
       alert('카테고리를 선택해 주세요');
       return false;
     } else if (title.value === '') {
@@ -33,8 +31,6 @@ function PostWrite() {
       alert('내용을 입력해 주세요');
       return false;
     }
-    
-
     const newPost = {
       category: category.value,
       title: title.value,
@@ -47,7 +43,6 @@ function PostWrite() {
     await addDoc(collectionRef, newPost);
     navigate(-1);
   };
-
   return (
     <StForm onSubmit={onSubmitHandler}>
       <FormHeader>
@@ -84,9 +79,7 @@ function PostWrite() {
     </StForm>
   );
 }
-
 export default PostWrite;
-
 const FormHeader = styled.div`
   display: flex;
   align-items: center;
@@ -124,7 +117,6 @@ const FormBottom = styled.div`
   justify-content: space-between;
   padding: 0 20px 0 50px;
 `;
-
 const FileLabel = styled.label`
   cursor: pointer;
   text-align: center;
@@ -136,7 +128,6 @@ const FileLabel = styled.label`
     background-color: #c5d8d1;
   }
 `;
-
 const StForm = styled.form`
   position: relative;
   display: flex;

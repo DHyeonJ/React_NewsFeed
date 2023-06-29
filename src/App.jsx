@@ -44,7 +44,10 @@ function App() {
         initialUsers.push(user);
       });
 
-      const result = initialUsers.find(user => user.uid == uid);
+      const result = initialUsers.find(user => user.uid === uid);
+      if (result === undefined) {
+        return null;
+      }
       return result;
     };
 
@@ -52,6 +55,7 @@ function App() {
       if (state) {
         const { email, uid } = state;
         const result = await userFetch(uid);
+
         console.log(result, result.photoUrl, 66);
         dispatch(
           getUserInfo({
