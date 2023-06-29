@@ -41,7 +41,6 @@ const initialState = {
 const user = (state = initialState, action) => {
   switch (action.type) {
     case USER_INFO:
-      console.log(action.payload)
       return {
         password: action.payload.userPw,
         isLogin: action.payload.isLogin,

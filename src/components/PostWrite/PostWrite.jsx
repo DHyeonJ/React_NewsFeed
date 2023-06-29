@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Select from './Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { db, storage } from '../../firebase';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { getAllPost } from '../../redux/modules/posts';
 import currentTime from '../../feature/currentTime';
-import { ref } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 function PostWrite() {
+  const param = useParams();
   const [fileName, setFileName] = useState('');
   const dispatch = useDispatch();
   const user = useSelector(state => {
@@ -37,13 +38,16 @@ function PostWrite() {
       alert('내용을 입력해 주세요');
       return false;
     }
-    const imageRef = ref(storage,)
+    const imageRef = ref(storage, `postImg/${user.email}`);
+    await uploadBytes(imageRef, img.files[0]);
+    const getImgRef = ref(storage, `postImg/${user.email}`);
+    const imgUrl = await getDownloadURL(getImgRef);
     const newPost = {
       category: category.value,
       title: title.value,
       content: content.value,
       date: currentTime(),
-      img: img.value,
+      img: imgUrl,
       userEmail: user.email
     };
     const collectionRef = collection(db, 'posts');
