@@ -11,7 +11,7 @@ function UserPage() {
       <Header />
       <Layout>
         <PostContainer />
-        <UserProfile />
+        {/* <UserProfile /> */}
       </Layout>
       <Footer />
     </>

@@ -58,8 +58,6 @@ const user = (state = initialState, action) => {
     case LOGIN:
       return {
         ...state,
-        isLogin: 'member',
-        email: action.payload.email,
         password: action.payload.password
       };
     case LOGOUT:

@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Contents() {
-  window.scrollTo(0, 0);
   const posts = useSelector(state => state.postDatas);
   const param = useParams();
   const post = posts.find(doc => {
@@ -48,6 +47,7 @@ function Contents() {
 }
 
 export default Contents;
+
 const Img = styled.img`
   pointer-events: none;
   width: 100px;
