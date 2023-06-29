@@ -83,9 +83,9 @@ export const Logo = styled.img`
 `;
 
 // const Sthr = styled.hr`
-//   width: 100%;
-//   border: 1px solid rgba(0, 0, 0, 0.1);
-//   margin: 15px 0px;
+// width: 100%;
+// border: 1px solid rgba(0, 0, 0, 0.1);
+// margin: 15px 0px;
 // `;
 
 const WarningMsg = styled.h3`

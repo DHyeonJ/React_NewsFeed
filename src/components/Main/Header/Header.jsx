@@ -8,29 +8,23 @@ import { signOut } from 'firebase/auth';
 import { auth, storage } from '../../../firebase';
 import { getDownloadURL, ref } from 'firebase/storage';
 import time from '../../../assets/time.png';
-
 function Header() {
   const { user, postDatas } = useSelector(state => {
     return state;
   });
-
   console.log(user);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState('');
   const defaultImg = '../../../assets/defaultImg.png';
-
   //currentUser.email이 path가 된다.
   //path를 입력받아 해당되는 이미지를 불러오는 함수를 만든다
   //useEffect속에서 받아온 path를 함수에 넣어 호출한다.
-
   const getImageUrl = async imagePath => {
     const imageRef = ref(storage, `profileImg/${imagePath}`);
     const url = await getDownloadURL(imageRef);
     return url;
   };
-
   /* useEffect(() => {
     if (user.isLogin == 'member') {
       const fetchImageUrl = async () => {
@@ -41,14 +35,12 @@ function Header() {
       fetchImageUrl();
     }
   }, [user.isLogin]);*/
-
   // console.log(user);
   const logoutHandler = async () => {
     await signOut(auth);
     dispatch(logoutUser());
     navigate('/');
   };
-
   console.log('유저정보 =>', user, '게시글 정보 =>', postDatas);
   return (
     <HeaderBG>
@@ -77,7 +69,6 @@ function Header() {
               <LoginLink to="/join">회원가입</LoginLink>
             </>
           )}
-
           {user.isLogin === 'member' && (
             <StyledLogOut onClick={logoutHandler}>로그아웃</StyledLogOut>
           )}
@@ -87,9 +78,7 @@ function Header() {
     </HeaderBG>
   );
 }
-
 export default Header;
-
 const HeaderBG = styled.header`
   background-color: #12263a;
   width: 100%;
@@ -98,7 +87,6 @@ const HeaderBG = styled.header`
   flex-direction: row;
   justify-content: space-between;
 `;
-
 const Logo = styled.img`
   cursor: pointer;
   width: 80px;
@@ -108,12 +96,10 @@ const Logo = styled.img`
   justify-content: center;
   align-items: center;
 `;
-
 const StyledNav = styled.nav`
   display: flex;
   align-items: center;
 `;
-
 const Menu = styled.ul`
   display: flex;
   justify-content: center;
@@ -121,7 +107,6 @@ const Menu = styled.ul`
   gap: 70px;
   color: #fff;
 `;
-
 const StLink = styled(Link)`
   color: #fff;
   font-size: 18px;
@@ -130,7 +115,6 @@ const StLink = styled(Link)`
     font-weight: 500;
   }
 `;
-
 const StyledLogOut = styled.p`
   cursor: pointer;
   font-size: 16px;
@@ -139,7 +123,6 @@ const StyledLogOut = styled.p`
     font-weight: 500;
   }
 `;
-
 const Login = styled.span`
   width: 100px;
   font-size: 20px;
@@ -153,7 +136,6 @@ const Login = styled.span`
     margin-left: 15px;
   }
 `;
-
 const LoginLink = styled(Link)`
   margin-left: 15px;
   font-size: 15px;
@@ -166,14 +148,12 @@ const LoginLink = styled(Link)`
 const WaitLogin = styled.img`
   width: 20px;
 `;
-
 const MyProfile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
 `;
-
 const ProfileImg = styled.div`
   cursor: pointer;
   width: 50px;

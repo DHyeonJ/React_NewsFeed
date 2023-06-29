@@ -9,15 +9,18 @@ import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function Qna() {
   const posts = useSelector(state => state.postDatas);
+  const filtered = posts.filter(post => {
+    return post.category === '질문 게시판';
+  });
   // 현재페이지
   const [currentPage, setCurrentPage] = useState(1);
   // 한 페이지에서 보일 posts 갯수
   const limit = 10;
   // (현재페이지에서 - 1 ) * limit  = 0
   const offset = (currentPage - 1) * limit;
-  const totalPage = Math.floor(posts.length / limit);
+  // 총 페이지
+  const totalPage = Math.ceil(filtered.length / limit);
 
-  // const useEffect
   const handlePageChange = item => {
     setCurrentPage(item.selected + 1);
   };
@@ -52,19 +55,23 @@ function Qna() {
               <col width="*" />
               <col width="*" />
               <col width="*" />
-              <col width="*" />
             </colgroup>
             <thead>
-              <tr>
+              <tr
+                style={{
+                  textAlign: 'center',
+                  borderRadius: '12px',
+                  boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
+                }}
+              >
                 <th>No</th>
-                <th>ID</th>
-                <th>Title</th>
                 <th>작성자</th>
+                <th>Title</th>
                 <th>Date</th>
                 <th>조회수</th>
               </tr>
             </thead>
-            <tbody style={{ border: '1px solid #12263a' }}>
+            <tbody>
               {posts
                 .filter(post => {
                   return post.category === '질문 게시판';
@@ -75,14 +82,51 @@ function Qna() {
                       onClick={() => {
                         return navigate(`/detailPage/${post.id}`);
                       }}
-                      style={{ cursor: 'pointer' }}
+                      style={{
+                        cursor: 'pointer',
+                        borderRadius: '12px',
+                        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+                        textAlign: 'center',
+                        height: '80px'
+                      }}
                     >
-                      <td>1</td>
-                      <td>{post.userEmail}</td>
-                      <td>{post.title}</td>
-                      <td>홍길동</td>
-                      <td>{post.date}</td>
-                      <td>3</td>
+                      <td
+                        style={{
+                          fontSize: '20px',
+                          paddingTop: '40px'
+                        }}
+                      >
+                        1
+                      </td>
+                      <td
+                        style={{
+                          fontSize: '20px'
+                        }}
+                      >
+                        {post.userEmail}
+                      </td>
+                      <td
+                        style={{
+                          fontSize: '20px',
+                          textAlign: 'left'
+                        }}
+                      >
+                        {post.title}
+                      </td>
+                      <td
+                        style={{
+                          fontSize: '20px'
+                        }}
+                      >
+                        {post.date}
+                      </td>
+                      <td
+                        style={{
+                          fontSize: '20px'
+                        }}
+                      >
+                        3
+                      </td>
                     </tr>
                   );
                 })
@@ -178,32 +222,53 @@ const BoardArea = styled.div`
 `;
 
 const Table = styled.table`
-  width: 1200px;
-  height: 840px;
-  border: 2px solid #12263a;
+  width: 100%;
+  height: 100%;
 `;
 
 const RPaginate = styled(ReactPaginate).attrs({
   activeClassName: 'active'
 })`
   display: flex;
-  gap: 15px;
+  gap: 20px;
   font-size: 20px;
+  margin-top: 30px;
   justify-content: center;
   color: #12263a;
   cursor: pointer;
 
-  li.previous a,
-  li.next a {
-    color: #06bcc1;
+  a[aria-label='Previous page'],
+  a[aria-label='Next page'] {
+    background-color: #c5d8d1;
+    color: #12263a;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    font-weight: 700;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+  }
+  li {
+    color: #12263a;
+    line-height: 30px;
+    display: block;
+    text-align: center;
   }
   li.active a {
-    color: #c5d8d1;
+    background-color: #12263a;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
     font-weight: 700;
-    min-width: 32px;
+    display: block;
+    text-align: center;
   }
   li.disabled a {
-    color: gray;
+    display: none;
   }
   li.disable,
   li.disabled a {
