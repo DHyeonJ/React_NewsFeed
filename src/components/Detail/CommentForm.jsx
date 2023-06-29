@@ -12,7 +12,6 @@ function Form({ text, setText, isEdit, setIsEdit }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const param = useParams();
-  console.log(isEdit);
   const onSubmitCommentHandler = async e => {
     e.preventDefault();
     if (user.isLogin === 'guest') {
@@ -26,10 +25,8 @@ function Form({ text, setText, isEdit, setIsEdit }) {
       return false;
     }
     if (isEdit.isIt) {
-      console.log('isit in');
       const item = isEdit.item;
-      const { content, id } = item;
-      console.log(content, text);
+      const { id } = item;
       const commentRef = doc(db, 'comment', id);
       await updateDoc(commentRef, { ...item, comment: text });
       setText('');
@@ -45,7 +42,6 @@ function Form({ text, setText, isEdit, setIsEdit }) {
       setText('');
       await addDoc(collectionRef, newComment);
     }
-    console.log('if out');
     const q = query(collection(db, 'comment'));
     const quertSnapShot = await getDocs(q);
     const initialPosts = [];
