@@ -12,7 +12,7 @@ function Boast() {
   });
   const posts = useSelector(state => state.postDatas);
   const goToWrite = () => {
-    if (user.isLogin === false) {
+    if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
       navigate('/login');
     } else {
