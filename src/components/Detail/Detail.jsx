@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Contents from './Contents';
 import Form from './CommentForm';
 import CommentsList from './CommentsList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const Detail = () => {
   const param = useParams();
   const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const post = useSelector(state => {
     const matchPost = state.postDatas.find(doc => doc.id === param.id);
     return matchPost;
   });
+  console.log(post);
+  // useEffect(() => {
+  //   //dispatch를 보내 리덕스의 post데이터 변경
+  //   //파이어베이스의 doc데이터 변경
+  // }[])
   const [text, setText] = useState('');
   const [isEdit, setIsEdit] = useState({
     isIt: false,
     item: {}
   });
+
   const editCommentBtnHandler = item => {
     const { id, userId } = item;
     if (userId !== user.email) {

@@ -1,9 +1,16 @@
 const GET_POSTS = 'posts/GET_POSTS';
+const VIEW_POST = 'posts/VIEW_POST';
 
 export const getAllPost = payload => {
   return {
     type: GET_POSTS,
     payload
+  };
+};
+
+export const viewPost = payload => {
+  return {
+    type: VIEW_POST
   };
 };
 

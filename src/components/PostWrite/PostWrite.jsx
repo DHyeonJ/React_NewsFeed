@@ -37,14 +37,15 @@ function PostWrite() {
       alert('내용을 입력해 주세요');
       return false;
     }
-    const imageRef = ref(storage,)
+    const imageRef = ref(storage);
     const newPost = {
       category: category.value,
       title: title.value,
       content: content.value,
       date: currentTime(),
       img: img.value,
-      userEmail: user.email
+      userEmail: user.email,
+      views: 0
     };
     const collectionRef = collection(db, 'posts');
     await addDoc(collectionRef, newPost);
