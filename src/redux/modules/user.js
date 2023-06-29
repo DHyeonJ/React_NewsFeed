@@ -35,20 +35,22 @@ const initialState = {
   email: null,
   password: null,
   photoURL: null,
-  docId: null
+  docId: null,
+  userName: null
 };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
     case USER_INFO:
-      console.log(action.payload)
+      console.log(action.payload);
       return {
         password: action.payload.userPw,
         isLogin: action.payload.isLogin,
         uid: action.payload.uid,
         email: action.payload.email,
         photoURL: action.payload.photoURL,
-        docId: action.payload.docId
+        docId: action.payload.docId,
+        userName: action.payload.userName
       };
     case PHOTO_CHANGE: {
       return {
