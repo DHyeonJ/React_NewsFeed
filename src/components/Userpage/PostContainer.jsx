@@ -55,7 +55,6 @@ function PostContainer() {
         <p>작성한 글 목록</p>
       </div>
       {postDatas.map(data => {
-        console.log('data', data.userEmail);
         if (data.userEmail === auth.currentUser.email && data.category === '질문 게시판') {
           return (
             <div key={data.id}>

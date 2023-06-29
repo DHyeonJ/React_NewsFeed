@@ -55,8 +55,7 @@ function App() {
       if (state) {
         const { email, uid } = state;
         const result = await userFetch(uid);
-
-        console.log(result, result.photoUrl, 66);
+        console.log('result', result);
         dispatch(
           getUserInfo({
             email,
@@ -70,6 +69,7 @@ function App() {
         dispatch(getUserInfo({ isLogin: 'guest' }));
       }
     });
+    console.log(auth, 'kkkk');
   }, [auth]);
 
   return <Router />;

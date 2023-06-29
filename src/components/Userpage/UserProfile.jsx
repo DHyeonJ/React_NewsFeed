@@ -4,8 +4,42 @@ import PostContainer from './PostContainer';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, auth, db } from '../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateDoc, collection, doc } from 'firebase/firestore';
+import { updateDoc, doc } from 'firebase/firestore';
 import { changePhoto } from '../../redux/modules/user';
+
+function UserProfile() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => {
+    return state.user;
+  });
+
+  const updateImg = async file => {
+    // 파일을 받아 스토리지에 저장
+    const imageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
+    await uploadBytes(imageRef, file);
+    // 스토리지에 저장된 파일의 url을 받아와 변수에 저장.
+    const newImageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
+    const url = await getDownloadURL(newImageRef);
+    // 받아온 url을 db users에 저장시킨다.
+    const collectionRef = doc(db, 'users', user.docId);
+    await updateDoc(collectionRef, { photoUrl: url });
+    // dispatch(changePhoto({ url: url })); // payload:{url: url}
+    dispatch(changePhoto(url)); // payload: url
+  };
+
+  const handleImgUpload = event => {
+    updateImg(event.target.files[0]);
+  };
+
+  return (
+    <div>
+      <ProfileImg profileimg={user.photoURL} />
+      <FileInput type="file" accept="image/jpg, image/jpeg, image/png" onChange={handleImgUpload} />
+      <PostContainer />
+      <PostContainer />
+    </div>
+  );
+}
 
 const ProfileImg = styled.div`
   width: 240px;
@@ -13,7 +47,7 @@ const ProfileImg = styled.div`
   border: 1px solid;
   border-radius: 50%;
   display: inline-flex;
-  background-image: url(${props => props.userimgurl});
+  background-image: url(${props => props.profileimg});
   background-size: cover;
   background-position: center;
 `;
@@ -21,43 +55,5 @@ const ProfileImg = styled.div`
 const FileInput = styled.input`
   width: 120px;
 `;
-
-function UserProfile() {
-  const dispatch = useDispatch();
-  const user = useSelector(state => {
-    return state.user;
-  });
-  const [profileImg, setProfileImg] = useState('');
-  // const [tempImg, setTempImg] = useState(user.photoURL);
-  useEffect(() => {
-    const updateImg = async () => {
-      const imageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
-      await uploadBytes(imageRef, profileImg);
-      const newImageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
-      const url = await getDownloadURL(newImageRef);
-      const collectionRef = doc(db, 'users', user.docId);
-      await updateDoc(collectionRef, { photoUrl: url });
-      dispatch(changePhoto(url));
-    };
-    // const renderImg = () => {
-    //   setTempImg('user.photoURL');
-    // };
-    // renderImg();
-    if (profileImg != '') updateImg();
-  }, [profileImg]);
-
-  const handleImgUpload = event => {
-    setProfileImg(event.target.files[0]);
-  };
-
-  return (
-    <div>
-      <ProfileImg />
-      <FileInput type="file" accept="image/jpg, image/jpeg, image/png" onChange={handleImgUpload} />
-      <PostContainer />
-      <PostContainer />
-    </div>
-  );
-}
 
 export default UserProfile;
