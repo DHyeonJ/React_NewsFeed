@@ -10,6 +10,7 @@ function PostContainer() {
   const myUser = users.find(user => user.userEmail === auth.currentUser.email);
 
   const postDatas = useSelector(state => state.postDatas);
+  // const commentDatas = useSelector(state => state);
 
   // firebase에 새로운 데이터 저장하기
   useEffect(() => {
@@ -54,6 +55,7 @@ function PostContainer() {
         <p>작성한 글 목록</p>
       </div>
       {postDatas.map(data => {
+        console.log('data', data.userEmail);
         if (data.userEmail === auth.currentUser.email && data.category === '질문 게시판') {
           return (
             <div key={data.id}>

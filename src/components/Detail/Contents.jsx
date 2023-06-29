@@ -20,8 +20,8 @@ function Contents() {
           <Writer></Writer>
           <Title></Title>
         </TitleWrapper>
-        <ContentWrapper style={{display: 'flex', justifyContent: 'center'}}>
-          <img src={loading} width='250px' height='230px' paddingTop='40px' />
+        <ContentWrapper style={{ display: 'flex', justifyContent: 'center' }}>
+          <img src={loading} width="250px" height="230px" paddingTop="40px" />
         </ContentWrapper>
         <Img src={pet2}></Img>
       </Section>

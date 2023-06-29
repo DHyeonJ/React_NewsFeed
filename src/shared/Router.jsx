@@ -19,7 +19,7 @@ const Router = () => {
         <Route path="/Qna" element={<QnaPage />} />
         <Route path="/postWrite" element={<PostWrite />} />
         <Route path="/userpage" element={<UserPage />} />
-        <Route path="/detailPage/:id" element={<DetailPage />} />
+        <Route path="/detailPage" element={<DetailPage />} />
       </Routes>
     </BrowserRouter>
   );
