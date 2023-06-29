@@ -47,7 +47,12 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg imageurl={imageUrl}></ProfileImg>
+        <ProfileImg
+          imageurl={imageUrl}
+          onClick={() => {
+            navigate('/userpage');
+          }}
+        ></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>
