@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
 import { useNavigate } from 'react-router-dom';
@@ -6,12 +6,43 @@ import { useSelector } from 'react-redux';
 import TopButton from '../../components/TopButton/TopButton';
 
 function Boast() {
+  const posts = useSelector(state => state.postDatas);
+  const filtered = posts.filter(post => {
+    return post.category === '자랑 게시판';
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
+  const offset = (currentPage - 1) * limit;
+  const option = { root: null, rootMargin: '0px', threshold: 0.5 };
+  const defaultOption = {
+    root: null,
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
+
+  const observer = new IntersectionObserver(
+    entries => {
+      if (entries[0].isIntersecting) {
+        setTimeout(() => {
+          setCurrentPage(prevPage => prevPage + 1);
+        }, 3000);
+      }
+    },
+    {
+      ...defaultOption,
+      ...option
+    }
+  );
+  const divRef = useRef();
+  useEffect(() => {
+    observer.observe(divRef.current);
+  }, []);
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
   });
-  const posts = useSelector(state => state.postDatas);
 
+  console.log(posts);
   const goToWrite = () => {
     if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
@@ -59,8 +90,9 @@ function Boast() {
                   </PostInfo>
                 </BoastPost>
               );
-            })}
-          <TopButton />
+            })
+            .slice(0, offset + 10)}
+          <div ref={divRef} style={{ height: '100px', width: '100px', background: 'black' }}></div>
         </FeedContainer>
         <MoveButtonArea>
           <TopButton />
