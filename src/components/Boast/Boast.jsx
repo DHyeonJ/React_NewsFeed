@@ -55,12 +55,21 @@ function Boast() {
             })}
           <TopButton />
         </FeedContainer>
+        <MoveButtonArea>
+          <TopButton />
+        </MoveButtonArea>
       </StLayout>
     </>
   );
 }
 
 export default Boast;
+const MoveButtonArea = styled.div`
+  position: fixed;
+  right: 40px;
+  bottom: 30px;
+`;
+
 const PostTitleBox = styled.div`
   width: 150px;
 `;
@@ -106,8 +115,6 @@ const PostInfo = styled.div`
   align-items: center;
 `;
 const PostWriter = styled.p`
-  /* width: 120px;
-  height: 50px; */
   border-right: 2px solid #12263a;
   text-align: center;
   color: black;
@@ -116,7 +123,6 @@ const PostWriter = styled.p`
 const BoastPost = styled.div`
   width: 570px;
   height: 370px;
-  /* background-color: white; */
 `;
 
 const StLayout = styled.div`
