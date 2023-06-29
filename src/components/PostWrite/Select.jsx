@@ -7,7 +7,7 @@ const Select = () => {
   const isOpenHandler = () => {
     setIsOpen(true);
   };
-  
+
   const selectOption = ({ target }) => {
     target.value === 1 ? setValue('자랑 게시판') : setValue('질문 게시판');
     setIsOpen(false);

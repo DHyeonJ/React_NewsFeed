@@ -15,9 +15,9 @@ function Qna() {
   const limit = 10;
   // (현재페이지에서 - 1 ) * limit  = 0
   const offset = (currentPage - 1) * limit;
+  // 총 페이지
   const totalPage = Math.floor(posts.length / limit);
 
-  // const useEffect
   const handlePageChange = item => {
     setCurrentPage(item.selected + 1);
   };

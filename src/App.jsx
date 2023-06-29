@@ -27,10 +27,29 @@ function App() {
     };
     fetchData();
     //  유저 정보 불러오기
-    onAuthStateChanged(auth, state => {
+    // photoUrl 불러오기
+    const userFetch = async uid => {
+      const q = query(collection(db, 'users'));
+      const querySnapShot = await getDocs(q);
+      const initialUsers = [];
+      querySnapShot.forEach(doc => {
+        const post = {
+          id: doc.id,
+          ...doc.data()
+        };
+        initialUsers.push(post);
+      });
+      const result = initialUsers.find(user => user.uid === uid);
+      if(result === undefined){
+        return null
+      }
+      return result.profileImg;
+    };
+    onAuthStateChanged(auth, async state => {
       if (state) {
-        const { email, uid, photoURL } = state;
-        dispatch(getUserInfo({ email, uid, photoURL, isLogin: 'member' }));
+        const { email, uid } = state;
+        const userPhotoUrl = await userFetch(uid);
+        dispatch(getUserInfo({ email, uid, photoURL: userPhotoUrl, isLogin: 'member' }));
       } else {
         dispatch(getUserInfo({ isLogin: 'guest' }));
       }
