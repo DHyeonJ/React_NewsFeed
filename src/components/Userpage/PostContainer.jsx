@@ -5,17 +5,19 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { auth } from '../../firebase';
 import UserProfile from './UserProfile';
+import { styled } from 'styled-components';
 
 function PostContainer() {
+  const loginUser = auth.currentUser.email;
+
   const [users, setUsers] = useState([]);
-  const myUser = users.find(user => user.userEmail === auth.currentUser.email);
-  // console.log('myUser => ', myUser);
+  const myUser = users.find(user => user.userEmail === loginUser);
 
   const postDatas = useSelector(state => state.postDatas);
-  // console.log('postDatas', postDatas);
-  const myPost = postDatas.filter(post => post.userEmail === auth.currentUser.email);
-  // console.log('myPost => ', myPost);
-  // const commentDatas = useSelector(state => state);
+  const myPost = postDatas.filter(post => post.userEmail === loginUser);
+
+  const commentDatas = useSelector(state => state.comments);
+  const myComment = commentDatas.filter(comment => comment.userEmail === loginUser);
 
   // firebase에 새로운 데이터 저장하기
   useEffect(() => {
@@ -35,62 +37,54 @@ function PostContainer() {
   }, []);
 
   return (
-    <>
+    <div>
       <div
         style={{
           display: 'flex',
-          marginTop: '100px'
+          justifyContent: 'center',
+          marginTop: '40px'
         }}
       >
         <UserProfile />
         <div>
-          <div style={{ border: '2px solid', width: '700px', height: '262px' }}>
-            <p style={{ fontSize: '24px', marginTop: '40px', marginLeft: '25px' }}>nickname</p>
-            <p style={{ fontSize: '24px', marginTop: '40px', marginLeft: '25px' }}>UserEmail</p>
-          </div>
-          <div
-            style={{
-              width: '700px',
-              height: '200px',
-              border: '2px solid',
-              fontSize: '24px',
-              marginTop: '40px'
-            }}
-          >
-            <p
-              style={{
-                fontSize: '24px',
-                marginTop: '40px',
-                marginLeft: '25px'
-              }}
-            >
-              {' '}
-              작성한 글 목록
-            </p>
-          </div>
-          <div
-            style={{
-              width: '700px',
-              height: '200px',
-              border: '2px solid',
-              fontSize: '24px',
-              marginTop: '40px'
-            }}
-          >
-            <p
-              style={{
-                fontSize: '24px',
-                marginTop: '40px',
-                marginLeft: '25px'
-              }}
-            >
-              {' '}
-              작성한 댓글 목록
-            </p>
-          </div>
+          <p>닉네임 : </p>
+          <p>이메일 : </p>
         </div>
       </div>
-    </>
+      <div>
+        <div
+          style={{
+            width: '700px',
+            height: '35px',
+            color: 'white',
+            backgroundColor: '#12263A',
+            margin: '30px auto auto auto',
+            textAlign: 'center'
+          }}
+        >
+          <label>작성 글 목록</label>
+        </div>
+        <div>
+          {myPost.map(data => {
+            return (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  width: '700px',
+                  margin: '10px auto auto auto'
+                }}
+                key={data.id}
+              >
+                <p>{data.category}</p>
+                <p>{data.title}</p>
+                <p>{data.date}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 
