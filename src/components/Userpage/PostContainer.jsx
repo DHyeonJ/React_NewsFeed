@@ -1,15 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { auth } from '../../firebase';
+import UserProfile from './UserProfile';
 
 function PostContainer() {
   const [users, setUsers] = useState([]);
   const myUser = users.find(user => user.userEmail === auth.currentUser.email);
+  // console.log('myUser => ', myUser);
 
   const postDatas = useSelector(state => state.postDatas);
+  // console.log('postDatas', postDatas);
+  const myPost = postDatas.filter(post => post.userEmail === auth.currentUser.email);
+  // console.log('myPost => ', myPost);
   // const commentDatas = useSelector(state => state);
 
   // firebase에 새로운 데이터 저장하기
@@ -30,52 +35,10 @@ function PostContainer() {
   }, []);
 
   return (
-    <>
-      <div
-        style={{
-          border: '1px solid',
-          padding: '10px'
-        }}
-      >
-        {users.length === 0 ? (
-          <div></div>
-        ) : (
-          <div>
-            <p>{myUser.userName}</p>
-            <p>{myUser.userEmail}</p>
-          </div>
-        )}
-      </div>
-      <div
-        style={{
-          border: '1px solid',
-          padding: '10px'
-        }}
-      >
-        <p>작성한 글 목록</p>
-      </div>
-      {postDatas.map(data => {
-        console.log('data', data.userEmail);
-        if (data.userEmail === auth.currentUser.email && data.category === '질문 게시판') {
-          return (
-            <div key={data.id}>
-              <h3>질문 게시판</h3>
-              <p>{data.title}</p>
-              <p>{data.content}</p>
-              <p>{data.img}</p>
-            </div>
-          );
-        } else if (data.userEmail === auth.currentUser.email && data.category === '자랑 게시판') {
-          return (
-            <div key={data.id}>
-              <h3>자랑 게시판</h3>
-              <p>{data.title}</p>
-              <p>{data.content}</p>
-            </div>
-          );
-        }
-      })}
-    </>
+    <div>
+      <UserProfile />
+      시작
+    </div>
   );
 }
 
