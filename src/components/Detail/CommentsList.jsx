@@ -6,14 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteComment, getAllComment } from '../../redux/modules/comments';
 import { useParams } from 'react-router-dom';
 
-function CommentsList() {
+function CommentsList({ editCommentBtnHandler }) {
   const comments = useSelector(state => state.comments);
-  console.log(comments)
+  const user = useSelector(state => state.user);
   const param = useParams();
   const dispatch = useDispatch();
-  const deleteBtnHandler = async commentId => {
-    const commentRef = doc(db, 'comment', commentId);
-    deleteComment(commentId);
+  const deleteBtnHandler = async item => {
+    const { id, userId } = item;
+    if (userId !== user.email) {
+      alert('본인의 댓글만 삭제가 가능합니다');
+      return false;
+    } 
+    const inputPw = prompt('비밀번호를 입력해 주세요');
+    if (inputPw !== user.password) {
+      alert('비밀번호가 다릅니다');
+      return false;
+    }
+    const commentRef = doc(db, 'comment', id);
+    deleteComment(id);
     await deleteDoc(commentRef);
     const q = query(collection(db, 'comment'));
     const quertSnapShot = await getDocs(q);
@@ -32,9 +42,9 @@ function CommentsList() {
       {comments
         .filter(comment => comment.postId === param.id)
         .toSorted((a, b) => {
-          const replaceA = a.time.replace(/[^0-9]/g, "");
-          const replaceB = b.time.replace(/[^0-9]/g, "");
-          return replaceB - replaceA
+          const replaceA = a.time.replace(/[^0-9]/g, '');
+          const replaceB = b.time.replace(/[^0-9]/g, '');
+          return replaceB - replaceA;
         })
         .map(item => {
           return (
@@ -44,7 +54,10 @@ function CommentsList() {
                 <p>{item.comment}</p>
                 <CommentTime>{item.time}</CommentTime>
               </div>
-              <DeleteBtn onClick={() => deleteBtnHandler(item.id)}>삭제하기</DeleteBtn>
+              <ButtonWrapper>
+                <Button onClick={() => editCommentBtnHandler(item)}>수정하기</Button>
+                <Button onClick={() => deleteBtnHandler(item)}>삭제하기</Button>
+              </ButtonWrapper>
             </Comment>
           );
         })}
@@ -76,16 +89,18 @@ const CommentWriter = styled.p`
   font-size: 20px;
   margin-bottom: 8px;
 `;
-
-const DeleteBtn = styled.button`
-  min-width: 70px;
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+const Button = styled.button`
+  width: 80px;
   height: 40px;
-  float: right;
-  border-radius: 5px;
-  margin-left: 15px;
-  background-color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
   &:hover {
     background-color: #f8db5c;
-    font-weight: 600;
   }
 `;
