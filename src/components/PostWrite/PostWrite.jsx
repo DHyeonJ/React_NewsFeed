@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Select from './Select';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { getAllPost } from '../../redux/modules/posts';
+import currentTime from '../../feature/currentTime';
+
 function PostWrite() {
   const [fileName, setFileName] = useState('');
+  const dispatch = useDispatch();
   const user = useSelector(state => {
     return state.user;
   });
@@ -35,13 +39,24 @@ function PostWrite() {
       category: category.value,
       title: title.value,
       content: content.value,
-      date: Date.now(),
+      date: currentTime(),
       img: img.value,
       userEmail: user.email
     };
     const collectionRef = collection(db, 'posts');
     await addDoc(collectionRef, newPost);
     navigate(-1);
+    const q = query(collection(db, 'posts'));
+    const quertSnapShot = await getDocs(q);
+    const initialPosts = [];
+    quertSnapShot.forEach(doc => {
+      const post = {
+        id: doc.id,
+        ...doc.data()
+      };
+      initialPosts.push(post);
+    });
+    dispatch(getAllPost(initialPosts));
   };
   return (
     <StForm onSubmit={onSubmitHandler}>
