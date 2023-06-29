@@ -35,7 +35,8 @@ const initialState = {
   email: null,
   password: null,
   photoURL: null,
-  docId: null
+  docId: null,
+  userName: null
 };
 
 const user = (state = initialState, action) => {
@@ -47,7 +48,8 @@ const user = (state = initialState, action) => {
         uid: action.payload.uid,
         email: action.payload.email,
         photoURL: action.payload.photoURL,
-        docId: action.payload.docId
+        docId: action.payload.docId,
+        userName: action.payload.userName
       };
     case PHOTO_CHANGE: {
       return {

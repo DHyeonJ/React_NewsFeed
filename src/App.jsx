@@ -64,7 +64,8 @@ function App() {
             uid,
             docId: result.id,
             isLogin: 'member',
-            userPw: result.userPw
+            userPw: result.userPw,
+            userName: result.userName
           })
         );
       } else {

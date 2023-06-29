@@ -8,16 +8,17 @@ import UserProfile from './UserProfile';
 import { styled } from 'styled-components';
 
 function PostContainer() {
-  const loginUser = auth.currentUser.email;
+  const loginUser = useSelector(state => state.user);
+  const { email, userName } = loginUser;
 
   const [users, setUsers] = useState([]);
-  const myUser = users.find(user => user.userEmail === loginUser);
+  const myUser = users.find(user => user.userEmail === email);
 
   const postDatas = useSelector(state => state.postDatas);
-  const myPost = postDatas.filter(post => post.userEmail === loginUser);
+  const myPost = postDatas.filter(post => post.userEmail === email);
 
   const commentDatas = useSelector(state => state.comments);
-  const myComment = commentDatas.filter(comment => comment.userEmail === loginUser);
+  const myComment = commentDatas.filter(comment => comment.userId === email);
 
   // firebase에 새로운 데이터 저장하기
   useEffect(() => {
@@ -72,13 +73,48 @@ function PostContainer() {
                   display: 'flex',
                   justifyContent: 'space-around',
                   width: '700px',
-                  margin: '10px auto auto auto'
+                  margin: '10px auto auto auto',
+                  textAlign: 'center'
                 }}
                 key={data.id}
               >
                 <p>{data.category}</p>
-                <p>{data.title}</p>
+                <p style={{ width: '330px' }}>{data.title}</p>
                 <p>{data.date}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div>
+        <div
+          style={{
+            width: '700px',
+            height: '35px',
+            color: 'white',
+            backgroundColor: '#12263A',
+            margin: '30px auto auto auto',
+            textAlign: 'center'
+          }}
+        >
+          <label>작성 댓글 목록</label>
+        </div>
+        <div>
+          {myComment.map(data => {
+            return (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  width: '700px',
+                  margin: '10px auto auto auto',
+                  textAlign: 'center'
+                }}
+                key={data.id}
+              >
+                <p>{data.category}</p>
+                <p style={{ width: '330px' }}>{data.comment}</p>
+                <p>{data.time}</p>
               </div>
             );
           })}
