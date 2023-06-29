@@ -11,6 +11,7 @@ function Boast() {
     return state.user;
   });
   const posts = useSelector(state => state.postDatas);
+  console.log(posts)
   const goToWrite = () => {
     if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
@@ -31,7 +32,12 @@ function Boast() {
           <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
         </PostWrite>
         <FeedContainer>
-          {posts
+          {posts.toSorted((a, b) => {
+            const replaceA = a.date.replace(/[^0-9]/g, "");
+            const replaceB = b.date.replace(/[^0-9]/g, "");
+            return replaceA - replaceB
+          })
+            .toReversed()
             .filter(post => {
               return post.category == '자랑 게시판';
             })
@@ -132,13 +138,10 @@ const StLayout = styled.div`
 
 const FeedContainer = styled.div`
   position: relative;
-
   width: 1200px;
   min-height: 840px;
   background-color: #12263a;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
