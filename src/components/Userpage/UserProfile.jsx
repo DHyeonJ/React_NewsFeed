@@ -54,8 +54,8 @@ function UserProfile() {
     <div>
       <ProfileImg />
       <FileInput type="file" accept="image/jpg, image/jpeg, image/png" onChange={handleImgUpload} />
-      <PostContainer />
-      <PostContainer />
+      {/* <PostContainer />
+      <PostContainer /> */}
     </div>
   );
 }
