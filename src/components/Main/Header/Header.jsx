@@ -67,7 +67,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg userimgurl={imgRender} defaultimgurl={defaultImgUrl}></ProfileImg>
+        <ProfileImg></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>

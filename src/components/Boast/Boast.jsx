@@ -1,17 +1,18 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import TopButton from '../TopButton/TopButton';
 
 function Boast() {
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
   });
-  const posts = useSelector((state) => state.postDatas);
+  const posts = useSelector(state => state.postDatas);
   const goToWrite = () => {
-    if (user.isLogin === false) {
+    if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
       navigate('/login');
     } else {
@@ -53,12 +54,21 @@ function Boast() {
               );
             })}
         </FeedContainer>
+        <MoveButtonArea>
+          <TopButton />
+        </MoveButtonArea>
       </StLayout>
     </>
   );
 }
 
 export default Boast;
+const MoveButtonArea = styled.div`
+  position: fixed;
+  right: 40px;
+  bottom: 30px;
+`;
+
 const PostTitleBox = styled.div`
   width: 150px;
 `;
@@ -104,8 +114,6 @@ const PostInfo = styled.div`
   align-items: center;
 `;
 const PostWriter = styled.p`
-  /* width: 120px;
-  height: 50px; */
   border-right: 2px solid #12263a;
   text-align: center;
   color: black;
@@ -114,7 +122,6 @@ const PostWriter = styled.p`
 const BoastPost = styled.div`
   width: 570px;
   height: 370px;
-  /* background-color: white; */
 `;
 
 const StLayout = styled.div`
