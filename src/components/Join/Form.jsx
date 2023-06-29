@@ -7,6 +7,14 @@ import { auth, db, storage } from '../../firebase';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
+
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
+
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { useEffect } from 'react';
 
@@ -104,6 +112,13 @@ function Form() {
   const [users, setUsers] = useState('');
 
   const navigate = useNavigate();
+  /* const googleSignIn = async () => {
+    try {
+      const providerGoogle = new GoogleAuthProvider();
+      navigate('/');
+      await signInWithPopup(auth, providerGoogle);
+    } catch {}
+  };*/
 
   const onClickJoinHandler = async e => {
     e.preventDefault();

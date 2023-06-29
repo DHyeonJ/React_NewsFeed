@@ -2,14 +2,17 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import Router from './shared/Router';
 import { getAllPost } from './redux/modules/posts';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo } from './redux/modules/user';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 
 function App() {
+  console.log(auth);
   const dispatch = useDispatch();
-
+  const user = useSelector(state => {
+    return state.user;
+  });
   useEffect(() => {
     // post 정보 불러오기
     const fetchData = async () => {
@@ -33,23 +36,36 @@ function App() {
       const querySnapShot = await getDocs(q);
       const initialUsers = [];
       querySnapShot.forEach(doc => {
-        const post = {
+        const user = {
           id: doc.id,
           ...doc.data()
         };
-        initialUsers.push(post);
+
+        initialUsers.push(user);
       });
+
       const result = initialUsers.find(user => user.uid === uid);
-      if(result === undefined){
-        return null
+      if (result === undefined) {
+        return null;
       }
       return result;
     };
+
     onAuthStateChanged(auth, async state => {
       if (state) {
         const { email, uid } = state;
         const result = await userFetch(uid);
-        dispatch(getUserInfo({ email, uid, photoURL: result.profileImg, docId: result.id , isLogin: 'member' }));
+
+        console.log(result, result.photoUrl, 66);
+        dispatch(
+          getUserInfo({
+            email,
+            photoURL: result.photoUrl,
+            uid,
+            docId: result.id,
+            isLogin: 'member'
+          })
+        );
       } else {
         dispatch(getUserInfo({ isLogin: 'guest' }));
       }
