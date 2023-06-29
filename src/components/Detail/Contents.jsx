@@ -48,6 +48,7 @@ function Contents() {
 }
 
 export default Contents;
+
 const Img = styled.img`
   pointer-events: none;
   width: 100px;

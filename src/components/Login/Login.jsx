@@ -27,7 +27,7 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       alert('환영합니다');
-      dispatch(loginUser({ email, password }));
+      dispatch(loginUser({ password }));
       navigate('/');
     } catch (error) {
       const { code } = error;
