@@ -1,37 +1,36 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { db } from '../../firebase';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, query } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllComment } from '../../redux/modules/comments';
+import { deleteComment, getAllComment } from '../../redux/modules/comments';
 import { useParams } from 'react-router-dom';
 
 function CommentsList() {
+  const comments = useSelector(state => state.comments);
   const param = useParams();
   const dispatch = useDispatch();
-  useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, 'comment'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
-      });
-      dispatch(getAllComment(initialPosts));
-    };
-    fetchData();
-  }, []);
-  const comments = useSelector(state => state.comments);
+  const deleteBtnHandler = async commentId => {
+    const commentRef = doc(db, 'comment', commentId);
+    deleteComment(commentId);
+    await deleteDoc(commentRef);
+    const q = query(collection(db, 'comment'));
+    const quertSnapShot = await getDocs(q);
+    const initialPosts = [];
+    quertSnapShot.forEach(doc => {
+      const post = {
+        id: doc.id,
+        ...doc.data()
+      };
+      initialPosts.push(post);
+    });
+    dispatch(getAllComment(initialPosts));
+  };
   return (
     <>
       {comments
         .filter(comment => comment.postId === param.id)
         .map(item => {
-          console.log(item.id);
           return (
             <Comment key={item.id}>
               <div>
@@ -39,7 +38,7 @@ function CommentsList() {
                 <p>{item.comment}</p>
                 <CommentTime>{item.time}</CommentTime>
               </div>
-              <DeleteBtn>삭제하기</DeleteBtn>
+              <DeleteBtn onClick={() => deleteBtnHandler(item.id)}>삭제하기</DeleteBtn>
             </Comment>
           );
         })}

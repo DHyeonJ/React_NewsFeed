@@ -8,7 +8,8 @@ const Detail = () => {
     <>
       <Contents />
       <Form />
-      <CommentsList />
+      <CommentsList
+      />
     </>
   );
 };

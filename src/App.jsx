@@ -43,13 +43,13 @@ function App() {
       if(result === undefined){
         return null
       }
-      return result.profileImg;
+      return result;
     };
     onAuthStateChanged(auth, async state => {
       if (state) {
         const { email, uid } = state;
-        const userPhotoUrl = await userFetch(uid);
-        dispatch(getUserInfo({ email, uid, photoURL: userPhotoUrl, isLogin: 'member' }));
+        const result = await userFetch(uid);
+        dispatch(getUserInfo({ email, uid, photoURL: result.profileImg, docId: result.id , isLogin: 'member' }));
       } else {
         dispatch(getUserInfo({ isLogin: 'guest' }));
       }
