@@ -1,15 +1,16 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import TopButton from '../../components/TopButton/TopButton';
 
 function Boast() {
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
   });
-  const posts = useSelector((state) => state.postDatas);
+  const posts = useSelector(state => state.postDatas);
   const goToWrite = () => {
     if (user.isLogin === false) {
       alert('로그인이 필요합니다');
@@ -52,6 +53,7 @@ function Boast() {
                 </BoastPost>
               );
             })}
+          <TopButton />
         </FeedContainer>
       </StLayout>
     </>
@@ -129,6 +131,8 @@ const StLayout = styled.div`
 `;
 
 const FeedContainer = styled.div`
+  position: relative;
+
   width: 1200px;
   min-height: 840px;
   background-color: #12263a;
