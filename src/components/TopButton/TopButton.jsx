@@ -10,6 +10,7 @@ function TopButton() {
       behavior: 'smooth'
     });
   };
+
   useEffect(() => {
     const ShowButtonClick = () => {
       if (window.scrollY > 1200) {
@@ -46,4 +47,3 @@ const Btn = styled.button`
   padding: 5px;
   border-radius: 5px;
 `;
-
