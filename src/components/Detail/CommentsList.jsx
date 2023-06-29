@@ -13,10 +13,6 @@ function CommentsList({ editCommentBtnHandler }) {
   const dispatch = useDispatch();
   const deleteBtnHandler = async item => {
     const { id, userId } = item;
-    if (userId !== user.email) {
-      alert('본인의 댓글만 삭제가 가능합니다');
-      return false;
-    }
     const inputPw = prompt('비밀번호를 입력해 주세요');
     if (inputPw !== user.password) {
       alert('비밀번호가 다릅니다');
