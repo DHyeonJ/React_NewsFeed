@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllComment } from '../../redux/modules/comments';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../firebase';
+import currentTime from '../../feature/currentTime';
 
 function Form() {
   const [text, setText] = useState('');
-  const { comments, user } = useSelector(state => state);
+  const { user } = useSelector(state => state);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const param = useParams();
   const onSubmitCommentHandler = async e => {
     e.preventDefault();
@@ -27,11 +29,22 @@ function Form() {
       postId: param.id,
       userId: user.email,
       comment: comment.value,
-      time: '2023/6/25 22:42:26'
+      time: currentTime()
     };
     const collectionRef = collection(db, 'comment');
     setText('');
     await addDoc(collectionRef, newComment);
+    const q = query(collection(db, 'comment'));
+    const quertSnapShot = await getDocs(q);
+    const initialPosts = [];
+    quertSnapShot.forEach(doc => {
+      const post = {
+        id: doc.id,
+        ...doc.data()
+      };
+      initialPosts.push(post);
+    });
+    dispatch(getAllComment(initialPosts));
   };
   return (
     <section>
@@ -43,8 +56,7 @@ function Form() {
           onChange={({ target }) => {
             setText(target.value);
           }}
-        >
-        </CommentInput>
+        ></CommentInput>
         <CommentBtn type="submit">입력</CommentBtn>
       </CommentForm>
     </section>
