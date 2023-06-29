@@ -68,6 +68,7 @@ function Header() {
       </StyledNav>
       <MyProfile>
         <ProfileImg
+          imageurl={imageUrl}
           onClick={() => {
             navigate('/userpage');
           }}
