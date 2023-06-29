@@ -3,10 +3,11 @@ import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Select from './Select';
 import { useDispatch, useSelector } from 'react-redux';
-import { db } from '../../firebase';
+import { db, storage } from '../../firebase';
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { getAllPost } from '../../redux/modules/posts';
 import currentTime from '../../feature/currentTime';
+import { ref } from 'firebase/storage';
 
 function PostWrite() {
   const [fileName, setFileName] = useState('');
@@ -22,6 +23,7 @@ function PostWrite() {
     const name = target.value.split('/').pop().split('\\').pop();
     setFileName(name);
   };
+
   const onSubmitHandler = async e => {
     e.preventDefault();
     const { category = 0, title = 1, content = 2, img = 3 } = e.target;
@@ -35,6 +37,7 @@ function PostWrite() {
       alert('내용을 입력해 주세요');
       return false;
     }
+    const imageRef = ref(storage,)
     const newPost = {
       category: category.value,
       title: title.value,
