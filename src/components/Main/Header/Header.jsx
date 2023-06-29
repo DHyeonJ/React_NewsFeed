@@ -24,11 +24,11 @@ function Header() {
   //path를 입력받아 해당되는 이미지를 불러오는 함수를 만든다
   //useEffect속에서 받아온 path를 함수에 넣어 호출한다.
 
-  const getImageUrl = async imagePath => {
-    const imageRef = ref(storage, `profileImg/${imagePath}`);
-    const url = await getDownloadURL(imageRef);
-    return url;
-  };
+  // const getImageUrl = async imagePath => {
+  //   const imageRef = ref(storage, `profileImg/${imagePath}`);
+  //   const url = await getDownloadURL(imageRef);
+  //   return url;
+  // };
 
   /* useEffect(() => {
     if (user.isLogin == 'member') {
@@ -67,7 +67,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg userimgurl={imgRender} defaultimgurl={defaultImgUrl}></ProfileImg>
+        <ProfileImg></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>
