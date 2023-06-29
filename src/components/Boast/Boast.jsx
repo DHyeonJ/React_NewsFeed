@@ -92,7 +92,7 @@ function Boast() {
               );
             })
             .slice(0, offset + 10)}
-          <div ref={divRef} style={{ height: '100px', width: '100px', background: 'black' }}></div>
+          <div ref={divRef}></div>
         </FeedContainer>
         <MoveButtonArea>
           <TopButton />
