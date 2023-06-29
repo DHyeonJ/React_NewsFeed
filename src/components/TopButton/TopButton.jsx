@@ -12,7 +12,7 @@ function TopButton() {
   };
   useEffect(() => {
     const ShowButtonClick = () => {
-      if (window.scrollY > 0) {
+      if (window.scrollY > 1200) {
         setShowButton(true);
       } else {
         setShowButton(false);
@@ -46,3 +46,4 @@ const Btn = styled.button`
   padding: 5px;
   border-radius: 5px;
 `;
+

@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import TopButton from '../TopButton/TopButton';
+import TopButton from '../../components/TopButton/TopButton';
 
 function Boast() {
   const navigate = useNavigate();
@@ -53,6 +53,7 @@ function Boast() {
                 </BoastPost>
               );
             })}
+          <TopButton />
         </FeedContainer>
         <MoveButtonArea>
           <TopButton />
@@ -136,6 +137,8 @@ const StLayout = styled.div`
 `;
 
 const FeedContainer = styled.div`
+  position: relative;
+
   width: 1200px;
   min-height: 840px;
   background-color: #12263a;
