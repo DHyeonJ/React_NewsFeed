@@ -36,10 +36,60 @@ function PostContainer() {
 
   return (
     <>
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          marginTop: '100px'
+        }}
+      >
         <UserProfile />
+        <div>
+          <div style={{ border: '2px solid', width: '700px', height: '262px' }}>
+            <p style={{ fontSize: '24px', marginTop: '40px', marginLeft: '25px' }}>nickname</p>
+            <p style={{ fontSize: '24px', marginTop: '40px', marginLeft: '25px' }}>UserEmail</p>
+          </div>
+          <div
+            style={{
+              width: '700px',
+              height: '200px',
+              border: '2px solid',
+              fontSize: '24px',
+              marginTop: '40px'
+            }}
+          >
+            <p
+              style={{
+                fontSize: '24px',
+                marginTop: '40px',
+                marginLeft: '25px'
+              }}
+            >
+              {' '}
+              작성한 글 목록
+            </p>
+          </div>
+          <div
+            style={{
+              width: '700px',
+              height: '200px',
+              border: '2px solid',
+              fontSize: '24px',
+              marginTop: '40px'
+            }}
+          >
+            <p
+              style={{
+                fontSize: '24px',
+                marginTop: '40px',
+                marginLeft: '25px'
+              }}
+            >
+              {' '}
+              작성한 댓글 목록
+            </p>
+          </div>
+        </div>
       </div>
-      <div></div>
     </>
   );
 }
