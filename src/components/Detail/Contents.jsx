@@ -4,13 +4,10 @@ import pet2 from '../../assets/pet2.png';
 import loading from '../../assets/loadingW.png';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Dots from './Dots';
 
-function Contents() {
-  const posts = useSelector(state => state.postDatas);
-  const param = useParams();
-  const post = posts.find(doc => {
-    return doc.id === param.id;
-  });
+function Contents({ post }) {
+  const user = useSelector(state => state.user);
 
   if (post === undefined) {
     return (
@@ -20,7 +17,7 @@ function Contents() {
           <Title></Title>
         </TitleWrapper>
         <ContentWrapper style={{ display: 'flex', justifyContent: 'center' }}>
-          <img src={loading} width="250px" height="230px" paddingTop="40px" />
+          <img src={loading} width="250px" height="230px" />
         </ContentWrapper>
         <Img src={pet2}></Img>
       </Section>
@@ -31,8 +28,11 @@ function Contents() {
     <>
       <Section>
         <TitleWrapper>
-          <Writer>{post.userEmail}</Writer>
-          <Title>{post.title}</Title>
+          <TitleInnerWrapper>
+            <Writer>{post.userEmail}</Writer>
+            <Title>{post.title}</Title>
+          </TitleInnerWrapper>
+          {user.email === post.userEmail && <Dots />}
         </TitleWrapper>
         <ContentWrapper>
           {!post.img && (
@@ -56,9 +56,15 @@ const Img = styled.img`
   top: 110px;
   right: -63px;
 `;
+const TitleInnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 50px;
   margin-top: 40px;
@@ -71,7 +77,6 @@ const Writer = styled.span`
 const Title = styled.h3`
   font-size: 22px;
   font-weight: 600;
-  margin-left: 20px;
 `;
 const ContentWrapper = styled.div`
   width: 100%;

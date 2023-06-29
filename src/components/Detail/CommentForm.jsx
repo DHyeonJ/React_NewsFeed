@@ -7,7 +7,7 @@ import { addDoc, collection, doc, getDocs, query, updateDoc } from 'firebase/fir
 import { db } from '../../firebase';
 import currentTime from '../../feature/currentTime';
 
-function Form({ text, setText, isEdit, setIsEdit }) {
+function Form({ text, setText, isEdit, setIsEdit, post }) {
   const { user } = useSelector(state => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,6 +35,7 @@ function Form({ text, setText, isEdit, setIsEdit }) {
       const newComment = {
         postId: param.id,
         userId: user.email,
+        category: post.category,
         comment: comment.value,
         time: currentTime()
       };
@@ -52,7 +53,6 @@ function Form({ text, setText, isEdit, setIsEdit }) {
       };
       initialPosts.push(post);
     });
-    console.log(initialPosts)
     dispatch(getAllComment(initialPosts));
   };
   return (
