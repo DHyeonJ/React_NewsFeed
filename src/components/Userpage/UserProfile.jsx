@@ -35,8 +35,6 @@ function UserProfile() {
     <div>
       <ProfileImg profileimg={user.photoURL} />
       <FileInput type="file" accept="image/jpg, image/jpeg, image/png" onChange={handleImgUpload} />
-      {/* <PostContainer />
-      <PostContainer /> */}
     </div>
   );
 }
@@ -46,14 +44,15 @@ const ProfileImg = styled.div`
   height: 240px;
   border: 1px solid;
   border-radius: 50%;
-  display: inline-flex;
+  /* display: inline-flex; */
   background-image: url(${props => props.profileimg});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
 `;
 
 const FileInput = styled.input`
   width: 120px;
+  margin-top: 20px;
 `;
 
 export default UserProfile;
