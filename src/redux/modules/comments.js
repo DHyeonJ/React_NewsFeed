@@ -1,5 +1,6 @@
 const GET_COMMENTS = 'comments/GET_COMMENTS';
 const DELETE_COMMENTS = 'comments/DELETE_COMMENTS';
+// const DELETE_COMMENTS = 'comments/DELETE_COMMENTS';
 
 export const getAllComment = payload => {
   return {

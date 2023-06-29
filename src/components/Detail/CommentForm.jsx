@@ -3,16 +3,16 @@ import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllComment } from '../../redux/modules/comments';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import currentTime from '../../feature/currentTime';
 
-function Form() {
-  const [text, setText] = useState('');
+function Form({ text, setText, isEdit, setIsEdit }) {
   const { user } = useSelector(state => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const param = useParams();
+  console.log(isEdit);
   const onSubmitCommentHandler = async e => {
     e.preventDefault();
     if (user.isLogin === 'guest') {
@@ -25,15 +25,27 @@ function Form() {
       alert('댓글을 입력해 주세요');
       return false;
     }
-    const newComment = {
-      postId: param.id,
-      userId: user.email,
-      comment: comment.value,
-      time: currentTime()
-    };
-    const collectionRef = collection(db, 'comment');
-    setText('');
-    await addDoc(collectionRef, newComment);
+    if (isEdit.isIt) {
+      console.log('isit in');
+      const item = isEdit.item;
+      const { content, id } = item;
+      console.log(content, text);
+      const commentRef = doc(db, 'comment', id);
+      await updateDoc(commentRef, { ...item, comment: text });
+      setText('');
+      setIsEdit({ isIt: false, item: {} });
+    } else {
+      const newComment = {
+        postId: param.id,
+        userId: user.email,
+        comment: comment.value,
+        time: currentTime()
+      };
+      const collectionRef = collection(db, 'comment');
+      setText('');
+      await addDoc(collectionRef, newComment);
+    }
+    console.log('if out');
     const q = query(collection(db, 'comment'));
     const quertSnapShot = await getDocs(q);
     const initialPosts = [];
@@ -44,6 +56,7 @@ function Form() {
       };
       initialPosts.push(post);
     });
+    console.log(initialPosts)
     dispatch(getAllComment(initialPosts));
   };
   return (
