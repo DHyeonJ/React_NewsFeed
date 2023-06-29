@@ -35,10 +35,12 @@ function PostContainer() {
   }, []);
 
   return (
-    <div>
-      <UserProfile />
-      시작
-    </div>
+    <>
+      <div>
+        <UserProfile />
+      </div>
+      <div></div>
+    </>
   );
 }
 
