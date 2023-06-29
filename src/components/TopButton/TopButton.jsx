@@ -12,7 +12,7 @@ function TopButton() {
   };
   useEffect(() => {
     const ShowButtonClick = () => {
-      if (window.scrollY > 800) {
+      if (window.scrollY > 1200) {
         setShowButton(true);
       } else {
         setShowButton(false);
@@ -27,9 +27,9 @@ function TopButton() {
     <div>
       {showButton && (
         <div>
-          <button onClick={scrollToTop} type="button">
+          <Btn onClick={scrollToTop} type="button">
             ▲
-          </button>
+          </Btn>
         </div>
       )}
     </div>
@@ -38,4 +38,12 @@ function TopButton() {
 
 export default TopButton;
 
-// const TopButton = styled.div``;
+const Btn = styled.button`
+  background-color: #12263a;
+  color: white;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+`;
+
