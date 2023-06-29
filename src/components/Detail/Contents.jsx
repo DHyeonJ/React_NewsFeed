@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Contents() {
-  window.scrollTo(0, 0);
   const posts = useSelector(state => state.postDatas);
   const param = useParams();
   const post = posts.find(doc => {

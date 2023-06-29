@@ -5,6 +5,7 @@ import Layout from '../components/Layout/Layout';
 import Detail from '../components/Detail/Detail';
 
 function DetailPage() {
+  window.scrollTo(0, 0);
   return (
     <>
       <Header />
