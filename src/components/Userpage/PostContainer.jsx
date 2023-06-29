@@ -90,6 +90,27 @@ function PostContainer() {
           </div>
         </div>
       </div>
+
+      {postDatas.map(data => {
+        if (data.userEmail === auth.currentUser.email && data.category === '질문 게시판') {
+          return (
+            <div key={data.id}>
+              <h3>질문 게시판</h3>
+              <p>{data.title}</p>
+              <p>{data.content}</p>
+              <p>{data.img}</p>
+            </div>
+          );
+        } else if (data.userEmail === auth.currentUser.email && data.category === '자랑 게시판') {
+          return (
+            <div key={data.id}>
+              <h3>자랑 게시판</h3>
+              <p>{data.title}</p>
+              <p>{data.content}</p>
+            </div>
+          );
+        }
+      })}
     </>
   );
 }

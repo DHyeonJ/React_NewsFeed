@@ -56,8 +56,7 @@ function App() {
       if (state) {
         const { email, uid } = state;
         const result = await userFetch(uid);
-
-        console.log(result, result.photoUrl, 66);
+        console.log('result', result);
         dispatch(
           getUserInfo({
             email,
@@ -71,6 +70,7 @@ function App() {
         dispatch(getUserInfo({ isLogin: 'guest' }));
       }
     });
+
     // 댓글 불러오기
     const getComments = async () => {
       const q = query(collection(db, 'comment'));
@@ -85,7 +85,7 @@ function App() {
       });
       dispatch(getAllComment(initialPosts));
     };
-    getComments()
+    getComments();
   }, [auth]);
 
   return <Router />;

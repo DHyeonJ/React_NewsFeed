@@ -9,39 +9,19 @@ import { auth, storage } from '../../../firebase';
 import { getDownloadURL, ref } from 'firebase/storage';
 import time from '../../../assets/time.png';
 function Header() {
-  const { user, postDatas } = useSelector(state => {
-    return state;
+  const user = useSelector(state => {
+    return state.user;
   });
-
-  console.log(user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [imageUrl, setImageUrl] = useState('');
-  const defaultImg = '../../../assets/defaultImg.png';
+  const [imageUrl, setImageUrl] = useState(user.photoURL);
 
-  //currentUser.email이 path가 된다.
-  //path를 입력받아 해당되는 이미지를 불러오는 함수를 만든다
-  //useEffect속에서 받아온 path를 함수에 넣어 호출한다.
+  useEffect(() => {
+    setImageUrl(user.photoURL);
+    console.log(user.photoURL);
+  }, [user.photoURL]);
 
-  const getImageUrl = async imagePath => {
-    const imageRef = ref(storage, `profileImg/${imagePath}`);
-    const url = await getDownloadURL(imageRef);
-    return url;
-  };
-
-  /* useEffect(() => {
-    if (user.isLogin == 'member') {
-      const fetchImageUrl = async () => {
-        const imagePath = auth.currentUser.email;
-        const url = await getImageUrl(imagePath);
-        setImageUrl(url);
-      };
-      fetchImageUrl();
-    }
-  }, [user.isLogin]);*/
-
-  // console.log(user);
   const logoutHandler = async () => {
     await signOut(auth);
     dispatch(logoutUser());
@@ -67,11 +47,7 @@ function Header() {
         </Menu>
       </StyledNav>
       <MyProfile>
-        <ProfileImg
-          onClick={() => {
-            navigate('/userpage');
-          }}
-        ></ProfileImg>
+        <ProfileImg imageurl={imageUrl}></ProfileImg>
         <Login>
           {user.isLogin === 'guest' && (
             <>
@@ -171,7 +147,7 @@ const ProfileImg = styled.div`
   border-radius: 50%;
   border: 2px solid white;
   /* background-image: url(${props => props.userimgurl ?? '../../../assets/defaultImg.png'}); */
-  background-image: url(${props => props.userimgurl});
+  background-image: url(${props => props.imageurl});
   background-size: cover;
   background-position: center;
 `;
