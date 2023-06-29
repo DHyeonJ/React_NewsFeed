@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 function CommentsList() {
   const comments = useSelector(state => state.comments);
+  console.log(comments)
   const param = useParams();
   const dispatch = useDispatch();
   const deleteBtnHandler = async commentId => {
@@ -30,6 +31,11 @@ function CommentsList() {
     <>
       {comments
         .filter(comment => comment.postId === param.id)
+        .toSorted((a, b) => {
+          const replaceA = a.time.replace(/[^0-9]/g, "");
+          const replaceB = b.time.replace(/[^0-9]/g, "");
+          return replaceB - replaceA
+        })
         .map(item => {
           return (
             <Comment key={item.id}>
