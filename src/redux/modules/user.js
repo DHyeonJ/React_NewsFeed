@@ -42,18 +42,19 @@ const user = (state = initialState, action) => {
   switch (action.type) {
     case USER_INFO:
       return {
-        ...state,
+        password: action.payload.userPw,
         isLogin: action.payload.isLogin,
         uid: action.payload.uid,
         email: action.payload.email,
         photoURL: action.payload.photoURL,
         docId: action.payload.docId
       };
-    case PHOTO_CHANGE:
+    case PHOTO_CHANGE: {
       return {
         ...state,
-        photoURL: action.payload.url
+        photoURL: action.payload
       };
+    }
     case LOGIN:
       return {
         ...state,
@@ -61,6 +62,7 @@ const user = (state = initialState, action) => {
       };
     case LOGOUT:
       return {
+        ...state,
         isLogin: 'guest',
         email: null,
         password: null
