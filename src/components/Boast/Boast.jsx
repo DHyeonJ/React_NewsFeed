@@ -69,7 +69,7 @@ function Boast() {
             })
             .toReversed()
             .filter(post => {
-              return post.category == '자랑 게시판';
+              return post.category === '자랑 게시판';
             })
             .map(post => {
               return (
@@ -213,7 +213,6 @@ const Input = styled.img`
 `;
 
 const Keyword = styled.input`
-  border: 3px solid#f4d1ae;
   border-radius: 15px;
   width: 560px;
   height: 60px;
@@ -221,4 +220,10 @@ const Keyword = styled.input`
   margin-left: 5px;
   padding-left: 10px;
   text-align: center;
+  font-size: 22px;
+  border: 3px solid#A2BCE0;
+  &:focus {
+    outline: none;
+    border: 3px solid#12263a;
+  }
 `;
