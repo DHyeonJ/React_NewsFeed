@@ -74,6 +74,7 @@ function Boast() {
               return post.category == '자랑 게시판';
             })
             .map(post => {
+              console.log(post.img)
               return (
                 <BoastPost
                   key={post.id}
@@ -81,7 +82,7 @@ function Boast() {
                     return navigate(`/detailPage/${post.id}`);
                   }}
                 >
-                  <PostImg>{post.img}</PostImg>
+                  <PostImg src={post.img}></PostImg>
                   <PostInfo>
                     <PostTitleBox>
                       <PostWriter>{post.userEmail}</PostWriter>
@@ -138,10 +139,10 @@ const PostWriteLink = styled.button`
   }
 `;
 
-const PostImg = styled.div`
+const PostImg = styled.img`
   width: 570px;
   height: 300px;
-  background-color: white;
+  background-size: cover;
   margin-bottom: 10px;
 `;
 

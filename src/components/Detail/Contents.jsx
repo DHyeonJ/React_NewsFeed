@@ -7,7 +7,7 @@ import Dots from './Dots';
 
 function Contents({ post, param }) {
   const user = useSelector(state => state.user);
-
+  console.log('dd',post.img)
   if (post === undefined) {
     return (
       <Section>
