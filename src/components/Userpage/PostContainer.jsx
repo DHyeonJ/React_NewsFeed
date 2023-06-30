@@ -142,7 +142,7 @@ const ListScroll = styled.div`
   padding: 15px;
   height: 250px;
   overflow: auto;
-  width: 100%;
+  width: 100%; //자동으로 설정된 값과 내가 설정한 값을 쓰는 것은 다르다.
   &::-webkit-scrollbar {
     display: none;
   }
