@@ -7,7 +7,7 @@ import Dots from './Dots';
 
 function Contents({ post, param }) {
   const user = useSelector(state => state.user);
-
+  console.log(post.img)
   if (post === undefined) {
     return (
       <Section>
@@ -38,7 +38,7 @@ function Contents({ post, param }) {
           </ContentRightSide>
         </TitleWrapper>
         <ContentWrapper>
-          {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
+          {post.img !== null && <ContentImg src={post.img} />}
           <p>{post.content}</p>
         </ContentWrapper>
         <Img src={pet2}></Img>

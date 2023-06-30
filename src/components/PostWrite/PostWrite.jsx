@@ -78,7 +78,7 @@ function PostWrite() {
       title: title.value,
       content: content.value,
       date: currentTime(),
-      img: imgUrl,
+      img: img.files[0] === undefined ? null : imgUrl,
       userEmail: user.email,
       views: 0
     };
