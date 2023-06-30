@@ -48,53 +48,51 @@ const Login = () => {
     }
   };
   return (
-    <>
-      <StyledLoginWrapper>
-        <StyledInnerWrapper>
-          <Logo src={LogoImagSrc}></Logo>
-          <StyledLoginForm onSubmit={onSubmitHandler}>
-            <StyledInput
-              type="text"
-              name="email"
-              placeholder="이메일"
-              value={email}
-              onChange={onChangeHandler}
-            />
-            <StyledInput
-              type="password"
-              name="password"
-              placeholder="비밀번호"
-              value={password}
-              onChange={onChangeHandler}
-            />
-            <StyledButtonWrapper>
-              <StyledButton>로그인</StyledButton>
-            </StyledButtonWrapper>
-          </StyledLoginForm>
-          <StyledSocialLoginForm onSubmit={onSubmitHandler}>
-            <StyledButton>구글로 로그인</StyledButton>
-            <StyledButton>깃허브로 로그인</StyledButton>
-            <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
-          </StyledSocialLoginForm>
-        </StyledInnerWrapper>
-      </StyledLoginWrapper>
-    </>
+    <LoginLayout>
+      <FormBox>
+        <Logo src={LogoImagSrc}></Logo>
+        <LoginForm onSubmit={onSubmitHandler}>
+          <Input
+            type="text"
+            name="email"
+            placeholder="이메일"
+            value={email}
+            onChange={onChangeHandler}
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={onChangeHandler}
+          />
+          <ButtonBox>
+            <Button>로그인</Button>
+          </ButtonBox>
+        </LoginForm>
+        <SocialLoginForm onSubmit={onSubmitHandler}>
+          <Button>구글로 로그인</Button>
+          <Button>깃허브로 로그인</Button>
+          <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
+        </SocialLoginForm>
+      </FormBox>
+    </LoginLayout>
   );
 };
 
 export default Login;
 
-const StyledLoginWrapper = styled.div`
+const LoginLayout = styled.div`
   display: flex;
   justify-content: center;
 `;
-export const StyledInnerWrapper = styled.div`
+export const FormBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 100px;
 `;
-const StyledLoginForm = styled.form`
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -103,7 +101,7 @@ const StyledLoginForm = styled.form`
   border: 2px solid #12263a;
   border-radius: 12px;
 `;
-const StyledInput = styled.input`
+const Input = styled.input`
   width: 400px;
   height: 40px;
   font-size: 18px;
@@ -118,7 +116,13 @@ const StyledInput = styled.input`
     opacity: 0.4;
   }
 `;
-const StyledButton = styled.button`
+
+const ButtonBox = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const Button = styled.button`
   cursor: pointer;
   width: 100%;
   height: 40px;
@@ -136,11 +140,8 @@ const StyledButton = styled.button`
     color: #f8db5c;
   }
 `;
-const StyledButtonWrapper = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-export const StyledSocialLoginForm = styled.form`
+
+export const SocialLoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

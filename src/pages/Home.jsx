@@ -10,8 +10,8 @@ function HomePage() {
       <Header />
       <Layout>
         <Body />
-        <Footer />
       </Layout>
+      <Footer />
     </>
   );
 }

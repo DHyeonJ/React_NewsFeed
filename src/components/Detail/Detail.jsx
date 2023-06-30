@@ -41,11 +41,6 @@ const Detail = () => {
   });
 
   const editCommentBtnHandler = item => {
-    const inputPw = prompt('비밀번호를 입력해 주세요');
-    if (inputPw !== user.password) {
-      alert('비밀번호가 다릅니다');
-      return false;
-    }
     setIsEdit({ isIt: true, item });
     setText(item.comment);
   };
