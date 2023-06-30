@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
 import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { getSearchData } from '../../redux/modules/posts';
 
 function Qna() {
   const posts = useSelector(state => state.postDatas);
+  const [inputValue, setInputValue] = useState('');
   const filtered = posts.filter(post => {
     return post.category === '질문 게시판';
   });
+
   // 현재페이지
   const [currentPage, setCurrentPage] = useState(1);
   // 한 페이지에서 보일 posts 갯수
@@ -20,7 +23,20 @@ function Qna() {
   const offset = (currentPage - 1) * limit;
   // 총 페이지
   const totalPage = Math.ceil(filtered.length / limit);
+  const dispatch = useDispatch();
+  const searchChange = e => {
+    setInputValue(e.target.value);
+  };
 
+  const searchSubmit = e => {
+    e.preventDefault();
+    if (!inputValue) {
+      alert('입력해주세요');
+    } else {
+      const inputData = filtered.filter(post => post.title.includes(inputValue));
+      dispatch(getSearchData(inputData));
+    }
+  };
   const handlePageChange = item => {
     setCurrentPage(item.selected + 1);
   };
@@ -38,10 +54,17 @@ function Qna() {
   };
   return (
     <>
-      <QSearch>
-        <Input src={InputImgSrc}></Input>
-        <QInput type="text" placeholder="입력하세요"></QInput>
-      </QSearch>
+      <form onSubmit={searchSubmit}>
+        <QSearch>
+          <Input src={InputImgSrc}></Input>
+          <QInput
+            type="text"
+            placeholder="입력하세요"
+            value={inputValue}
+            onChange={searchChange}
+          ></QInput>
+        </QSearch>
+      </form>
       <StLayout>
         <PostWrite>
           <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
@@ -73,6 +96,12 @@ function Qna() {
             </thead>
             <tbody>
               {posts
+                .toSorted((a, b) => {
+                  const replaceA = a.date.replace(/[^0-9]/g, '');
+                  const replaceB = b.date.replace(/[^0-9]/g, '');
+                  return replaceA - replaceB;
+                })
+                .toReversed()
                 .filter(post => {
                   return post.category === '질문 게시판';
                 })
@@ -139,7 +168,7 @@ function Qna() {
           nextLabel={<FontAwesomeIcon icon={faAngleRight} />}
           pageCount={totalPage}
           pageRangeDisplayed={3}
-          marginPagesDisplayed={3}
+          // marginPagesDisplayed={3}
           onPageChange={handlePageChange}
           pageClassName="page-item"
           pageLinkClassName="page-link"
@@ -195,7 +224,6 @@ const Input = styled.img`
 `;
 
 const QInput = styled.input`
-  border: 3px solid#f4d1ae;
   border-radius: 15px;
   width: 560px;
   height: 60px;
@@ -203,6 +231,12 @@ const QInput = styled.input`
   margin-left: 5px;
   padding-left: 10px;
   text-align: center;
+  font-size: 22px;
+  border: 3px solid#A2BCE0;
+  &:focus {
+    outline: none;
+    border: 3px solid#12263a;
+  }
 `;
 
 const StLayout = styled.div`
@@ -267,11 +301,10 @@ const RPaginate = styled(ReactPaginate).attrs({
     display: block;
     text-align: center;
   }
-  li.disabled a {
-    display: none;
-  }
+
   li.disable,
   li.disabled a {
     cursor: default;
+    display: none;
   }
 `;

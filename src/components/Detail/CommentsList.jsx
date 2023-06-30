@@ -9,7 +9,6 @@ import TopButton from '../TopButton/TopButton';
 
 function CommentsList({ editCommentBtnHandler }) {
   const comments = useSelector(state => state.comments);
-  // console.log('aefwaef', comments);
   const user = useSelector(state => state.user);
   const param = useParams();
   const dispatch = useDispatch();
