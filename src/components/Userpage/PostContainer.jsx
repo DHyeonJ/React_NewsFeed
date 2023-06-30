@@ -7,12 +7,14 @@ import { useNavigate } from 'react-router-dom';
 function PostContainer() {
   const loginUser = useSelector(state => state.user);
   const { email, userName } = loginUser;
+  const { uid, userName, email } = loginUser;
+
 
   const postDatas = useSelector(state => state.postDatas);
-  const myPost = postDatas.filter(post => post.userEmail === email);
+  const myPost = postDatas.filter(post => post.uid === uid);
 
   const commentDatas = useSelector(state => state.comments);
-  const myComment = commentDatas.filter(comment => comment.userId === email);
+  const myComment = commentDatas.filter(comment => comment.uid === uid);
 
   const navigate = useNavigate();
 
@@ -142,7 +144,7 @@ const ListScroll = styled.div`
   padding: 15px;
   height: 250px;
   overflow: auto;
-  width: 100%; //자동으로 설정된 값과 내가 설정한 값을 쓰는 것은 다르다.
+  width: 100%;
   &::-webkit-scrollbar {
     display: none;
   }
