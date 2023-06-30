@@ -6,9 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function PostContainer() {
   const loginUser = useSelector(state => state.user);
-  const { email, userName } = loginUser;
   const { uid, userName, email } = loginUser;
-
 
   const postDatas = useSelector(state => state.postDatas);
   const myPost = postDatas.filter(post => post.uid === uid);
