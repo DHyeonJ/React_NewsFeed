@@ -1,31 +1,90 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-function CommentsList() {
+import { db } from '../../firebase';
+import { collection, deleteDoc, doc, getDocs, query } from 'firebase/firestore';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteComment, getAllComment } from '../../redux/modules/comments';
+import { useParams } from 'react-router-dom';
+import TopButton from '../TopButton/TopButton';
+
+function CommentsList({ editCommentBtnHandler }) {
+  const comments = useSelector(state => state.comments);
+  // console.log('aefwaef', comments);
+  const user = useSelector(state => state.user);
+  const param = useParams();
+  const dispatch = useDispatch();
+  const deleteBtnHandler = async item => {
+    const { id } = item;
+    const check = window.confirm('정말 삭제하시겠습니까?');
+    if (!check) {
+      return false;
+    }
+    const commentRef = doc(db, 'comment', id);
+    deleteComment(id);
+    await deleteDoc(commentRef);
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
+  const offset = (currentPage - 1) * limit;
+  const option = { root: null, rootMargin: '0px', threshold: 0.5 };
+  const defaultOption = {
+    root: null,
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
+
+  const observer = new IntersectionObserver(
+    entries => {
+      if (entries[0].isIntersecting) {
+        setTimeout(() => {
+          setCurrentPage(prevPage => prevPage + 1);
+        }, 500);
+      }
+    },
+    {
+      ...defaultOption,
+      ...option
+    }
+  );
+
+  const divRef = useRef();
+  useEffect(() => {
+    observer.observe(divRef.current);
+  }, []);
+
   return (
-    <>
-      <Comment>
-        <div>
-          <CommentWriter>작성자 1</CommentWriter>
-          <p>작성자 1의 댓글 내용 ...</p>
-          <CommentTime>2023/6/25 12:12:12</CommentTime>
-        </div>
-        <DeleteBtn>삭제하기</DeleteBtn>
-      </Comment>
-      <Comment>
-        <div>
-          <CommentWriter>작성자 1</CommentWriter>
-          <p>
-            작성자 1의 댓글 내용 ... 작성자 1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자 1의 댓글
-            내용 ...작성자 1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자
-            1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자 1의 댓글 내용
-            ...작성자 1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자 1의 댓글 내용 ...작성자 1의
-            댓글 내용 ...
-          </p>
-          <CommentTime>2023/6/25 12:12:12</CommentTime>
-        </div>
-        <DeleteBtn>삭제하기</DeleteBtn>
-      </Comment>
-    </>
+    <section style={{ position: 'relative' }}>
+      {comments
+        .filter(comment => comment.postId === param.id)
+        .toSorted((a, b) => {
+          const replaceA = a.time.replace(/[^0-9]/g, '');
+          const replaceB = b.time.replace(/[^0-9]/g, '');
+          return replaceB - replaceA;
+        })
+        .map(item => {
+          return (
+            <Comment key={item.id}>
+              <div>
+                <CommentWriter>{item.userName ? item.userName : item.userId}</CommentWriter>
+                <p>{item.comment}</p>
+                <CommentTime>{item.time}</CommentTime>
+              </div>
+              {item.userId === user.email && (
+                <ButtonWrapper>
+                  <Button onClick={() => editCommentBtnHandler(item)}>수정하기</Button>
+                  <Button onClick={() => deleteBtnHandler(item)}>삭제하기</Button>
+                </ButtonWrapper>
+              )}
+            </Comment>
+          );
+        })
+        .slice(0, offset + 10)}
+      <div ref={divRef}></div>
+      <MoveButtonArea>
+        <TopButton />
+      </MoveButtonArea>
+    </section>
   );
 }
 
@@ -53,16 +112,23 @@ const CommentWriter = styled.p`
   font-size: 20px;
   margin-bottom: 8px;
 `;
-
-const DeleteBtn = styled.button`
-  min-width: 70px;
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+const Button = styled.button`
+  width: 80px;
   height: 40px;
-  float: right;
-  border-radius: 5px;
-  margin-left: 15px;
-  background-color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
   &:hover {
     background-color: #f8db5c;
-    font-weight: 600;
   }
+`;
+const MoveButtonArea = styled.div`
+  position: fixed;
+  right: 40px;
+  bottom: 100px;
 `;

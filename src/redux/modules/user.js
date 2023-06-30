@@ -1,5 +1,21 @@
 const LOGIN = 'user/LOGIN';
 const LOGOUT = 'user/LOGOUT';
+const USER_INFO = 'user/USER_INFO';
+const PHOTO_CHANGE = 'user/PHOTO_CHANGE';
+
+export const getUserInfo = payload => {
+  return {
+    type: USER_INFO,
+    payload
+  };
+};
+
+export const changePhoto = payload => {
+  return {
+    type: PHOTO_CHANGE,
+    payload
+  };
+};
 
 export const loginUser = payload => {
   return {
@@ -9,27 +25,47 @@ export const loginUser = payload => {
 };
 export const logoutUser = () => {
   return {
-    type: LOGOUT,
+    type: LOGOUT
   };
 };
 
 const initialState = {
-  isLogin: false,
+  isLogin: 'wait',
+  uid: null,
   email: null,
-  password: null
+  password: null,
+  photoURL: null,
+  docId: null,
+  userName: null
 };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
+    case USER_INFO:
+      return {
+        password: action.payload.userPw,
+        isLogin: action.payload.isLogin,
+        uid: action.payload.uid,
+        email: action.payload.email,
+        photoURL: action.payload.photoURL,
+        docId: action.payload.docId,
+        userName: action.payload.userName
+      };
+    case PHOTO_CHANGE: {
+      return {
+        ...state,
+        photoURL: action.payload
+      };
+    }
     case LOGIN:
       return {
-        isLogin: true,
-        email: action.payload.email,
+        ...state,
         password: action.payload.password
       };
     case LOGOUT:
       return {
-        isLogin: false,
+        ...state,
+        isLogin: 'guest',
         email: null,
         password: null
       };

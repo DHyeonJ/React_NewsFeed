@@ -1,19 +1,18 @@
 import React from 'react';
 import Header from '../components/Main/Header/Header';
-import Contents from '../components/Detail/Contents';
+import Footer from '../components/Main/Footer/Footer';
 import Layout from '../components/Layout/Layout';
-import Form from '../components/Detail/Form';
-import CommentsList from '../components/Detail/CommentsList';
+import Detail from '../components/Detail/Detail';
 
 function DetailPage() {
+  window.scrollTo(0, 0);
   return (
     <>
       <Header />
       <Layout style={{ position: 'relative' }}>
-        <Contents />
-        <Form />
-        <CommentsList />
+        <Detail />
       </Layout>
+      <Footer />
     </>
   );
 }

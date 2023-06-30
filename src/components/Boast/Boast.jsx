@@ -1,43 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../../firebase';
+import TopButton from '../../components/TopButton/TopButton';
+import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
-  const [posts, setPosts] = useState([]);
-  console.log(posts);
+  const posts = useSelector(state => state.postDatas);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
+  const offset = (currentPage - 1) * limit;
+  const option = { root: null, rootMargin: '0px', threshold: 0.5 };
+  const defaultOption = {
+    root: null,
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
+
+  const observer = new IntersectionObserver(
+    entries => {
+      if (entries[0].isIntersecting) {
+        setTimeout(() => {
+          setCurrentPage(prevPage => prevPage + 1);
+        }, 500);
+      }
+    },
+    {
+      ...defaultOption,
+      ...option
+    }
+  );
+  const divRef = useRef();
+  useEffect(() => {
+    observer.observe(divRef.current);
+  }, []);
   const navigate = useNavigate();
   const user = useSelector(state => {
     return state.user;
   });
+
   const goToWrite = () => {
-    if (user.isLogin === false) {
+    if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
       navigate('/login');
     } else {
-      navigate('/postWrite');
+      navigate('/postWrite/1');
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, 'posts'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
-      });
-      setPosts(initialPosts);
-    };
 
-    fetchData();
-  }, []);
   return (
     <>
       <Search>
@@ -49,43 +61,63 @@ function Boast() {
           <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
         </PostWrite>
         <FeedContainer>
-          <BoastPost>
-            <Link to="/detailPage">
-              <PostImg>이미지</PostImg>
-              <PostInfo>
-                <PostWriter>작성자</PostWriter>
-                <p>글 제목</p>
-              </PostInfo>
-            </Link>
-          </BoastPost>
-          <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
-          </BoastPost>
-          <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
-          </BoastPost>
-          <BoastPost>
-            <PostImg>이미지</PostImg>
-            <PostInfo>
-              <PostWriter>작성자</PostWriter>
-              <p>글 제목</p>
-            </PostInfo>
-          </BoastPost>
+          {posts
+            .toSorted((a, b) => {
+              const replaceA = a.date.replace(/[^0-9]/g, '');
+              const replaceB = b.date.replace(/[^0-9]/g, '');
+              return replaceA - replaceB;
+            })
+            .toReversed()
+            .filter(post => {
+              return post.category === '자랑 게시판';
+            })
+            .map(post => {
+              return (
+                <BoastPost
+                  key={post.id}
+                  onClick={() => {
+                    return navigate(`/detailPage/${post.id}`);
+                  }}
+                >
+                  <PostImgWrapper>
+                    {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
+                  </PostImgWrapper>
+                  <PostInfo>
+                    <PostTitleBox>
+                      <PostWriter>{post.userName}</PostWriter>
+                    </PostTitleBox>
+                    <PostTitle>{post.title}</PostTitle>
+                  </PostInfo>
+                </BoastPost>
+              );
+            })
+            .slice(0, offset + 10)}
+          <div ref={divRef}></div>
         </FeedContainer>
+        <MoveButtonArea>
+          <TopButton />
+        </MoveButtonArea>
       </StLayout>
     </>
   );
 }
 
 export default Boast;
+
+const MoveButtonArea = styled.div`
+  position: fixed;
+  right: 40px;
+  bottom: 100px;
+`;
+
+const PostTitleBox = styled.div`
+  width: 150px;
+`;
+const PostTitle = styled.p`
+  font-size: 20px;
+  margin-left: 20px;
+  color: black;
+`;
 const PostWrite = styled.div`
   display: flex;
   flex-direction: row-reverse;
@@ -106,12 +138,19 @@ const PostWriteLink = styled.button`
     font-weight: 600;
   }
 `;
-
-const PostImg = styled.div`
+const PostImgWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 570px;
   height: 300px;
-  background-color: white;
   margin-bottom: 10px;
+`;
+const PostImg = styled.img`
+  min-width: 200px;
+  max-width: 570px;
+  min-height: 200px;
+  max-height: 300px;
 `;
 
 const PostInfo = styled.div`
@@ -123,16 +162,14 @@ const PostInfo = styled.div`
   align-items: center;
 `;
 const PostWriter = styled.p`
-  width: 120px;
-  height: 50px;
   border-right: 2px solid #12263a;
   text-align: center;
+  color: black;
 `;
 
 const BoastPost = styled.div`
   width: 570px;
   height: 370px;
-  /* background-color: white; */
 `;
 
 const StLayout = styled.div`
@@ -147,15 +184,14 @@ const StLayout = styled.div`
 `;
 
 const FeedContainer = styled.div`
+  position: relative;
   width: 1200px;
-  height: 840px;
+  min-height: 840px;
   background-color: #12263a;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
   gap: 20px;
+  padding: 20px;
 `;
 
 const Search = styled.div`
@@ -177,7 +213,6 @@ const Input = styled.img`
 `;
 
 const Keyword = styled.input`
-  border: 3px solid#f4d1ae;
   border-radius: 15px;
   width: 560px;
   height: 60px;
@@ -185,4 +220,10 @@ const Keyword = styled.input`
   margin-left: 5px;
   padding-left: 10px;
   text-align: center;
+  font-size: 22px;
+  border: 3px solid#A2BCE0;
+  &:focus {
+    outline: none;
+    border: 3px solid#12263a;
+  }
 `;

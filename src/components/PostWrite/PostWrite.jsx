@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Select from './Select';
-import { useSelector } from 'react-redux';
-import { db } from '../../firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { useDispatch, useSelector } from 'react-redux';
+import { db, storage } from '../../firebase';
+import { addDoc, collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
+import { getAllPost } from '../../redux/modules/posts';
+import currentTime from '../../feature/currentTime';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import uuid from 'react-uuid';
 
 function PostWrite() {
   const [fileName, setFileName] = useState('');
-  const user = useSelector(state => {
-    return state.user;
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const param = useParams();
+  const post = useSelector(state => {
+    const matchPost = state.postDatas.find(doc => doc.id === param.id);
+    return matchPost;
   });
+
+  const [postContent, setPostContent] = useState({
+    title: '',
+    content: ''
+  });
+  useEffect(() => {
+    if (param.id !== '1') {
+      setPostContent({
+        title: post.title,
+        content: post.content
+      });
+    }
+  }, []);
   const navigate = useNavigate();
   const cancelWrite = () => {
     navigate(-1);
@@ -19,11 +40,11 @@ function PostWrite() {
     const name = target.value.split('/').pop().split('\\').pop();
     setFileName(name);
   };
+
   const onSubmitHandler = async e => {
     e.preventDefault();
     const { category = 0, title = 1, content = 2, img = 3 } = e.target;
-    console.log(category.value, title.value, content.value, img.value);
-    if (category.value === 0) {
+    if (category.value === '0') {
       alert('카테고리를 선택해 주세요');
       return false;
     } else if (title.value === '') {
@@ -34,28 +55,77 @@ function PostWrite() {
       return false;
     }
 
+    const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
+    await uploadBytes(imageRef, img.files[0]);
+    const imgUrl = await getDownloadURL(imageRef);
+
     const newPost = {
       category: category.value,
+      userName: user.userName,
       title: title.value,
       content: content.value,
-      date: Date.now(),
-      img: img.value,
-      userEmail: user.email
+      date: currentTime(),
+      img: img.files[0] === undefined ? null : imgUrl,
+      userEmail: user.email,
+      views: 0,
+      uid: user.uid
     };
     const collectionRef = collection(db, 'posts');
     await addDoc(collectionRef, newPost);
     navigate(-1);
   };
+  const onEditSubmitHandler = async e => {
+    e.preventDefault();
+    const { category = 0, title = 1, content = 2, img = 3 } = e.target;
+    if (category.value === '0') {
+      alert('카테고리를 선택해 주세요');
+      return false;
+    } else if (title.value === '') {
+      alert('제목을 입력해 주세요');
+      return false;
+    } else if (content.value === '') {
+      alert('내용을 입력해 주세요');
+      return false;
+    }
+
+    const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
+    await uploadBytes(imageRef, img.files[0]);
+    const imgUrl = await getDownloadURL(imageRef);
+
+    const changedPost = {
+      category: category.value,
+      userName: user.userName,
+      title: title.value,
+      content: content.value,
+      date: post.date,
+      userEmail: user.email,
+      uid: user.uid
+    };
+    const collectionRef = doc(db, 'posts', post.id);
+    await updateDoc(collectionRef, {
+      img: img.files[0] ? imgUrl : post.img,
+      ...changedPost
+    });
+
+    navigate(-1);
+  };
 
   return (
-    <StForm onSubmit={onSubmitHandler}>
+    <StForm onSubmit={param.id === '1' ? onSubmitHandler : onEditSubmitHandler}>
       <FormHeader>
         <Select />
-        <StInput placeholder="제목을 입력하세요" name="title"></StInput>
+        <StInput
+          placeholder="제목을 입력하세요"
+          name="title"
+          value={postContent.title}
+          onChange={({ target }) => setPostContent({ title: target.value })}
+        ></StInput>
       </FormHeader>
       <StyledTextarea
         placeholder="내용을 입력하세요"
         name="content"
+        value={postContent.content}
+        onChange={({ target }) => setPostContent({ content: target.value })}
         rows="30"
         cols="118"
       ></StyledTextarea>
@@ -74,18 +144,27 @@ function PostWrite() {
           <File>{fileName}</File>
         </FileField>
         <ButtonArea>
-          <Button type="submit">작성하기</Button>
-          <Button onClick={cancelWrite} type="button">
-            취소하기
-          </Button>
+          {param.id === '1' ? (
+            <>
+              <Button type="submit">작성하기</Button>
+              <Button onClick={cancelWrite} type="button">
+                취소하기
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button type="submit">수정하기</Button>
+              <Button onClick={cancelWrite} type="button">
+                취소하기
+              </Button>
+            </>
+          )}
         </ButtonArea>
       </FormBottom>
     </StForm>
   );
 }
-
 export default PostWrite;
-
 const FormHeader = styled.div`
   display: flex;
   align-items: center;
@@ -123,7 +202,6 @@ const FormBottom = styled.div`
   justify-content: space-between;
   padding: 0 20px 0 50px;
 `;
-
 const FileLabel = styled.label`
   cursor: pointer;
   text-align: center;
@@ -135,7 +213,6 @@ const FileLabel = styled.label`
     background-color: #c5d8d1;
   }
 `;
-
 const StForm = styled.form`
   position: relative;
   display: flex;
