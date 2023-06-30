@@ -3,8 +3,7 @@ import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db, storage } from '../../firebase';
-import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
+import { auth, db } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
 
@@ -15,118 +14,57 @@ import {
   signInWithPopup
 } from 'firebase/auth';
 
-import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { addDoc, collection, getDocs, getDoc, query, where, doc } from 'firebase/firestore';
 import { useEffect } from 'react';
-
-const FormContainer = styled.div`
-  width: 1200px;
-  margin: 0 auto;
-  height: 1080px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid;
-`;
-
-const StForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 440px;
-  padding: 20px;
-  border: 2px solid #12263a;
-  border-radius: 12px;
-  box-shadow: rgba(18, 38, 58, 0.3) 0px 1px 3px 0px, rgba(18, 38, 58, 0.1) 0px 1px 2px 0px;
-`;
-
-const StInput = styled.input`
-  width: 400px;
-  height: 40px;
-  font-size: 18px;
-  padding: 3px 20px;
-  border: 1px solid #12263a;
-  border-radius: 8px;
-  outline: none;
-  box-shadow: rgba(18, 38, 58, 0.1) 0px 1px 3px 0px, rgba(18, 38, 58, 0.06) 0px 1px 2px 0px;
-  &:focus {
-    border: 2px solid #f8db5c;
-  }
-  &::placeholder {
-    opacity: 0.4;
-  }
-`;
-
-const StLink = styled(Link)`
-  text-decoration-line: none;
-  color: black;
-`;
-
-const JoinButton = styled.button`
-  width: 400px;
-  height: 40px;
-  border-radius: 10px;
-  background-color: #12263a;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 800;
-  &:hover {
-    color: #f8db5c;
-    font-weight: 600;
-  }
-  &:focus {
-    color: #f8db5c;
-  }
-`;
-export const Logo = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-left: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 0px;
-`;
-
-// const Sthr = styled.hr`
-// width: 100%;
-// border: 1px solid rgba(0, 0, 0, 0.1);
-// margin: 15px 0px;
-// `;
-
-const WarningMsg = styled.h3`
-  color: red;
-`;
+import { useSelector } from 'react-redux';
 
 function Form() {
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userPw, setUserPw] = useState('');
-  const [profileImg, setProfileImg] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const [failMsg, setFailMsg] = useState('');
   let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-  const [users, setUsers] = useState('');
-
   const navigate = useNavigate();
+
+  const userCheck = async user => {
+    console.log(user);
+    // const docSnap = await getDoc(q);
+
+    const usersCollectionRef = doc(db, 'users');
+    const q = await query(usersCollectionRef.where('uid', '==', user.uid));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+      console.log(doc.id, ' => ', doc.data());
+    });
+
+    // if (co.exists()) {
+    //   console.log('docData', docSnap.data());
+    // } else {
+    //   console.log('none');
+    // }
+  };
 
   const googleSignIn = function (e) {
     e.preventDefault();
-    console.log('a');
+    const setUserData = data => {
+      const { email, displayName, uid, photoURL } = data;
+      const newUser = {
+        userEmail: email,
+        userName: displayName,
+        uid,
+        photoUrl: photoURL
+      };
+      const usersRef = collection(db, 'users');
+      addDoc(usersRef, newUser);
+      navigate('/');
+    };
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then(data => {
-        const newUser = {
-          userEmail: data.email,
-          userName: data.displayName,
-          uid: data.uid,
-          photoUrl: data.photoURL
-        };
-        const usersRef = collection(db, 'users');
-        addDoc(usersRef, newUser);
+        // if (data.user.uid) setUserData(data.user);
+        userCheck(data.user);
       })
       .catch(err => {
         console.log(err);
@@ -211,4 +149,85 @@ function Form() {
   );
 }
 
+const FormContainer = styled.div`
+  width: 1200px;
+  margin: 0 auto;
+  height: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid;
+`;
+
+const StForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 440px;
+  padding: 20px;
+  border: 2px solid #12263a;
+  border-radius: 12px;
+  box-shadow: rgba(18, 38, 58, 0.3) 0px 1px 3px 0px, rgba(18, 38, 58, 0.1) 0px 1px 2px 0px;
+`;
+
+const StInput = styled.input`
+  width: 400px;
+  height: 40px;
+  font-size: 18px;
+  padding: 3px 20px;
+  border: 1px solid #12263a;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: rgba(18, 38, 58, 0.1) 0px 1px 3px 0px, rgba(18, 38, 58, 0.06) 0px 1px 2px 0px;
+  &:focus {
+    border: 2px solid #f8db5c;
+  }
+  &::placeholder {
+    opacity: 0.4;
+  }
+`;
+
+const StLink = styled(Link)`
+  text-decoration-line: none;
+  color: black;
+`;
+
+const JoinButton = styled.button`
+  width: 400px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #12263a;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  &:hover {
+    color: #f8db5c;
+    font-weight: 600;
+  }
+  &:focus {
+    color: #f8db5c;
+  }
+`;
+export const Logo = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-left: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0px;
+`;
+
+// const Sthr = styled.hr`
+// width: 100%;
+// border: 1px solid rgba(0, 0, 0, 0.1);
+// margin: 15px 0px;
+// `;
+
+const WarningMsg = styled.h3`
+  color: red;
+`;
 export default Form;
