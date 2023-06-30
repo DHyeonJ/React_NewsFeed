@@ -7,7 +7,7 @@ import TopButton from '../../components/TopButton/TopButton';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
-  console.log('asfewfwaef', posts);
+
   const filtered = posts.filter(post => {
     return post.category === '자랑 게시판';
   });
@@ -82,7 +82,7 @@ function Boast() {
                   }}
                 >
                   <PostImgWrapper>
-                    <PostImg src={post.img}></PostImg>
+                    {post.img !== null && <PostImg src={post.img}></PostImg>}
                   </PostImgWrapper>
                   <PostInfo>
                     <PostTitleBox>
