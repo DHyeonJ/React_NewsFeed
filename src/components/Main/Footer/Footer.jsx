@@ -4,31 +4,34 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer>
-      <FInfo>
-        © 2023{' '}
-        <Link to="/" style={{ color: '#12263a', fontWeight: '600' }}>
-          Pinfo
-        </Link>{' '}
+    <FooterLayout>
+      <FootertParagraph>
+        © 2023 &nbsp;
+        <FooterLink to="/">Pinfo &nbsp;</FooterLink>
         powered by &nbsp;
-        <Link
-          style={{ color: '#12263a', fontWeight: '600' }}
-          target="_blank"
-          to="https://github.com/DHyeonJ/React_NewsFeed"
-        >
+        <FooterLink target="_blank" to="https://github.com/DHyeonJ/React_NewsFeed">
           NbCamp-MapJo
-        </Link>
-      </FInfo>
-    </footer>
+        </FooterLink>
+      </FootertParagraph>
+    </FooterLayout>
   );
 }
 
 export default Footer;
 
-const FInfo = styled.div`
-  height: 100px;
-  padding-top: 60px;
-  text-align: center;
-  /* position: fixed;
-  bottom: 0; */
+const FooterLayout = styled.footer`
+  display: flex;
+  justify-content: center;
+  height: 150px;
+  margin-top: 60px;
+  color: #fff;
+  background-color: #12263a;
+`;
+const FootertParagraph = styled.p`
+  margin-top: 40px;
+`;
+
+const FooterLink = styled(Link)`
+  color: #fff;
+  font-weight: 600;
 `;
