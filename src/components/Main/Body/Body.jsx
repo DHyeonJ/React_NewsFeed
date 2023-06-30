@@ -1,10 +1,22 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../../assets/pet.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Body() {
-  
+  const posts = useSelector(state => state.postDatas);
+  const navigate = useNavigate();
+  const orderedDate = posts
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .reverse()
+    .slice(0, 5);
+
+  const hitPosts = posts
+    .sort((a, b) => a.views - b.views)
+    .reverse()
+    .slice(0, 5);
+  // 이미지 감싸는 border-radius,div 크기 고정 max/min, border속성
   return (
     <BArea>
       <Search>
@@ -12,15 +24,47 @@ function Body() {
         <Keyword type="text" placeholder="입력하세요"></Keyword>
       </Search>
       <article>
+        {/* 인기게시글 */}
         <StSection>
-          <StContent>
-            <Link to="/detailPage">
-              <DivImg>이미지</DivImg>
-              <StTitle>제목</StTitle>
-            </Link>
-          </StContent>
+          <h2>인기 게시글</h2>
+          <DivMap>
+            {hitPosts.map(post => {
+              return (
+                <StContent
+                  onClick={() => {
+                    return navigate(`/detailPage/${post.id}`);
+                  }}
+                >
+                  <Div>
+                    <DivImg src={post.img}></DivImg>
+                  </Div>
+                  <StTitle>{post.title}</StTitle>
+                </StContent>
+              );
+            })}
+          </DivMap>
         </StSection>
-        <StSection></StSection>
+        {/* 최신 게시 글 */}
+        <StSection>
+          <h2>최신 게시글</h2>
+          <DivMap>
+            {orderedDate.map(post => {
+              return (
+                <StContent
+                  onClick={() => {
+                    return navigate(`/detailPage/${post.id}`);
+                  }}
+                >
+                  <Div>
+                    <DivImg src={post.img}></DivImg>
+                  </Div>
+
+                  <StTitle>{post.title}</StTitle>
+                </StContent>
+              );
+            })}
+          </DivMap>
+        </StSection>
       </article>
     </BArea>
   );
@@ -29,25 +73,44 @@ function Body() {
 export default Body;
 
 const StContent = styled.div`
-  width: 250px;
+  width: 216px;
   height: 300px;
   border: 2px solid #f4d1ae;
   border-radius: 10px 10px 0 0;
   text-align: center;
-  /* background-color: #f4d1ae; */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 const StTitle = styled.p`
-  font-size: 30px;
+  font-size: 18px;
   text-align: center;
-  padding-top: 30px;
+  padding: 20px 0;
   color: white;
-`;
-
-const DivImg = styled.div`
+  border-top: 2px solid #f4d1ae;
   width: 100%;
+`;
+const Div = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 234px;
   border-radius: 10px 10px 0 0;
-  height: 70%;
-  background-color: #f4d1ae;
+`;
+const DivMap = styled.div`
+  display: flex;
+  gap: 20px;
+  /* padding: 0 20px; */
+  align-items: center;
+`;
+const DivImg = styled.img`
+  max-width: 200px;
+  min-width: 150px;
+  max-height: 200px;
+  /* min-height: 150px; */
+  border-radius: 10px 10px 0 0;
 `;
 
 const BArea = styled.div`
@@ -84,16 +147,25 @@ const Keyword = styled.input`
   padding-left: 10px;
   text-align: center;
   font-size: 22px;
-  border: 3px solid#f4d1ae;
+  border: 3px solid#A2BCE0;
+  &:focus {
+    outline: none;
+    border: 3px solid#12263a;
+  }
 `;
 
 const StSection = styled.section`
   width: 1200px;
-  height: 340px;
   background-color: #12263a;
   margin-bottom: 50px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  color: #ffffff;
+  flex-direction: column;
+  & h2 {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
 `;
