@@ -4,6 +4,7 @@ import InputImgSrc from '../../assets/pet.png';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import TopButton from '../../components/TopButton/TopButton';
+import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
@@ -79,7 +80,7 @@ function Boast() {
                   }}
                 >
                   <PostImgWrapper>
-                    {post.img !== null && <PostImg src={post.img}></PostImg>}
+                    {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
                   </PostImgWrapper>
                   <PostInfo>
                     <PostTitleBox>
