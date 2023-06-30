@@ -34,10 +34,12 @@ function Form({ text, setText, isEdit, setIsEdit, post }) {
     } else {
       const newComment = {
         postId: param.id,
+        userName: user.userName,
         userId: user.email,
         category: post.category,
         comment: comment.value,
-        time: currentTime()
+        time: currentTime(),
+        uid: user.uid
       };
       const collectionRef = collection(db, 'comment');
       setText('');
