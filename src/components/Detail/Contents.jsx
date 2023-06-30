@@ -37,10 +37,8 @@ function Contents({ post, param }) {
           </ContentRightSide>
         </TitleWrapper>
         <ContentWrapper>
-          {post.img !== null && <ContentImg src={post.img} />}
-          <p>{post.content}</p>
+          {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
         </ContentWrapper>
-        <Img src={pet2}></Img>
       </Section>
     </>
   );
