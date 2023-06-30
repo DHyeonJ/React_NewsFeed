@@ -1,26 +1,19 @@
 import React from 'react';
+import Layout from '../components/Layout/Layout';
 import Header from '../components/Main/Header/Header';
-import Body from '../components/Main/Body/Body';
+import Body from '../components/Main/Body/Home';
 import Footer from '../components/Main/Footer/Footer';
-import { styled } from 'styled-components';
 
-function Home() {
+function HomePage() {
   return (
     <>
       <Header />
-      <StContainer>
+      <Layout>
         <Body />
         <Footer />
-      </StContainer>
+      </Layout>
     </>
   );
 }
 
-export default Home;
-
-// styled-components
-const StContainer = styled.div`
-  width: 1200px;
-  margin: 0 auto;
-  height: 1080px;
-`;
+export default HomePage;

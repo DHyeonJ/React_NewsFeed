@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from '../pages/Login';
-import Home from '../pages/Home';
+import HomePage from '../pages/Home';
 import BoastPage from '../pages/Boast';
 import Join from '../pages/Join';
 import PostWrite from '../pages/PostWrite';
@@ -12,7 +12,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/join" element={<Join />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/boast" element={<BoastPage />} />
