@@ -42,13 +42,12 @@ function Boast() {
     return state.user;
   });
 
-  console.log(posts);
   const goToWrite = () => {
     if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
       navigate('/login');
     } else {
-      navigate('/postWrite');
+      navigate('/postWrite/1');
     }
   };
 
@@ -81,7 +80,7 @@ function Boast() {
                     return navigate(`/detailPage/${post.id}`);
                   }}
                 >
-                  <PostImg>{post.img}</PostImg>
+                  <PostImg src={post.img}></PostImg>
                   <PostInfo>
                     <PostTitleBox>
                       <PostWriter>{post.userEmail}</PostWriter>
@@ -138,10 +137,10 @@ const PostWriteLink = styled.button`
   }
 `;
 
-const PostImg = styled.div`
+const PostImg = styled.img`
   width: 570px;
   height: 300px;
-  background-color: white;
+  background-size: cover;
   margin-bottom: 10px;
 `;
 

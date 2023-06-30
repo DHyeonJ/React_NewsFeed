@@ -1,14 +1,12 @@
-import React from 'react';
-import { styled } from 'styled-components';
+import React, { useState } from 'react';
+import { css, styled } from 'styled-components';
 import pet2 from '../../assets/pet2.png';
 import loading from '../../assets/loadingW.png';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Dots from './Dots';
 
-function Contents({ post }) {
+function Contents({ post, param }) {
   const user = useSelector(state => state.user);
-
   if (post === undefined) {
     return (
       <Section>
@@ -34,12 +32,10 @@ function Contents({ post }) {
             <Title>{post.title}</Title>
             <Views>조회수 : {post.views}</Views>
           </TitleInnerWrapper>
-          {user.email === post.userEmail && <Dots />}
+          {user.email === post.userEmail && <Dots param={param} />}
         </TitleWrapper>
         <ContentWrapper>
-          {!post.img && (
-            <ContentImg src="https://modo-phinf.pstatic.net/20161227_17/1482824657944M2RjC_JPEG/mosaJxz9vM.jpeg?type=w720"></ContentImg>
-          )}
+          {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
           <p>{post.content}</p>
         </ContentWrapper>
         <Img src={pet2}></Img>
@@ -89,7 +85,7 @@ const ContentWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 const ContentImg = styled.img`
-  max-width: 300px;
+  max-width: 1000px;
   margin-bottom: 20px;
 `;
 
