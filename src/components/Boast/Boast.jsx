@@ -7,6 +7,7 @@ import TopButton from '../../components/TopButton/TopButton';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
+  console.log('asfewfwaef', posts);
   const filtered = posts.filter(post => {
     return post.category === '자랑 게시판';
   });
@@ -80,10 +81,12 @@ function Boast() {
                     return navigate(`/detailPage/${post.id}`);
                   }}
                 >
-                  <PostImg src={post.img}></PostImg>
+                  <PostImgWrapper>
+                    <PostImg src={post.img}></PostImg>
+                  </PostImgWrapper>
                   <PostInfo>
                     <PostTitleBox>
-                      <PostWriter>{post.userEmail}</PostWriter>
+                      <PostWriter>{post.userName}</PostWriter>
                     </PostTitleBox>
                     <PostTitle>{post.title}</PostTitle>
                   </PostInfo>
@@ -136,12 +139,19 @@ const PostWriteLink = styled.button`
     font-weight: 600;
   }
 `;
-
-const PostImg = styled.img`
+const PostImgWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 570px;
   height: 300px;
-  background-size: cover;
   margin-bottom: 10px;
+`;
+const PostImg = styled.img`
+  min-width: 200px;
+  max-width: 570px;
+  min-height: 200px;
+  max-height: 300px;
 `;
 
 const PostInfo = styled.div`
