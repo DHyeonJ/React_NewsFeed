@@ -76,7 +76,7 @@ function Qna() {
                 .filter(post => {
                   return post.category === '질문 게시판';
                 })
-                .map(post => {
+                .map((post, i) => {
                   return (
                     <tr
                       onClick={() => {
@@ -96,7 +96,7 @@ function Qna() {
                           paddingTop: '40px'
                         }}
                       >
-                        1
+                        {i + 1}
                       </td>
                       <td
                         style={{
@@ -125,7 +125,7 @@ function Qna() {
                           fontSize: '20px'
                         }}
                       >
-                        3
+                        {post.views}
                       </td>
                     </tr>
                   );

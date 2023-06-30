@@ -15,6 +15,7 @@ function Contents({ post }) {
         <TitleWrapper>
           <Writer></Writer>
           <Title></Title>
+          <Views></Views>
         </TitleWrapper>
         <ContentWrapper style={{ display: 'flex', justifyContent: 'center' }}>
           <img src={loading} width="250px" height="230px" />
@@ -31,6 +32,7 @@ function Contents({ post }) {
           <TitleInnerWrapper>
             <Writer>{post.userEmail}</Writer>
             <Title>{post.title}</Title>
+            <Views>조회수 : {post.views}</Views>
           </TitleInnerWrapper>
           {user.email === post.userEmail && <Dots />}
         </TitleWrapper>
@@ -93,4 +95,9 @@ const ContentImg = styled.img`
 
 const Section = styled.section`
   position: relative;
+`;
+
+const Views = styled.h3`
+  font-size: 22px;
+  font-weight: 600;
 `;

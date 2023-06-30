@@ -8,12 +8,6 @@ export const getAllPost = payload => {
   };
 };
 
-export const viewPost = payload => {
-  return {
-    type: VIEW_POST
-  };
-};
-
 const initialState = [];
 
 const postDatas = (state = initialState, action) => {

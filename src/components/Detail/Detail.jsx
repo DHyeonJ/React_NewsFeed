@@ -4,6 +4,9 @@ import Form from './CommentForm';
 import CommentsList from './CommentsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { doc, updateDoc, collection, query, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { getAllPost } from '../../redux/modules/posts';
 
 const Detail = () => {
   const param = useParams();
@@ -13,11 +16,24 @@ const Detail = () => {
     const matchPost = state.postDatas.find(doc => doc.id === param.id);
     return matchPost;
   });
-  console.log(post);
-  // useEffect(() => {
-  //   //dispatch를 보내 리덕스의 post데이터 변경
-  //   //파이어베이스의 doc데이터 변경
-  // }[])
+  useEffect(() => {
+    const updatePost = async () => {
+      const collectionRef = doc(db, 'posts', post.id);
+      await updateDoc(collectionRef, { views: post.views + 1 });
+      const q = query(collection(db, 'posts'));
+      const quertSnapShot = await getDocs(q);
+      const initialPosts = [];
+      quertSnapShot.forEach(doc => {
+        const post = {
+          id: doc.id,
+          ...doc.data()
+        };
+        initialPosts.push(post);
+      });
+      dispatch(getAllPost(initialPosts));
+    };
+    if (post != null) updatePost();
+  }, []);
   const [text, setText] = useState('');
   const [isEdit, setIsEdit] = useState({
     isIt: false,
