@@ -112,13 +112,26 @@ function Form() {
   const [users, setUsers] = useState('');
 
   const navigate = useNavigate();
-  /* const googleSignIn = async () => {
-    try {
-      const providerGoogle = new GoogleAuthProvider();
-      navigate('/');
-      await signInWithPopup(auth, providerGoogle);
-    } catch {}
-  };*/
+
+  const googleSignIn = function (e) {
+    e.preventDefault();
+    console.log('a');
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(data => {
+        const newUser = {
+          userEmail: data.email,
+          userName: data.displayName,
+          uid: data.uid,
+          photoUrl: data.photoURL
+        };
+        const usersRef = collection(db, 'users');
+        addDoc(usersRef, newUser);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   const onClickJoinHandler = async e => {
     e.preventDefault();
@@ -190,7 +203,7 @@ function Form() {
           <JoinButton type="submit">회원가입</JoinButton>
         </StForm>
         <StyledSocialLoginForm>
-          <JoinButton>구글 아이디로 회원가입</JoinButton>
+          <JoinButton onClick={googleSignIn}>구글 아이디로 회원가입</JoinButton>
           <StLink to="/login">로그인하기</StLink>
         </StyledSocialLoginForm>
       </StyledInnerWrapper>

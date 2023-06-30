@@ -7,7 +7,6 @@ import Dots from './Dots';
 
 function Contents({ post, param }) {
   const user = useSelector(state => state.user);
-  console.log(post.img)
   if (post === undefined) {
     return (
       <Section>
@@ -88,7 +87,8 @@ const ContentWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 const ContentImg = styled.img`
-  max-width: 1000px;
+  max-width: 500px;
+  max-height: 500px;
   margin-bottom: 20px;
 `;
 
@@ -106,4 +106,4 @@ const ContentRightSide = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`
+`;
