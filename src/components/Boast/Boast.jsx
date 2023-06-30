@@ -42,7 +42,6 @@ function Boast() {
     return state.user;
   });
 
-  console.log(posts);
   const goToWrite = () => {
     if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
@@ -74,7 +73,6 @@ function Boast() {
               return post.category == '자랑 게시판';
             })
             .map(post => {
-              console.log(post.img)
               return (
                 <BoastPost
                   key={post.id}
