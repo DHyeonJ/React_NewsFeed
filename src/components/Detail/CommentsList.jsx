@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { db } from '../../firebase';
 import { collection, deleteDoc, doc, getDocs, query } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteComment, getAllComment } from '../../redux/modules/comments';
 import { useParams } from 'react-router-dom';
+import TopButton from '../TopButton/TopButton';
 
 function CommentsList({ editCommentBtnHandler }) {
   const comments = useSelector(state => state.comments);
@@ -12,10 +13,9 @@ function CommentsList({ editCommentBtnHandler }) {
   const param = useParams();
   const dispatch = useDispatch();
   const deleteBtnHandler = async item => {
-    const { id, userId } = item;
-    const inputPw = prompt('비밀번호를 입력해 주세요');
-    if (inputPw !== user.password) {
-      alert('비밀번호가 다릅니다');
+    const { id } = item;
+    const check = window.confirm('정말 삭제하시겠습니까?');
+    if (!check) {
       return false;
     }
     const commentRef = doc(db, 'comment', id);
@@ -33,8 +33,38 @@ function CommentsList({ editCommentBtnHandler }) {
     });
     dispatch(getAllComment(initialPosts));
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
+  const offset = (currentPage - 1) * limit;
+  const option = { root: null, rootMargin: '0px', threshold: 0.5 };
+  const defaultOption = {
+    root: null,
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
+
+  const observer = new IntersectionObserver(
+    entries => {
+      if (entries[0].isIntersecting) {
+        setTimeout(() => {
+          setCurrentPage(prevPage => prevPage + 1);
+        }, 500);
+      }
+    },
+    {
+      ...defaultOption,
+      ...option
+    }
+  );
+
+  const divRef = useRef();
+  useEffect(() => {
+    observer.observe(divRef.current);
+  }, []);
+
   return (
-    <section>
+    <section style={{position: 'relative'}}>
       {comments
         .filter(comment => comment.postId === param.id)
         .toSorted((a, b) => {
@@ -46,7 +76,7 @@ function CommentsList({ editCommentBtnHandler }) {
           return (
             <Comment key={item.id}>
               <div>
-                <CommentWriter>{item.userId}</CommentWriter>
+                <CommentWriter>{item.userName ? item.userName : item.userId}</CommentWriter>
                 <p>{item.comment}</p>
                 <CommentTime>{item.time}</CommentTime>
               </div>
@@ -58,7 +88,12 @@ function CommentsList({ editCommentBtnHandler }) {
               )}
             </Comment>
           );
-        })}
+        })
+        .slice(0, offset + 10)}
+      <div ref={divRef}></div>
+      <MoveButtonArea>
+        <TopButton />
+      </MoveButtonArea>
     </section>
   );
 }
@@ -101,4 +136,9 @@ const Button = styled.button`
   &:hover {
     background-color: #f8db5c;
   }
+`;
+const MoveButtonArea = styled.div`
+  position: fixed;
+  right: 40px;
+  bottom: 100px;
 `;

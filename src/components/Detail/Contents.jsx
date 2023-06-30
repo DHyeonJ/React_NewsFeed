@@ -22,7 +22,7 @@ function Contents({ post, param }) {
       </Section>
     );
   }
-
+  
   return (
     <>
       <Section>
