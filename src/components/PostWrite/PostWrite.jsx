@@ -8,6 +8,7 @@ import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { getAllPost } from '../../redux/modules/posts';
 import currentTime from '../../feature/currentTime';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import uuid from 'react-uuid';
 
 function PostWrite() {
   const param = useParams();
@@ -38,10 +39,11 @@ function PostWrite() {
       alert('내용을 입력해 주세요');
       return false;
     }
-    const imageRef = ref(storage, `postImg/${user.email}`);
+
+    const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
     await uploadBytes(imageRef, img.files[0]);
-    const getImgRef = ref(storage, `postImg/${user.email}`);
-    const imgUrl = await getDownloadURL(getImgRef);
+    const imgUrl = await getDownloadURL(imageRef);
+
     const newPost = {
       category: category.value,
       title: title.value,
