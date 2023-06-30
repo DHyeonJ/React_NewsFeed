@@ -1,4 +1,4 @@
-import { Firestore, collection, doc, getDocs, onSnapshot, query } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, query } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import Router from './shared/Router';
 import { getAllPost } from './redux/modules/posts';
@@ -7,7 +7,6 @@ import { getUserInfo } from './redux/modules/user';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { getAllComment } from './redux/modules/comments';
-import { async } from '@firebase/util';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +17,7 @@ function App() {
     // post 정보 불러오기
     const fetchData = async () => {
       const q = query(collection(db, 'posts'));
-      const unsubscribe = onSnapshot(q, querySnapshot => {
+      const snapShot = onSnapshot(q, querySnapshot => {
         const initialPosts = [];
         querySnapshot.forEach(doc => {
           const post = {
@@ -28,13 +27,11 @@ function App() {
           initialPosts.push(post);
         });
         dispatch(getAllPost(initialPosts));
-        return () => unsubscribe();
       });
     };
     fetchData();
 
     //  유저 정보 불러오기
-    // photoUrl 불러오기
     const userFetch = async uid => {
       const q = query(collection(db, 'users'));
       const querySnapShot = await getDocs(q);
@@ -88,9 +85,9 @@ function App() {
         });
         dispatch(getAllComment(initialPosts));
       });
-      return () => getComments();
     };
     getComments();
+    
   }, [auth]);
 
   return <Router />;
