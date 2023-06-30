@@ -9,12 +9,12 @@ import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCa-TqkqnfugBdHNvlUwHcoF5Jkt9sNg_E',
-  authDomain: 'fir-test-fe5bf.firebaseapp.com',
-  projectId: 'fir-test-fe5bf',
-  storageBucket: 'fir-test-fe5bf.appspot.com',
-  messagingSenderId: '382815658287',
-  appId: '1:382815658287:web:13ff1c3eb48cff526441da'
+  apiKey: 'AIzaSyDWmMa1Q4q2tj4xDXC1bICJhpJuVtyJMB8',
+  authDomain: 'pinfo-68a00.firebaseapp.com',
+  projectId: 'pinfo-68a00',
+  storageBucket: 'pinfo-68a00.appspot.com',
+  messagingSenderId: '127938683536',
+  appId: '1:127938683536:web:ebc7a912f72b972e28ae15'
 };
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
