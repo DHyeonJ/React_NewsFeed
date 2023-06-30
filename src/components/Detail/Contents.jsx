@@ -22,7 +22,7 @@ function Contents({ post, param }) {
       </Section>
     );
   }
-
+  
   return (
     <>
       <Section>
@@ -40,6 +40,7 @@ function Contents({ post, param }) {
           {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
           <p>{post.content}</p>
         </ContentWrapper>
+        <Img src={pet2}></Img>
       </Section>
     </>
   );
@@ -99,10 +100,10 @@ const Views = styled.p`
   cursor: default;
   font-size: 16px;
   font-weight: 500;
+  margin-right: 20px;
 `;
 
 const ContentRightSide = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
 `;
