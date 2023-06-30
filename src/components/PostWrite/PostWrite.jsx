@@ -80,7 +80,8 @@ function PostWrite() {
       date: currentTime(),
       img: img.files[0] === undefined ? null : imgUrl,
       userEmail: user.email,
-      views: 0
+      views: 0,
+      uid: user.uid
     };
     const collectionRef = collection(db, 'posts');
     await addDoc(collectionRef, newPost);
@@ -110,7 +111,8 @@ function PostWrite() {
       title: title.value,
       content: content.value,
       date: post.date,
-      userEmail: user.email
+      userEmail: user.email,
+      uid: user.uid
     };
     const collectionRef = doc(db, 'posts', post.id);
     await updateDoc(collectionRef, {
