@@ -19,7 +19,7 @@ function PostWrite() {
     const matchPost = state.postDatas.find(doc => doc.id === param.id);
     return matchPost;
   });
-  console.log(post);
+
   const [postContent, setPostContent] = useState({
     title: '',
     content: ''
@@ -74,10 +74,11 @@ function PostWrite() {
 
     const newPost = {
       category: category.value,
+      userName: user.userName,
       title: title.value,
       content: content.value,
       date: currentTime(),
-      img: img.value,
+      img: imgUrl,
       userEmail: user.email,
       views: 0
     };
@@ -105,6 +106,7 @@ function PostWrite() {
 
     const changedPost = {
       category: category.value,
+      userName: user.userName,
       title: title.value,
       content: content.value,
       date: post.date,

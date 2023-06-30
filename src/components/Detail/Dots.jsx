@@ -1,6 +1,10 @@
+import { collection, deleteDoc, doc, getDocs, query } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { db } from '../../firebase';
+import { useDispatch } from 'react-redux';
+import { getAllPost } from '../../redux/modules/posts';
 
 const Dots = ({ param }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +12,32 @@ const Dots = ({ param }) => {
     setIsOpen(true);
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const afterSubmit = async () => {
+    const q = query(collection(db, 'posts'));
+    const quertSnapShot = await getDocs(q);
+    const initialPosts = [];
+    quertSnapShot.forEach(doc => {
+      const post = {
+        id: doc.id,
+        ...doc.data()
+      };
+      initialPosts.push(post);
+    });
+    dispatch(getAllPost(initialPosts));
+    navigate(-1);
+  };
+
+  const deletePost = async id => {
+    const check = window.confirm('정말 삭제하시겠습니까?');
+    if (!check) return false;
+
+    const postRef = doc(db, 'posts', id);
+    await deleteDoc(postRef);
+    await afterSubmit()
+    navigate('/');
+  };
   return (
     <DotArea>
       <DotsWrapper onClick={isOpenHandler} onBlur={() => setIsOpen(false)}>
@@ -18,7 +48,7 @@ const Dots = ({ param }) => {
       {isOpen && (
         <Options>
           <Option onMouseDown={() => navigate(`/postWrite/${param.id}`)}>수정</Option>
-          <Option>삭제</Option>
+          <Option onMouseDown={() => deletePost(param.id)}>삭제</Option>
         </Options>
       )}
     </DotArea>

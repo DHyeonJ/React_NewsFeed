@@ -7,6 +7,7 @@ import Dots from './Dots';
 
 function Contents({ post, param }) {
   const user = useSelector(state => state.user);
+
   if (post === undefined) {
     return (
       <Section>
@@ -28,11 +29,13 @@ function Contents({ post, param }) {
       <Section>
         <TitleWrapper>
           <TitleInnerWrapper>
-            <Writer>{post.userEmail}</Writer>
+            <Writer>{post.userName}</Writer>
             <Title>{post.title}</Title>
-            <Views>조회수 : {post.views}</Views>
           </TitleInnerWrapper>
-          {user.email === post.userEmail && <Dots param={param} />}
+          <ContentRightSide>
+            <Views>조회수&nbsp;{post.views}</Views>
+            {user.email === post.userEmail && <Dots param={param} />}
+          </ContentRightSide>
         </TitleWrapper>
         <ContentWrapper>
           {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
@@ -93,7 +96,14 @@ const Section = styled.section`
   position: relative;
 `;
 
-const Views = styled.h3`
-  font-size: 22px;
-  font-weight: 600;
+const Views = styled.p`
+  cursor: default;
+  font-size: 16px;
+  font-weight: 500;
 `;
+
+const ContentRightSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
