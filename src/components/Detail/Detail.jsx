@@ -1,22 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Contents from './Contents';
 import Form from './CommentForm';
 import CommentsList from './CommentsList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { doc, updateDoc, collection, query, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { getAllPost } from '../../redux/modules/posts';
 
 const Detail = () => {
   const param = useParams();
   const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const post = useSelector(state => {
     const matchPost = state.postDatas.find(doc => doc.id === param.id);
     return matchPost;
   });
+  useEffect(() => {
+    const updatePost = async () => {
+      const collectionRef = doc(db, 'posts', post.id);
+      await updateDoc(collectionRef, { views: post.views + 1 });
+      const q = query(collection(db, 'posts'));
+      const quertSnapShot = await getDocs(q);
+      const initialPosts = [];
+      quertSnapShot.forEach(doc => {
+        const post = {
+          id: doc.id,
+          ...doc.data()
+        };
+        initialPosts.push(post);
+      });
+      dispatch(getAllPost(initialPosts));
+    };
+    if (post != null) updatePost();
+  }, []);
   const [text, setText] = useState('');
   const [isEdit, setIsEdit] = useState({
     isIt: false,
     item: {}
   });
+
   const editCommentBtnHandler = item => {
     const inputPw = prompt('비밀번호를 입력해 주세요');
     if (inputPw !== user.password) {
