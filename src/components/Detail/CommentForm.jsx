@@ -38,7 +38,8 @@ function Form({ text, setText, isEdit, setIsEdit, post }) {
         userId: user.email,
         category: post.category,
         comment: comment.value,
-        time: currentTime()
+        time: currentTime(),
+        uid: user.uid
       };
       const collectionRef = collection(db, 'comment');
       setText('');
