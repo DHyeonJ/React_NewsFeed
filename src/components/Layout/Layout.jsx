@@ -11,5 +11,5 @@ const Container = styled.main`
   width: 1200px;
   margin: 0 auto;
   /* height: 1080px; */
-  border: 1px solid;
+  /* border: 1px solid; */
 `;
