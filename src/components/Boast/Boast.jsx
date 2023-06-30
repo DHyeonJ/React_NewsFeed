@@ -8,9 +8,6 @@ import TopButton from '../../components/TopButton/TopButton';
 function Boast() {
   const posts = useSelector(state => state.postDatas);
 
-  const filtered = posts.filter(post => {
-    return post.category === '자랑 게시판';
-  });
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   const offset = (currentPage - 1) * limit;
@@ -26,7 +23,7 @@ function Boast() {
       if (entries[0].isIntersecting) {
         setTimeout(() => {
           setCurrentPage(prevPage => prevPage + 1);
-        }, 3000);
+        }, 500);
       }
     },
     {
@@ -105,10 +102,11 @@ function Boast() {
 }
 
 export default Boast;
+
 const MoveButtonArea = styled.div`
   position: fixed;
   right: 40px;
-  bottom: 30px;
+  bottom: 100px;
 `;
 
 const PostTitleBox = styled.div`

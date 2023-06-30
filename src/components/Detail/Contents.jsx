@@ -22,7 +22,7 @@ function Contents({ post, param }) {
       </Section>
     );
   }
-
+  
   return (
     <>
       <Section>
@@ -38,6 +38,7 @@ function Contents({ post, param }) {
         </TitleWrapper>
         <ContentWrapper>
           {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
+          <p>{post.content}</p>
         </ContentWrapper>
       </Section>
     </>
