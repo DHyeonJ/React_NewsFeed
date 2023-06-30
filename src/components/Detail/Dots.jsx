@@ -16,9 +16,9 @@ const Dots = ({ param }) => {
 
   const afterSubmit = async () => {
     const q = query(collection(db, 'posts'));
-    const quertSnapShot = await getDocs(q);
+    const querySnapShot = await getDocs(q);
     const initialPosts = [];
-    quertSnapShot.forEach(doc => {
+    querySnapShot.forEach(doc => {
       const post = {
         id: doc.id,
         ...doc.data()

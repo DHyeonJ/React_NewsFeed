@@ -1,4 +1,4 @@
-import { collection, getDocs, query } from 'firebase/firestore';
+import { Firestore, collection, doc, getDocs, onSnapshot, query } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import Router from './shared/Router';
 import { getAllPost } from './redux/modules/posts';
@@ -7,9 +7,9 @@ import { getUserInfo } from './redux/modules/user';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { getAllComment } from './redux/modules/comments';
+import { async } from '@firebase/util';
 
 function App() {
-  console.log(auth);
   const dispatch = useDispatch();
   const user = useSelector(state => {
     return state.user;
@@ -18,18 +18,21 @@ function App() {
     // post 정보 불러오기
     const fetchData = async () => {
       const q = query(collection(db, 'posts'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
+      const unsubscribe = onSnapshot(q, querySnapshot => {
+        const initialPosts = [];
+        querySnapshot.forEach(doc => {
+          const post = {
+            id: doc.id,
+            ...doc.data()
+          };
+          initialPosts.push(post);
+        });
+        dispatch(getAllPost(initialPosts));
+        return () => unsubscribe();
       });
-      dispatch(getAllPost(initialPosts));
     };
     fetchData();
+
     //  유저 정보 불러오기
     // photoUrl 불러오기
     const userFetch = async uid => {
@@ -41,7 +44,6 @@ function App() {
           id: doc.id,
           ...doc.data()
         };
-
         initialUsers.push(user);
       });
 
@@ -56,7 +58,6 @@ function App() {
       if (state) {
         const { email, uid } = state;
         const result = await userFetch(uid);
-        console.log('result', result);
         dispatch(
           getUserInfo({
             email,
@@ -76,16 +77,18 @@ function App() {
     // 댓글 불러오기
     const getComments = async () => {
       const q = query(collection(db, 'comment'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
+      const snapShot = onSnapshot(q, querySanpShot => {
+        const initialPosts = [];
+        querySanpShot.forEach(doc => {
+          const post = {
+            id: doc.id,
+            ...doc.data()
+          };
+          initialPosts.push(post);
+        });
+        dispatch(getAllComment(initialPosts));
       });
-      dispatch(getAllComment(initialPosts));
+      return () => getComments();
     };
     getComments();
   }, [auth]);

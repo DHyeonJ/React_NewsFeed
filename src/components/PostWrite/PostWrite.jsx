@@ -40,20 +40,7 @@ function PostWrite() {
     const name = target.value.split('/').pop().split('\\').pop();
     setFileName(name);
   };
-  const afterSubmit = async () => {
-    const q = query(collection(db, 'posts'));
-    const quertSnapShot = await getDocs(q);
-    const initialPosts = [];
-    quertSnapShot.forEach(doc => {
-      const post = {
-        id: doc.id,
-        ...doc.data()
-      };
-      initialPosts.push(post);
-    });
-    dispatch(getAllPost(initialPosts));
-    navigate(-1);
-  };
+
   const onSubmitHandler = async e => {
     e.preventDefault();
     const { category = 0, title = 1, content = 2, img = 3 } = e.target;
@@ -85,7 +72,7 @@ function PostWrite() {
     };
     const collectionRef = collection(db, 'posts');
     await addDoc(collectionRef, newPost);
-    await afterSubmit();
+    navigate(-1);
   };
   const onEditSubmitHandler = async e => {
     e.preventDefault();
@@ -119,7 +106,8 @@ function PostWrite() {
       img: img.files[0] ? imgUrl : post.img,
       ...changedPost
     });
-    await afterSubmit();
+
+    navigate(-1);
   };
 
   return (

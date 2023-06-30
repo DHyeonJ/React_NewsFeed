@@ -10,7 +10,6 @@ import currentTime from '../../feature/currentTime';
 function Form({ text, setText, isEdit, setIsEdit, post }) {
   const { user } = useSelector(state => state);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const param = useParams();
   const onSubmitCommentHandler = async e => {
     e.preventDefault();
@@ -45,17 +44,6 @@ function Form({ text, setText, isEdit, setIsEdit, post }) {
       setText('');
       await addDoc(collectionRef, newComment);
     }
-    const q = query(collection(db, 'comment'));
-    const quertSnapShot = await getDocs(q);
-    const initialPosts = [];
-    quertSnapShot.forEach(doc => {
-      const post = {
-        id: doc.id,
-        ...doc.data()
-      };
-      initialPosts.push(post);
-    });
-    dispatch(getAllComment(initialPosts));
   };
   return (
     <section>

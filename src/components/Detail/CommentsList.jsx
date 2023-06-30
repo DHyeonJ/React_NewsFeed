@@ -9,6 +9,7 @@ import TopButton from '../TopButton/TopButton';
 
 function CommentsList({ editCommentBtnHandler }) {
   const comments = useSelector(state => state.comments);
+  // console.log('aefwaef', comments);
   const user = useSelector(state => state.user);
   const param = useParams();
   const dispatch = useDispatch();
@@ -21,17 +22,6 @@ function CommentsList({ editCommentBtnHandler }) {
     const commentRef = doc(db, 'comment', id);
     deleteComment(id);
     await deleteDoc(commentRef);
-    const q = query(collection(db, 'comment'));
-    const quertSnapShot = await getDocs(q);
-    const initialPosts = [];
-    quertSnapShot.forEach(doc => {
-      const post = {
-        id: doc.id,
-        ...doc.data()
-      };
-      initialPosts.push(post);
-    });
-    dispatch(getAllComment(initialPosts));
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,7 +54,7 @@ function CommentsList({ editCommentBtnHandler }) {
   }, []);
 
   return (
-    <section style={{position: 'relative'}}>
+    <section style={{ position: 'relative' }}>
       {comments
         .filter(comment => comment.postId === param.id)
         .toSorted((a, b) => {
