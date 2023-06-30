@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllComment } from '../../redux/modules/comments';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import currentTime from '../../feature/currentTime';
 
