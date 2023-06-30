@@ -34,7 +34,19 @@ function UserProfile() {
   return (
     <div>
       <ProfileImg profileimg={user.photoURL} />
-      <FileInput type="file" accept="image/jpg, image/jpeg, image/png" onChange={handleImgUpload} />
+      <FileField>
+        <FileLabel>
+          프로필 사진 변경
+          <input
+            type="file"
+            accept="image/jpg, image/jpeg, image/png"
+            name="img"
+            style={{ display: 'none' }}
+            onChange={handleImgUpload}
+          />
+        </FileLabel>
+        {/* <File>{fileName}</File> */}
+      </FileField>
     </div>
   );
 }
@@ -46,13 +58,31 @@ const ProfileImg = styled.div`
   border-radius: 50%;
   /* display: inline-flex; */
   background-image: url(${props => props.profileimg});
-  background-size: contain;
+  background-size: cover;
   background-position: center;
 `;
 
-const FileInput = styled.input`
-  width: 120px;
-  margin-top: 20px;
+const FileField = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 40px;
 `;
+const FileLabel = styled.label`
+  cursor: pointer;
+  text-align: center;
+  padding-top: 7px;
+  width: 140px;
+  height: 40px;
+  margin: 20px auto auto auto;
+  border: 0.5px solid #dcdcdc;
+  &:hover {
+    background-color: #c5d8d1;
+  }
+`;
+
+// const FileInput = styled.input`
+//   width: 120px;
+//   margin-top: 20px;
+// `;
 
 export default UserProfile;
