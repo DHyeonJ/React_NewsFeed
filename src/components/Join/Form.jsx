@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db, storage } from '../../firebase';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
-import { StyledInnerWrapper, StyledSocialLoginForm } from '../Login/Login';
+import { FormBox, SocialLoginForm } from '../Login/Login';
 
 import {
   signInWithEmailAndPassword,
@@ -154,7 +154,7 @@ function Form() {
 
   return (
     <FormContainer>
-      <StyledInnerWrapper>
+      <FormBox>
         <Logo src={LogoImagSrc}></Logo>
         <StForm onSubmit={e => onClickJoinHandler(e)}>
           <StInput
@@ -189,11 +189,11 @@ function Form() {
           {failMsg && <WarningMsg>{failMsg}</WarningMsg>}
           <JoinButton type="submit">회원가입</JoinButton>
         </StForm>
-        <StyledSocialLoginForm>
+        <SocialLoginForm>
           <JoinButton>구글 아이디로 회원가입</JoinButton>
           <StLink to="/login">로그인하기</StLink>
-        </StyledSocialLoginForm>
-      </StyledInnerWrapper>
+        </SocialLoginForm>
+      </FormBox>
     </FormContainer>
   );
 }
