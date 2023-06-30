@@ -39,18 +39,18 @@ function PostContainer() {
             .map(data => {
               return (
                 <MyPostCommentList key={data.id}>
-                  <p>{data.category}</p>
+                  <Category>{data.category}</Category>
                   {/* 호버 포커스 */}
                   <MyTitleComment onClick={() => navigate(`/detailPage/${data.id}`)}>
                     {data.title}
                   </MyTitleComment>
-                  <p>{data.date}</p>
+                  <Time>{data.date}</Time>
                 </MyPostCommentList>
               );
             })}
         </ListScroll>
       </div>
-      <div>
+      <Bottom>
         <MyPostComment>
           <MyLabel>작성 댓글 목록</MyLabel>
         </MyPostComment>
@@ -64,19 +64,33 @@ function PostContainer() {
             .map(data => {
               return (
                 <MyPostCommentList key={data.id}>
-                  <p>{data.category}</p>
+                  <Category>{data.category}</Category>
                   <MyTitleComment onClick={() => navigate(`/detailPage/${data.postId}`)}>
                     {data.comment}
                   </MyTitleComment>
-                  <p>{data.time}</p>
+                  <Time>{data.time}</Time>
                 </MyPostCommentList>
               );
             })}
         </ListScroll>
-      </div>
+      </Bottom>
     </div>
   );
 }
+const Bottom = styled.div`
+  margin-bottom: 100px;
+`;
+const Time = styled.p`
+  padding: 10px;
+  font-size: 13px;
+`;
+
+const Category = styled.p`
+  text-align: center;
+  padding: 10px;
+  width: 100px;
+  color: gray;
+`;
 
 const Layout = styled.div`
   display: flex;
@@ -109,21 +123,29 @@ const MyLabel = styled.label`
 `;
 const MyPostCommentList = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   width: 700px;
   margin: 10px auto auto auto;
-  text-align: center;
+  /* text-align: center; */
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 const MyTitleComment = styled.p`
-  width: 330px;
+  width: 450px;
+  padding: 10px;
+  border-left: 1px solid #857575;
   &:hover {
     cursor: pointer;
   }
 `;
 const ListScroll = styled.div`
-  height: 138px;
+  padding: 15px;
+  height: 250px;
   overflow: auto;
   width: 100%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export default PostContainer;
