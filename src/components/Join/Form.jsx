@@ -3,8 +3,7 @@ import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db, storage } from '../../firebase';
-import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
+import { auth, db } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { FormBox, SocialLoginForm } from '../Login/Login';
 
@@ -15,8 +14,105 @@ import {
   signInWithPopup
 } from 'firebase/auth';
 
-import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { addDoc, collection, getDocs, getDoc, query, where, doc } from 'firebase/firestore';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+function Form() {
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userPw, setUserPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
+  const [failMsg, setFailMsg] = useState('');
+  let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  const navigate = useNavigate();
+
+  // const userCheck = async user => {
+  //   const q = query(collection(db, 'users'));
+  //   const userSnapShot = await getDocs(q);
+  //   console.log(userSnapShot)
+  // };
+
+  const onClickJoinHandler = async e => {
+    e.preventDefault();
+
+    /// 비밀번호 확인
+    if (userPw !== confirmPw) {
+      setFailMsg('비밀번호가 일치하지 않습니다.');
+    } else if (!regex.test(userEmail)) {
+      setFailMsg('유효한 이메일을 입력해주세요');
+    } else {
+      //DB에 저장, 로그인페이지로 이동
+
+      try {
+        await createUserWithEmailAndPassword(auth, userEmail, userPw);
+        navigate('/login');
+        const newUser = {
+          userEmail,
+          userName,
+          uid: auth.currentUser.uid,
+          photoUrl: '',
+          userPw
+        };
+        const usersRef = collection(db, 'users');
+        addDoc(usersRef, newUser);
+      } catch (error) {
+        // 회원가입 실패시
+        if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
+          setFailMsg('이미 존재하는 이메일입니다.');
+        }
+      }
+    }
+  };
+
+  return (
+    <FormContainer>
+      <FormBox>
+        <Logo src={LogoImagSrc}></Logo>
+        <StForm onSubmit={e => onClickJoinHandler(e)}>
+          <StInput
+            value={userEmail}
+            onChange={e => setUserEmail(e.target.value)}
+            type="email"
+            required
+            placeholder="이메일"
+          ></StInput>
+          <StInput
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+            type="text"
+            required
+            placeholder="이름"
+          />
+          <StInput
+            type="password"
+            value={userPw}
+            minLength="8"
+            required
+            onChange={e => setUserPw(e.target.value)}
+            placeholder="비밀번호"
+          />
+          <StInput
+            type="password"
+            value={confirmPw}
+            required
+            onChange={e => setConfirmPw(e.target.value)}
+            placeholder="비밀번호 확인"
+          />
+          {failMsg && <WarningMsg>{failMsg}</WarningMsg>}
+          <JoinButton type="submit">회원가입</JoinButton>
+        </StForm>
+
+        <SocialLoginForm>
+          {/* <JoinButton onClick={googleSignIn}>구글 아이디로 회원가입</JoinButton> */}
+
+          <StLink to="/login">로그인하기</StLink>
+        </SocialLoginForm>
+      </FormBox>
+    </FormContainer>
+  );
+}
 
 const FormContainer = styled.div`
   width: 1200px;
@@ -99,103 +195,4 @@ export const Logo = styled.img`
 const WarningMsg = styled.h3`
   color: red;
 `;
-
-function Form() {
-  const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userPw, setUserPw] = useState('');
-  const [profileImg, setProfileImg] = useState('');
-  const [confirmPw, setConfirmPw] = useState('');
-  const [failMsg, setFailMsg] = useState('');
-  let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
-  const [users, setUsers] = useState('');
-
-  const navigate = useNavigate();
-  /* const googleSignIn = async () => {
-    try {
-      const providerGoogle = new GoogleAuthProvider();
-      navigate('/');
-      await signInWithPopup(auth, providerGoogle);
-    } catch {}
-  };*/
-
-  const onClickJoinHandler = async e => {
-    e.preventDefault();
-
-    /// 비밀번호 확인
-    if (userPw !== confirmPw) {
-      setFailMsg('비밀번호가 일치하지 않습니다.');
-    } else if (!regex.test(userEmail)) {
-      setFailMsg('유효한 이메일을 입력해주세요');
-    } else {
-      //DB에 저장, 로그인페이지로 이동
-
-      try {
-        await createUserWithEmailAndPassword(auth, userEmail, userPw);
-        navigate('/login');
-        const newUser = {
-          userEmail,
-          userName,
-          uid: auth.currentUser.uid,
-          photoUrl: '',
-          userPw
-        };
-        const usersRef = collection(db, 'users');
-        addDoc(usersRef, newUser);
-      } catch (error) {
-        // 회원가입 실패시
-        if (error == 'FirebaseError: Firebase: Error (auth/email-already-in-use).') {
-          setFailMsg('이미 존재하는 이메일입니다.');
-        }
-      }
-    }
-  };
-
-  return (
-    <FormContainer>
-      <FormBox>
-        <Logo src={LogoImagSrc}></Logo>
-        <StForm onSubmit={e => onClickJoinHandler(e)}>
-          <StInput
-            value={userEmail}
-            onChange={e => setUserEmail(e.target.value)}
-            type="email"
-            required
-            placeholder="이메일"
-          ></StInput>
-          <StInput
-            value={userName}
-            onChange={e => setUserName(e.target.value)}
-            type="text"
-            required
-            placeholder="이름"
-          />
-          <StInput
-            type="password"
-            value={userPw}
-            minLength="8"
-            required
-            onChange={e => setUserPw(e.target.value)}
-            placeholder="비밀번호"
-          />
-          <StInput
-            type="password"
-            value={confirmPw}
-            required
-            onChange={e => setConfirmPw(e.target.value)}
-            placeholder="비밀번호 확인"
-          />
-          {failMsg && <WarningMsg>{failMsg}</WarningMsg>}
-          <JoinButton type="submit">회원가입</JoinButton>
-        </StForm>
-        <SocialLoginForm>
-          <JoinButton>구글 아이디로 회원가입</JoinButton>
-          <StLink to="/login">로그인하기</StLink>
-        </SocialLoginForm>
-      </FormBox>
-    </FormContainer>
-  );
-}
-
 export default Form;

@@ -5,10 +5,15 @@ import { styled } from 'styled-components';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/modules/user';
+import { db } from '../../firebase';
+import { collection, getDocs, query, addDoc } from 'firebase/firestore';
+import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getUserInfo } from '../../redux/modules/user.js';
 
 const Login = () => {
+  const user = useSelector(state => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -20,6 +25,60 @@ const Login = () => {
   };
   const goToJoin = () => {
     navigate('/join');
+  };
+
+  //////유저 데이터 추가
+  // const setUserData = async data => {
+  //   const { email, displayName, uid, photoURL } = data;
+  //   const newUser = {
+  //     userEmail: email,
+  //     userName: displayName,
+  //     uid,
+  //     photoUrl: photoURL
+  //   };
+
+  //   const usersRef = collection(db, 'users');
+  //   await addDoc(usersRef, newUser);
+  // };
+
+  /////기존 유저 확인
+  const userCheck = async user => {
+    const q = query(collection(db, 'users'));
+    const userSnapShot = await getDocs(q);
+    const initialUsers = [];
+    userSnapShot.forEach(doc => {
+      const user = {
+        id: doc.id,
+        ...doc.data()
+      };
+      initialUsers.push(user);
+    });
+    const findUser = initialUsers.filter(userData => userData.uid == user.uid);
+    if (findUser.length === 0) {
+      return true;
+    }
+  };
+
+  //////구글 로그인/회원가입
+  const googleSignIn = async e => {
+    e.preventDefault();
+    const provider = new GoogleAuthProvider();
+    const data = await signInWithPopup(auth, provider);
+    const userData = data.user;
+    const check = await userCheck(userData);
+    if (check) {
+      const { email, displayName, uid, photoURL } = userData;
+      const newUser = {
+        userEmail: email,
+        userName: displayName,
+        uid,
+        photoUrl: photoURL
+      };
+      const usersRef = collection(db, 'users');
+      await addDoc(usersRef, newUser);
+    }
+    navigate('/');
+    window.location.reload();
   };
 
   const onSubmitHandler = async e => {
@@ -71,10 +130,10 @@ const Login = () => {
           </ButtonBox>
         </LoginForm>
         <SocialLoginForm onSubmit={onSubmitHandler}>
-          <Button>구글로 로그인</Button>
           <Button>깃허브로 로그인</Button>
           <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
         </SocialLoginForm>
+        <Button onClick={googleSignIn}>구글로 로그인</Button>
       </FormBox>
     </LoginLayout>
   );
