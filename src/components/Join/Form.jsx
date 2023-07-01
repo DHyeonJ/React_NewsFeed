@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LogoImagSrc from '../../assets/logo2.png';
+import LogoImagSrc from '../../assets/logo_white.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -48,12 +48,33 @@ function Form() {
       }
     }
   };
+  const [inputValue, setInputValue] = useState();
+
+  const onChange = event => {
+    const { name, value } = event.target;
+    setInputValue({ ...inputValue, [name]: value });
+  };
+  console.log('🚀 ', inputValue);
+
+  const inputCaption = (type, name, placeholder) => ({
+    type,
+    name,
+    placeholder,
+    value: inputValue[name],
+    onChange,
+    required: 'required'
+  });
 
   return (
     <FormContainer>
       <FormBox>
         <Logo src={LogoImagSrc}></Logo>
         <StForm onSubmit={e => onClickJoinHandler(e)}>
+          <StInput {...inputCaption('email', 'email', '이메일')}></StInput>
+          <StInput {...inputCaption('text', 'title', '이름')}></StInput>
+          <StInput {...inputCaption('password', 'password', '비밀번호')}></StInput>
+          <StInput {...inputCaption('password', 'passwordConfirm', '비밀번호 확인')}></StInput>
+
           <StInput
             value={userEmail}
             onChange={e => setUserEmail(e.target.value)}
@@ -99,11 +120,12 @@ function Form() {
 
 const FormContainer = styled.div`
   width: 1200px;
-  height: calc(100vh - 300px);
   margin: 0 auto;
+  height: 1080px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid;
 `;
 
 const StForm = styled.form`
@@ -113,10 +135,9 @@ const StForm = styled.form`
   gap: 20px;
   width: 440px;
   padding: 20px;
+  border: 2px solid #12263a;
   border-radius: 12px;
-  box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
-  background-color: #fafafa;
-
+  box-shadow: rgba(18, 38, 58, 0.3) 0px 1px 3px 0px, rgba(18, 38, 58, 0.1) 0px 1px 2px 0px;
 `;
 
 const StInput = styled.input`
@@ -124,7 +145,7 @@ const StInput = styled.input`
   height: 40px;
   font-size: 18px;
   padding: 3px 20px;
-  border: none;
+  border: 1px solid #12263a;
   border-radius: 8px;
   outline: none;
   box-shadow: rgba(18, 38, 58, 0.1) 0px 1px 3px 0px, rgba(18, 38, 58, 0.06) 0px 1px 2px 0px;
@@ -138,17 +159,15 @@ const StInput = styled.input`
 
 const StLink = styled(Link)`
   text-decoration-line: none;
-  font-weight: 600;
   color: black;
 `;
 
 const JoinButton = styled.button`
-  cursor: pointer;
   width: 400px;
   height: 40px;
   border-radius: 10px;
   background-color: #12263a;
-  border: none;
+  cursor: pointer;
   outline: none;
   color: #fff;
   font-size: 18px;
