@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import InputImgSrc from '../../assets/pet.png';
 import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { getSearchData } from '../../redux/modules/posts';
 
 function Qna() {
   const posts = useSelector(state => state.postDatas);
@@ -23,20 +22,7 @@ function Qna() {
   const offset = (currentPage - 1) * limit;
   // 총 페이지
   const totalPage = Math.ceil(filtered.length / limit);
-  const dispatch = useDispatch();
-  const searchChange = e => {
-    setInputValue(e.target.value);
-  };
 
-  const searchSubmit = e => {
-    e.preventDefault();
-    if (!inputValue) {
-      alert('입력해주세요');
-    } else {
-      const inputData = filtered.filter(post => post.title.includes(inputValue));
-      dispatch(getSearchData(inputData));
-    }
-  };
   const handlePageChange = item => {
     setCurrentPage(item.selected + 1);
   };
@@ -45,7 +31,7 @@ function Qna() {
     return state.user;
   });
   const goToWrite = () => {
-    if (user.isLogin === false) {
+    if (user.isLogin === 'guest') {
       alert('로그인이 필요합니다');
       navigate('/login');
     } else {
@@ -54,17 +40,17 @@ function Qna() {
   };
   return (
     <>
-      <form onSubmit={searchSubmit}>
-        <QSearch>
-          <Input src={InputImgSrc}></Input>
-          <QInput
-            type="text"
-            placeholder="입력하세요"
-            value={inputValue}
-            onChange={searchChange}
-          ></QInput>
-        </QSearch>
-      </form>
+      <QSearch>
+        <Input src={InputImgSrc}></Input>
+        <QInput
+          type="text"
+          placeholder="입력하세요"
+          value={inputValue}
+          onChange={e => {
+            setInputValue(e.target.value);
+          }}
+        ></QInput>
+      </QSearch>
       <StLayout>
         <PostWrite>
           <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
@@ -104,6 +90,13 @@ function Qna() {
                 .toReversed()
                 .filter(post => {
                   return post.category === '질문 게시판';
+                })
+                .filter(post => {
+                  if (inputValue) {
+                    return post.title.includes(inputValue);
+                  } else {
+                    return post;
+                  }
                 })
                 .map((post, i) => {
                   return (
