@@ -15,29 +15,38 @@ const Dots = ({ param }) => {
   const dispatch = useDispatch();
 
   const afterSubmit = async () => {
-    const q = query(collection(db, 'posts'));
-    const querySnapShot = await getDocs(q);
-    const initialPosts = [];
-    querySnapShot.forEach(doc => {
-      const post = {
-        id: doc.id,
-        ...doc.data()
-      };
-      initialPosts.push(post);
-    });
-    dispatch(getAllPost(initialPosts));
-    navigate(-1);
+    try {
+      const q = query(collection(db, 'posts'));
+      const querySnapShot = await getDocs(q);
+      const initialPosts = [];
+      querySnapShot.forEach(doc => {
+        const post = {
+          id: doc.id,
+          ...doc.data()
+        };
+        initialPosts.push(post);
+      });
+      dispatch(getAllPost(initialPosts));
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deletePost = async id => {
-    const check = window.confirm('정말 삭제하시겠습니까?');
-    if (!check) return false;
+    try {
+      const check = window.confirm('정말 삭제하시겠습니까?');
+      if (!check) return false;
 
-    const postRef = doc(db, 'posts', id);
-    await deleteDoc(postRef);
-    await afterSubmit()
-    navigate('/');
+      const postRef = doc(db, 'posts', id);
+      await deleteDoc(postRef);
+      await afterSubmit();
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
   return (
     <DotArea>
       <DotsWrapper onClick={isOpenHandler} onBlur={() => setIsOpen(false)}>

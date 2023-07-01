@@ -27,58 +27,52 @@ const Login = () => {
     navigate('/join');
   };
 
-  //////유저 데이터 추가
-  // const setUserData = async data => {
-  //   const { email, displayName, uid, photoURL } = data;
-  //   const newUser = {
-  //     userEmail: email,
-  //     userName: displayName,
-  //     uid,
-  //     photoUrl: photoURL
-  //   };
-
-  //   const usersRef = collection(db, 'users');
-  //   await addDoc(usersRef, newUser);
-  // };
-
   /////기존 유저 확인
   const userCheck = async user => {
-    const q = query(collection(db, 'users'));
-    const userSnapShot = await getDocs(q);
-    const initialUsers = [];
-    userSnapShot.forEach(doc => {
-      const user = {
-        id: doc.id,
-        ...doc.data()
-      };
-      initialUsers.push(user);
-    });
-    const findUser = initialUsers.filter(userData => userData.uid == user.uid);
-    if (findUser.length === 0) {
-      return true;
+    try {
+      const q = query(collection(db, 'users'));
+      const userSnapShot = await getDocs(q);
+      const initialUsers = [];
+      userSnapShot.forEach(doc => {
+        const user = {
+          id: doc.id,
+          ...doc.data()
+        };
+        initialUsers.push(user);
+      });
+      const findUser = initialUsers.filter(userData => userData.uid == user.uid);
+      if (findUser.length === 0) {
+        return true;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   //////구글 로그인/회원가입
   const googleSignIn = async e => {
-    e.preventDefault();
-    const provider = new GoogleAuthProvider();
-    const data = await signInWithPopup(auth, provider);
-    const userData = data.user;
-    const check = await userCheck(userData);
-    if (check) {
-      const { email, displayName, uid, photoURL } = userData;
-      const newUser = {
-        userEmail: email,
-        userName: displayName,
-        uid,
-        photoUrl: photoURL
-      };
-      const usersRef = collection(db, 'users');
-      await addDoc(usersRef, newUser);
+    try {
+      e.preventDefault();
+      const provider = new GoogleAuthProvider();
+      const data = await signInWithPopup(auth, provider);
+      const userData = data.user;
+      const check = await userCheck(userData);
+      if (check) {
+        const { email, displayName, uid, photoURL } = userData;
+        const newUser = {
+          userEmail: email,
+          userName: displayName,
+          uid,
+          photoUrl: photoURL
+        };
+        const usersRef = collection(db, 'users');
+        await addDoc(usersRef, newUser);
+      }
+      navigate('/');
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
     }
-    navigate('/');
-    window.location.reload();
   };
 
   const onSubmitHandler = async e => {

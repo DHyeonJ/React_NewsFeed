@@ -13,14 +13,18 @@ function CommentsList({ editCommentBtnHandler }) {
   const param = useParams();
   const dispatch = useDispatch();
   const deleteBtnHandler = async item => {
-    const { id } = item;
-    const check = window.confirm('정말 삭제하시겠습니까?');
-    if (!check) {
-      return false;
+    try {
+      const { id } = item;
+      const check = window.confirm('정말 삭제하시겠습니까?');
+      if (!check) {
+        return false;
+      }
+      const commentRef = doc(db, 'comment', id);
+      deleteComment(id);
+      await deleteDoc(commentRef);
+    } catch (error) {
+      console.log(error);
     }
-    const commentRef = doc(db, 'comment', id);
-    deleteComment(id);
-    await deleteDoc(commentRef);
   };
 
   const [currentPage, setCurrentPage] = useState(1);

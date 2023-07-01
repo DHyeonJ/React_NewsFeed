@@ -6,17 +6,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { FormBox, SocialLoginForm } from '../Login/Login';
-
-import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  signInWithPopup
-} from 'firebase/auth';
-
-import { addDoc, collection, getDocs, getDoc, query, where, doc } from 'firebase/firestore';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { addDoc, collection } from 'firebase/firestore';
 
 function Form() {
   const [userEmail, setUserEmail] = useState('');
@@ -28,12 +18,6 @@ function Form() {
 
   const navigate = useNavigate();
 
-  // const userCheck = async user => {
-  //   const q = query(collection(db, 'users'));
-  //   const userSnapShot = await getDocs(q);
-  //   console.log(userSnapShot)
-  // };
-
   const onClickJoinHandler = async e => {
     e.preventDefault();
 
@@ -44,7 +28,6 @@ function Form() {
       setFailMsg('유효한 이메일을 입력해주세요');
     } else {
       //DB에 저장, 로그인페이지로 이동
-
       try {
         await createUserWithEmailAndPassword(auth, userEmail, userPw);
         navigate('/login');
