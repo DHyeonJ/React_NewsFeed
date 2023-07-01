@@ -21,14 +21,14 @@ function Home() {
   return (
     <HomeLayout>
       <Text>
-        Discover the Pet World with <br /> 
+        Discover the Pet World with <br />
         <span
           style={{
             color: '#12263a',
             fontSize: '70px',
             lineHeight: 2,
             borderBottom: '2px solid orange',
-            boxShadow: 'inset 0 -2px 0 orange',
+            boxShadow: 'inset 0 -2px 0 orange'
             // background: 'linear-gradient(to top, #f4d1ae 85%, transparent 50%)'
           }}
         >
@@ -37,8 +37,8 @@ function Home() {
       </Text>
       <Section posts={hitPosts} name={'Popular'} />
       <Section posts={orderedDate} name={'New'} />
-      <BgDog src={bgdog} />
-      <SideCat src={side} />
+      <BgDogImg src={bgdog} />
+      <SideCatImg src={side} />
     </HomeLayout>
   );
 }
@@ -54,15 +54,14 @@ const HomeLayout = styled.article`
   margin-top: 460px;
   background-color: #fffeee;
 `;
-
-const BgDog = styled.img`
+const BgDogImg = styled.img`
   position: absolute;
   top: -430px;
   right: 60px;
   width: 700px;
   height: 430px;
 `;
-const SideCat = styled.img`
+const SideCatImg = styled.img`
   position: absolute;
   bottom: 410px;
   left: -400px;
