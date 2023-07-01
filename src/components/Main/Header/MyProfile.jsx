@@ -13,12 +13,10 @@ const MyProfile = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [imageUrl, setImageUrl] = useState(user.photoURL);
-
+  const [imageUrl, setImageUrl] = useState({});
   useEffect(() => {
-    setImageUrl(user.photoURL);
+    setImageUrl({url: user.photoURL});
   }, [user.photoURL]);
-
   const logoutHandler = async () => {
     try {
       await signOut(auth);
@@ -32,7 +30,7 @@ const MyProfile = () => {
   return (
     <MyProfileLayout>
       <MyProfileImg
-        imageurl={imageUrl}
+        imageurl={imageUrl.url}
         onClick={() => {
           navigate('/userpage');
         }}
@@ -66,7 +64,9 @@ const MyProfileImg = styled.div`
   height: 50px;
   border: 2px solid #12263a;
   border-radius: 50%;
-  background: cover/center url(${props => props.imageurl});
+  background-image: url(${props => props.imageurl});
+  background-size: cover;
+  background-position: center;
 `;
 
 const LoginBox = styled.div`

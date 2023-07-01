@@ -3,7 +3,8 @@ import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 import Section from './Section';
 import bgdog from '../../../assets/bgfamily.png';
-import side from '../../../assets/sidecat.png';
+import sideCat from '../../../assets/sidecat.png';
+import Banner from './Banner';
 
 function Home() {
   const posts = useSelector(state => state.postDatas);
@@ -19,27 +20,12 @@ function Home() {
     .slice(0, 5);
 
   return (
-    <HomeLayout>
-      <Text>
-        Discover the Pet World with <br />
-        <span
-          style={{
-            color: '#12263a',
-            fontSize: '70px',
-            lineHeight: 2,
-            borderBottom: '2px solid orange',
-            boxShadow: 'inset 0 -2px 0 orange'
-            // background: 'linear-gradient(to top, #f4d1ae 85%, transparent 50%)'
-          }}
-        >
-          Pinfo
-        </span>
-      </Text>
+    <>
+      <Banner />
       <Section posts={hitPosts} name={'Popular'} />
       <Section posts={orderedDate} name={'New'} />
-      <BgDogImg src={bgdog} />
-      <SideCatImg src={side} />
-    </HomeLayout>
+      <SideCatImg src={sideCat} />
+    </>
   );
 }
 
@@ -51,7 +37,6 @@ const HomeLayout = styled.article`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin-top: 460px;
   background-color: #fffeee;
 `;
 const BgDogImg = styled.img`
