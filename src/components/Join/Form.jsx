@@ -29,46 +29,9 @@ function Form() {
   const navigate = useNavigate();
 
   // const userCheck = async user => {
-  //   console.log(user);
-  // const docSnap = await getDoc(q);
-
-  // const usersCollectionRef = doc(db, 'users');
-  // const q = await query(usersCollectionRef.where('uid', '==', user.uid));
-  // const querySnapshot = await getDocs(q);
-  // querySnapshot.forEach(doc => {
-  //   console.log(doc.id, ' => ', doc.data());
-  // });
-
-  // if (co.exists()) {
-  //   console.log('docData', docSnap.data());
-  // } else {
-  //   console.log('none');
-  // }
-  // };
-
-  // const googleSignIn = function (e) {
-  //   e.preventDefault();
-  //   const setUserData = data => {
-  //     const { email, displayName, uid, photoURL } = data;
-  //     const newUser = {
-  //       userEmail: email,
-  //       userName: displayName,
-  //       uid,
-  //       photoUrl: photoURL
-  //     };
-  //     const usersRef = collection(db, 'users');
-  //     addDoc(usersRef, newUser);
-  //     navigate('/');
-  //   };
-  //   const provider = new GoogleAuthProvider();
-  //   signInWithPopup(auth, provider)
-  //     .then(data => {
-  //       // if (data.user.uid) setUserData(data.user);
-  //       userCheck(data.user);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
+  //   const q = query(collection(db, 'users'));
+  //   const userSnapShot = await getDocs(q);
+  //   console.log(userSnapShot)
   // };
 
   const onClickJoinHandler = async e => {
@@ -142,7 +105,7 @@ function Form() {
         </StForm>
 
         <SocialLoginForm>
-          <JoinButton onClick={googleSignIn}>구글 아이디로 회원가입</JoinButton>
+          {/* <JoinButton onClick={googleSignIn}>구글 아이디로 회원가입</JoinButton> */}
 
           <StLink to="/login">로그인하기</StLink>
         </SocialLoginForm>
