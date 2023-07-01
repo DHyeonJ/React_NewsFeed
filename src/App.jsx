@@ -7,6 +7,7 @@ import { getUserInfo } from './redux/modules/user';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { getAllComment } from './redux/modules/comments';
+import './App.css';
 
 function App() {
   const dispatch = useDispatch();
