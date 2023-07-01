@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
-import PostContainer from './PostContainer';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, auth, db } from '../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,17 +13,21 @@ function UserProfile() {
   });
 
   const updateImg = async file => {
-    // 파일을 받아 스토리지에 저장
-    const imageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
-    await uploadBytes(imageRef, file);
-    // 스토리지에 저장된 파일의 url을 받아와 변수에 저장.
-    const newImageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
-    const url = await getDownloadURL(newImageRef);
-    // 받아온 url을 db users에 저장시킨다.
-    const collectionRef = doc(db, 'users', user.docId);
-    await updateDoc(collectionRef, { photoUrl: url });
-    // dispatch(changePhoto({ url: url })); // payload:{url: url}
-    dispatch(changePhoto(url)); // payload: url
+    try {
+      // 파일을 받아 스토리지에 저장
+      const imageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
+      await uploadBytes(imageRef, file);
+      // 스토리지에 저장된 파일의 url을 받아와 변수에 저장.
+      const newImageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
+      const url = await getDownloadURL(newImageRef);
+      // 받아온 url을 db users에 저장시킨다.
+      const collectionRef = doc(db, 'users', user.docId);
+      await updateDoc(collectionRef, { photoUrl: url });
+      // dispatch(changePhoto({ url: url })); // payload:{url: url}
+      dispatch(changePhoto(url)); // payload: url
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleImgUpload = event => {

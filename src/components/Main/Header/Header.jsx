@@ -23,11 +23,15 @@ function Header() {
   }, [user.photoURL]);
 
   const logoutHandler = async () => {
-    await signOut(auth);
-    dispatch(logoutUser());
-    navigate('/');
+    try {
+      await signOut(auth);
+      dispatch(logoutUser());
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
-  console.log('유저정보 =>', user, '게시글 정보 =>');
+
   return (
     <HeaderBG>
       <h1>

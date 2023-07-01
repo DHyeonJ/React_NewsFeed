@@ -13,76 +13,92 @@ function App() {
   useEffect(() => {
     // post 정보 불러오기
     const fetchData = async () => {
-      const q = query(collection(db, 'posts'));
-      onSnapshot(q, querySnapshot => {
-        const initialPosts = [];
-        querySnapshot.forEach(doc => {
-          const post = {
-            id: doc.id,
-            ...doc.data()
-          };
-          initialPosts.push(post);
+      try {
+        const q = query(collection(db, 'posts'));
+        onSnapshot(q, querySnapshot => {
+          const initialPosts = [];
+          querySnapshot.forEach(doc => {
+            const post = {
+              id: doc.id,
+              ...doc.data()
+            };
+            initialPosts.push(post);
+          });
+          dispatch(getAllPost(initialPosts));
         });
-        dispatch(getAllPost(initialPosts));
-      });
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchData();
     //  유저 정보 불러오기
     const userFetch = async uid => {
-      const q = query(collection(db, 'users'));
-      const querySnapShot = await getDocs(q);
-      const initialUsers = [];
-      querySnapShot.forEach(doc => {
-        const user = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialUsers.push(user);
-      });
+      try {
+        const q = query(collection(db, 'users'));
+        const querySnapShot = await getDocs(q);
+        const initialUsers = [];
+        querySnapShot.forEach(doc => {
+          const user = {
+            id: doc.id,
+            ...doc.data()
+          };
+          initialUsers.push(user);
+        });
 
-      const result = initialUsers.find(user => user.uid === uid);
-      if (result === undefined) {
-        return null;
+        const result = initialUsers.find(user => user.uid === uid);
+        if (result === undefined) {
+          return null;
+        }
+        return result;
+      } catch (error) {
+        console.log(error);
       }
-      return result;
     };
 
     onAuthStateChanged(auth, async state => {
-      if (state) {
-        const { email, uid } = state;
-        const result = await userFetch(uid);
-        if (result !== null) {
-          dispatch(
-            getUserInfo({
-              email,
-              photoURL: result.photoUrl,
-              uid,
-              docId: result.id,
-              isLogin: 'member',
-              userPw: result.userPw,
-              userName: result.userName
-            })
-          );
+      try {
+        if (state) {
+          const { email, uid } = state;
+          const result = await userFetch(uid);
+          if (result !== null) {
+            dispatch(
+              getUserInfo({
+                email,
+                photoURL: result.photoUrl,
+                uid,
+                docId: result.id,
+                isLogin: 'member',
+                userPw: result.userPw,
+                userName: result.userName
+              })
+            );
+          }
+        } else {
+          dispatch(getUserInfo({ isLogin: 'guest' }));
         }
-      } else {
-        dispatch(getUserInfo({ isLogin: 'guest' }));
+      } catch (error) {
+        console.log(error);
       }
     });
 
     // 댓글 불러오기
     const getComments = async () => {
-      const q = query(collection(db, 'comment'));
-      onSnapshot(q, querySanpShot => {
-        const initialPosts = [];
-        querySanpShot.forEach(doc => {
-          const post = {
-            id: doc.id,
-            ...doc.data()
-          };
-          initialPosts.push(post);
+      try {
+        const q = query(collection(db, 'comment'));
+        onSnapshot(q, querySanpShot => {
+          const initialPosts = [];
+          querySanpShot.forEach(doc => {
+            const post = {
+              id: doc.id,
+              ...doc.data()
+            };
+            initialPosts.push(post);
+          });
+          dispatch(getAllComment(initialPosts));
         });
-        dispatch(getAllComment(initialPosts));
-      });
+      } catch (error) {
+        console.log(error);
+      }
     };
     getComments();
   }, [auth]);

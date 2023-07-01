@@ -18,19 +18,23 @@ const Detail = () => {
   });
   useEffect(() => {
     const updatePost = async () => {
-      const collectionRef = doc(db, 'posts', post.id);
-      await updateDoc(collectionRef, { views: post.views + 1 });
-      const q = query(collection(db, 'posts'));
-      const quertSnapShot = await getDocs(q);
-      const initialPosts = [];
-      quertSnapShot.forEach(doc => {
-        const post = {
-          id: doc.id,
-          ...doc.data()
-        };
-        initialPosts.push(post);
-      });
-      dispatch(getAllPost(initialPosts));
+      try {
+        const collectionRef = doc(db, 'posts', post.id);
+        await updateDoc(collectionRef, { views: post.views + 1 });
+        const q = query(collection(db, 'posts'));
+        const quertSnapShot = await getDocs(q);
+        const initialPosts = [];
+        quertSnapShot.forEach(doc => {
+          const post = {
+            id: doc.id,
+            ...doc.data()
+          };
+          initialPosts.push(post);
+        });
+        dispatch(getAllPost(initialPosts));
+      } catch (error) {
+        console.log(error);
+      }
     };
     if (post != null) updatePost();
   }, []);
