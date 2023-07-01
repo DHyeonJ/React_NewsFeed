@@ -8,6 +8,8 @@ import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
+  const [inputValue, setInputValue] = useState('');
+
   const divRef = useRef();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
@@ -54,7 +56,14 @@ function Boast() {
     <BoastLayout>
       <BoastSearchBox>
         <Input src={InputImgSrc}></Input>
-        <Keyword type="text" placeholder="입력하세요"></Keyword>
+        <Keyword
+          type="text"
+          placeholder="입력하세요"
+          value={inputValue}
+          onChange={({ target }) => {
+            setInputValue(target.value);
+          }}
+        ></Keyword>
       </BoastSearchBox>
       <Content>
         <PostWriteBox>
@@ -71,25 +80,34 @@ function Boast() {
             .filter(post => {
               return post.category === '자랑 게시판';
             })
+            .filter(post => {
+              if (inputValue) {
+                return post.title.includes(inputValue);
+              } else {
+                return post;
+              }
+            })
             .map(post => {
-              return (
-                <BoastPostBox
-                  key={post.id}
-                  onClick={() => {
-                    return navigate(`/detailPage/${post.id}`);
-                  }}
-                >
-                  <PostImgBox>
-                    {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
-                  </PostImgBox>
-                  <PostInfoBox>
-                    <PostTitleBox>
-                      <PostWriter>{post.userName}</PostWriter>
-                    </PostTitleBox>
-                    <PostTitle>{post.title}</PostTitle>
-                  </PostInfoBox>
-                </BoastPostBox>
-              );
+              if (post.length !== 0 && post !== null) {
+                return (
+                  <BoastPostBox
+                    key={post.id}
+                    onClick={() => {
+                      return navigate(`/detailPage/${post.id}`);
+                    }}
+                  >
+                    <PostImgBox>
+                      {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
+                    </PostImgBox>
+                    <PostInfoBox>
+                      <PostTitleBox>
+                        <PostWriter>{post.userName}</PostWriter>
+                      </PostTitleBox>
+                      <PostTitle>{post.title}</PostTitle>
+                    </PostInfoBox>
+                  </BoastPostBox>
+                );
+              }
             })
             .slice(0, offset + 10)}
           <div ref={divRef}></div>
