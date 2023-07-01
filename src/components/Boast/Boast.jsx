@@ -8,7 +8,7 @@ import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
-
+  const divRef = useRef();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   const offset = (currentPage - 1) * limit;
@@ -32,7 +32,7 @@ function Boast() {
       ...option
     }
   );
-  const divRef = useRef();
+
   useEffect(() => {
     observer.observe(divRef.current);
   }, []);
@@ -51,15 +51,15 @@ function Boast() {
   };
 
   return (
-    <>
-      <Search>
+    <BoastLayout>
+      <BoastSearchBox>
         <Input src={InputImgSrc}></Input>
         <Keyword type="text" placeholder="입력하세요"></Keyword>
-      </Search>
-      <StLayout>
-        <PostWrite>
-          <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
-        </PostWrite>
+      </BoastSearchBox>
+      <Content>
+        <PostWriteBox>
+          <PostWriteButton onClick={goToWrite}>글쓰기</PostWriteButton>
+        </PostWriteBox>
         <FeedContainer>
           {posts
             .toSorted((a, b) => {
@@ -73,60 +73,57 @@ function Boast() {
             })
             .map(post => {
               return (
-                <BoastPost
+                <BoastPostBox
                   key={post.id}
                   onClick={() => {
                     return navigate(`/detailPage/${post.id}`);
                   }}
                 >
-                  <PostImgWrapper>
+                  <PostImgBox>
                     {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
-                  </PostImgWrapper>
-                  <PostInfo>
+                  </PostImgBox>
+                  <PostInfoBox>
                     <PostTitleBox>
                       <PostWriter>{post.userName}</PostWriter>
                     </PostTitleBox>
                     <PostTitle>{post.title}</PostTitle>
-                  </PostInfo>
-                </BoastPost>
+                  </PostInfoBox>
+                </BoastPostBox>
               );
             })
             .slice(0, offset + 10)}
           <div ref={divRef}></div>
         </FeedContainer>
-        <MoveButtonArea>
+        <MoveButtonBox>
           <TopButton />
-        </MoveButtonArea>
-      </StLayout>
-    </>
+        </MoveButtonBox>
+      </Content>
+    </BoastLayout>
   );
 }
 
 export default Boast;
 
-const MoveButtonArea = styled.div`
+const MoveButtonBox = styled.div`
   position: fixed;
   right: 40px;
   bottom: 100px;
 `;
-
 const PostTitleBox = styled.div`
   width: 150px;
 `;
 const PostTitle = styled.p`
   font-size: 20px;
-  /* margin-left: 20px; */
   color: black;
 `;
-const PostWrite = styled.div`
+const PostWriteBox = styled.div`
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
   height: 40px;
   margin-bottom: 10px;
 `;
-
-const PostWriteLink = styled.button`
+const PostWriteButton = styled.button`
   width: 100px;
   height: 40px;
   color: #fff;
@@ -138,7 +135,8 @@ const PostWriteLink = styled.button`
     font-weight: 600;
   }
 `;
-const PostImgWrapper = styled.div`
+const BoastLayout = styled.div``;
+const PostImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,8 +151,7 @@ const PostImg = styled.img`
   height: 300px;
   object-fit: cover;
 `;
-
-const PostInfo = styled.div`
+const PostInfoBox = styled.div`
   width: 570px;
   height: 50px;
   display: flex;
@@ -168,15 +165,12 @@ const PostWriter = styled.p`
   font-weight: 600;
   border-right: 1px solid #12263a;
 `;
-
-const BoastPost = styled.div`
+const BoastPostBox = styled.div`
   width: 570px;
   height: 370px;
   background-color: #fff;
-  
 `;
-
-const StLayout = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -186,7 +180,6 @@ const StLayout = styled.div`
   flex-wrap: wrap;
   margin-bottom: 100px;
 `;
-
 const FeedContainer = styled.div`
   position: relative;
   width: 1200px;
@@ -199,8 +192,7 @@ const FeedContainer = styled.div`
   gap: 20px;
   padding: 20px;
 `;
-
-const Search = styled.div`
+const BoastSearchBox = styled.div`
   width: 100%;
   margin-bottom: 70px;
   margin-top: 30px;
@@ -208,7 +200,6 @@ const Search = styled.div`
   justify-content: center;
   position: relative;
 `;
-
 const Input = styled.img`
   width: 182px;
   height: 58px;
@@ -217,7 +208,6 @@ const Input = styled.img`
   align-items: center;
   position: absolute;
 `;
-
 const Keyword = styled.input`
   border-radius: 15px;
   width: 560px;
