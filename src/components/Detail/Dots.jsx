@@ -46,27 +46,27 @@ const Dots = ({ param }) => {
       console.log(error);
     }
   };
-  
+
   return (
-    <DotArea>
-      <DotsWrapper onClick={isOpenHandler} onBlur={() => setIsOpen(false)}>
-        <Dot />
-        <Dot />
-        <Dot />
-      </DotsWrapper>
+    <DotAreaBox>
+      <DotsWrapperBtn onClick={isOpenHandler} onBlur={() => setIsOpen(false)}>
+        <DotSpan />
+        <DotSpan />
+        <DotSpan />
+      </DotsWrapperBtn>
       {isOpen && (
-        <Options>
-          <Option onMouseDown={() => navigate(`/postWrite/${param.id}`)}>수정</Option>
-          <Option onMouseDown={() => deletePost(param.id)}>삭제</Option>
-        </Options>
+        <OptionsList>
+          <OptionItem onMouseDown={() => navigate(`/postWrite/${param.id}`)}>수정</OptionItem>
+          <OptionItem onMouseDown={() => deletePost(param.id)}>삭제</OptionItem>
+        </OptionsList>
       )}
-    </DotArea>
+    </DotAreaBox>
   );
 };
 
 export default Dots;
 
-const Option = styled.li`
+const OptionItem = styled.li`
   text-align: center;
   padding: 5px;
   font-size: 15px;
@@ -80,7 +80,7 @@ const Option = styled.li`
     border-radius: 0 0 5px 5px;
   }
 `;
-const Options = styled.ul`
+const OptionsList = styled.ul`
   cursor: pointer;
   position: absolute;
   right: 10px;
@@ -91,13 +91,13 @@ const Options = styled.ul`
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
-const Dot = styled.span`
+const DotSpan = styled.span`
   display: block;
   width: 3px;
   height: 3px;
   background-color: #555;
 `;
-const DotsWrapper = styled.button`
+const DotsWrapperBtn = styled.button`
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -110,6 +110,6 @@ const DotsWrapper = styled.button`
   margin-right: 10px;
   background-color: #fff;
 `;
-const DotArea = styled.div`
+const DotAreaBox = styled.div`
   position: relative;
 `;
