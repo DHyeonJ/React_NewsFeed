@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Logo } from '../Join/Form';
 import LogoImagSrc from '../../assets/logo2.png';
 import { styled } from 'styled-components';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/modules/user';
-import { db } from '../../firebase';
 import { collection, getDocs, query, addDoc } from 'firebase/firestore';
-import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
   const user = useSelector(state => state.user);
@@ -99,6 +98,7 @@ const Login = () => {
       }
     }
   };
+
   return (
     <LoginLayout>
       <FormBox>
@@ -171,12 +171,10 @@ const Input = styled.input`
     opacity: 0.4;
   }
 `;
-
 const ButtonBox = styled.div`
   display: flex;
   gap: 20px;
 `;
-
 const Button = styled.button`
   cursor: pointer;
   width: 100%;

@@ -9,13 +9,13 @@ const Section = ({ posts, name }) => {
   const navigate = useNavigate();
 
   return (
-    <HomeSection>
+    <SectionLayout>
       <SectionTitle>
         <FontAwesomeIcon icon={faPaw} style={{ color: '#12263a' }} />
         &nbsp;
         {name}
       </SectionTitle>
-      <PostList>
+      <PostListBox>
         {posts.map(post => {
           return (
             <PostBox onClick={() => navigate(`/detailPage/${post.id}`)}>
@@ -26,14 +26,14 @@ const Section = ({ posts, name }) => {
             </PostBox>
           );
         })}
-      </PostList>
-    </HomeSection>
+      </PostListBox>
+    </SectionLayout>
   );
 };
 
 export default Section;
 
-const HomeSection = styled.section`
+const SectionLayout = styled.section`
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -45,18 +45,15 @@ const HomeSection = styled.section`
   background-color: #fafafa;
   box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
 `;
-
 const SectionTitle = styled.h2`
   font-size: 22px;
   font-weight: 600;
 `;
-
-const PostList = styled.div`
+const PostListBox = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
 `;
-
 const PostBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,11 +62,8 @@ const PostBox = styled.div`
   width: 216px;
   height: 300px;
   text-align: center;
-  border: 1px solid #f4d1ae;
   border-radius: 10px 10px 0 0;
-  background-color: #fff;
 `;
-
 const ImgBox = styled.div`
   display: flex;
   justify-content: center;
@@ -77,19 +71,22 @@ const ImgBox = styled.div`
   width: 216px;
   height: 300px;
   border-radius: 10px 10px 0 0;
+  background-color: #fff;
 `;
-
 const PostImg = styled.img`
   width: 214px;
   height: 254px;
   object-fit: contain;
 `;
-
 const PostName = styled.p`
   width: 100%;
   padding: 10px 0;
   font-size: 18px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
   color: #12263a;
   border-top: 1px solid #f4d1ae;
 `;

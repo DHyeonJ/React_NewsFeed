@@ -12,9 +12,10 @@ const Select = () => {
     target.value === 1 ? setValue('자랑 게시판') : setValue('질문 게시판');
     setIsOpen(false);
   };
+
   return (
     <>
-      <StSelect
+      <SelectButton
         onClick={isOpenHandler}
         onBlur={() => setIsOpen(false)}
         name="category"
@@ -22,10 +23,10 @@ const Select = () => {
         value={value}
       >
         {value ? value : '게시판 선택'}
-      </StSelect>
+      </SelectButton>
       {isOpen && (
-        <StyledSelect>
-          <StyledOptoin
+        <SelectList>
+          <SelectItem
             value={1}
             onMouseDown={e => {
               e.preventDefault();
@@ -33,8 +34,8 @@ const Select = () => {
             onClick={selectOption}
           >
             자랑 게시판
-          </StyledOptoin>
-          <StyledOptoin
+          </SelectItem>
+          <SelectItem
             value={2}
             onMouseDown={e => {
               e.preventDefault();
@@ -42,8 +43,8 @@ const Select = () => {
             onClick={selectOption}
           >
             질문 게시판
-          </StyledOptoin>
-        </StyledSelect>
+          </SelectItem>
+        </SelectList>
       )}
     </>
   );
@@ -51,7 +52,7 @@ const Select = () => {
 
 export default Select;
 
-const StyledSelect = styled.ul`
+const SelectList = styled.ul`
   cursor: pointer;
   position: absolute;
   top: 50px;
@@ -60,7 +61,7 @@ const StyledSelect = styled.ul`
   border: 0.5px solid #dcdcdc;
   border-radius: 8px;
 `;
-const StyledOptoin = styled.li`
+const SelectItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,7 +78,7 @@ const StyledOptoin = styled.li`
     border-radius: 0 0 8px 8px;
   }
 `;
-const StSelect = styled.button`
+const SelectButton = styled.button`
   cursor: pointer;
   width: 160px;
   height: 40px;
