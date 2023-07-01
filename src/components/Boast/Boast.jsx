@@ -8,7 +8,8 @@ import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
-
+  console.log(posts);
+  const [inputValue, setInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   const offset = (currentPage - 1) * limit;
@@ -54,7 +55,14 @@ function Boast() {
     <>
       <Search>
         <Input src={InputImgSrc}></Input>
-        <Keyword type="text" placeholder="입력하세요"></Keyword>
+        <Keyword
+          type="text"
+          placeholder="입력하세요"
+          value={inputValue}
+          onChange={e => {
+            setInputValue(e.target.value);
+          }}
+        ></Keyword>
       </Search>
       <StLayout>
         <PostWrite>
@@ -70,6 +78,13 @@ function Boast() {
             .toReversed()
             .filter(post => {
               return post.category === '자랑 게시판';
+            })
+            .filter(post => {
+              if (inputValue) {
+                return post.title.includes(inputValue);
+              } else {
+                return post;
+              }
             })
             .map(post => {
               return (
