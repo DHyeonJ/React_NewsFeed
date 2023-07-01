@@ -122,10 +122,10 @@ const Login = () => {
             <Button>로그인</Button>
           </ButtonBox>
         </LoginForm>
-        <SocialLoginForm onSubmit={onSubmitHandler}>
+        <SocialLoginBox onSubmit={onSubmitHandler}>
           <Button onClick={googleSignIn}>구글로 로그인</Button>
           <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
-        </SocialLoginForm>
+        </SocialLoginBox>
       </FormBox>
     </LoginLayout>
   );
@@ -193,7 +193,8 @@ const Button = styled.button`
     color: #f8db5c;
   }
 `;
-export const SocialLoginForm = styled.form`
+
+export const SocialLoginBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

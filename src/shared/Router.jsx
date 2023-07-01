@@ -11,6 +11,9 @@ import QnaPage from '../pages/Qna';
 const Router = () => {
   return (
     <BrowserRouter>
+      {/* 공용으로 쓰는 컴포넌트 밖으로 빼기 */}
+      {/* <Header /> */}
+      {/* <Layout /> */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/join" element={<Join />} />
@@ -21,6 +24,7 @@ const Router = () => {
         <Route path="/userpage" element={<UserPage />} />
         <Route path="/detailPage/:id" element={<DetailPage />} />
       </Routes>
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 };

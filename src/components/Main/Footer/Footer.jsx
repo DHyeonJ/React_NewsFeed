@@ -23,7 +23,7 @@ const FooterLayout = styled.footer`
   display: flex;
   justify-content: center;
   height: 150px;
-  margin-top: 60px;
+  margin-top: 160px;
   color: #fff;
   background-color: #12263a;
 `;
