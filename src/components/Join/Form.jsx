@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { FormBox, SocialLoginForm } from '../Login/Login';
+import { FormBox, SocialLoginBox } from '../Login/Login';
 import { addDoc, collection } from 'firebase/firestore';
 
 function Form() {
@@ -87,11 +87,11 @@ function Form() {
           <JoinButton type="submit">회원가입</JoinButton>
         </StForm>
 
-        <SocialLoginForm>
+        <SocialLoginBox>
           {/* <JoinButton onClick={googleSignIn}>구글 아이디로 회원가입</JoinButton> */}
 
           <StLink to="/login">로그인하기</StLink>
-        </SocialLoginForm>
+        </SocialLoginBox>
       </FormBox>
     </FormContainer>
   );
