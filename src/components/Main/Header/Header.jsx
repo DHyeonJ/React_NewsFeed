@@ -43,10 +43,10 @@ function Header() {
             <StLink to="/">Home</StLink>
           </li>
           <li>
-            <StLink to="/boast">자랑게시판</StLink>
+            <StLink to="/boast">Free Board</StLink>
           </li>
           <li>
-            <StLink to="/qna">질문게시판</StLink>
+            <StLink to="/qna">Q&A</StLink>
           </li>
         </Menu>
       </StyledNav>
@@ -61,7 +61,7 @@ function Header() {
           {user.isLogin === 'guest' && (
             <>
               <LoginLink to="/login">Login</LoginLink>
-              <LoginLink to="/join">회원가입</LoginLink>
+              <LoginLink to="/join">Join</LoginLink>
             </>
           )}
           {user.isLogin === 'member' && (
@@ -75,12 +75,16 @@ function Header() {
 }
 export default Header;
 const HeaderBG = styled.header`
-  background-color: #12263a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
   width: 100%;
   height: 80px;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  background-color: #fff;
+  box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
 `;
 const Logo = styled.img`
   cursor: pointer;
@@ -100,14 +104,14 @@ const Menu = styled.ul`
   justify-content: center;
   align-items: center;
   gap: 70px;
-  color: #fff;
+  color: #12263a;
 `;
 const StLink = styled(Link)`
-  color: #fff;
-  font-size: 18px;
+  color: #12263a;
+  font-size: 30px;
+  font-weight: 600;
   &:hover {
     color: #f8db5c;
-    font-weight: 500;
   }
 `;
 const StyledLogOut = styled.p`
@@ -122,7 +126,7 @@ const Login = styled.span`
   width: 100px;
   font-size: 20px;
   display: flex;
-  color: #fff;
+  color: #12263a;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -133,8 +137,8 @@ const Login = styled.span`
 `;
 const LoginLink = styled(Link)`
   margin-left: 15px;
-  font-size: 15px;
-  color: #fff;
+  font-size: 20px;
+  color: #12263a;
   &:hover {
     color: #f8db5c;
     font-weight: 500;
@@ -154,7 +158,7 @@ const ProfileImg = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid #12263a;
   /* background-image: url(${props => props.userimgurl ?? '../../../assets/defaultImg.png'}); */
   background-image: url(${props => props.imageurl});
   background-size: cover;

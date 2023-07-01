@@ -8,8 +8,7 @@ import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
-  console.log(posts);
-  const [inputValue, setInputValue] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   const offset = (currentPage - 1) * limit;
@@ -55,14 +54,7 @@ function Boast() {
     <>
       <Search>
         <Input src={InputImgSrc}></Input>
-        <Keyword
-          type="text"
-          placeholder="입력하세요"
-          value={inputValue}
-          onChange={e => {
-            setInputValue(e.target.value);
-          }}
-        ></Keyword>
+        <Keyword type="text" placeholder="입력하세요"></Keyword>
       </Search>
       <StLayout>
         <PostWrite>
@@ -78,13 +70,6 @@ function Boast() {
             .toReversed()
             .filter(post => {
               return post.category === '자랑 게시판';
-            })
-            .filter(post => {
-              if (inputValue) {
-                return post.title.includes(inputValue);
-              } else {
-                return post;
-              }
             })
             .map(post => {
               return (
@@ -130,7 +115,7 @@ const PostTitleBox = styled.div`
 `;
 const PostTitle = styled.p`
   font-size: 20px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   color: black;
 `;
 const PostWrite = styled.div`
@@ -160,31 +145,35 @@ const PostImgWrapper = styled.div`
   width: 570px;
   height: 300px;
   margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
 `;
 const PostImg = styled.img`
-  min-width: 200px;
-  max-width: 570px;
-  min-height: 200px;
-  max-height: 300px;
+  width: 570px;
+  height: 300px;
+  object-fit: cover;
 `;
 
 const PostInfo = styled.div`
   width: 570px;
   height: 50px;
-  background-color: white;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  gap: 20px;
+  background-color: #fff;
 `;
 const PostWriter = styled.p`
-  border-right: 2px solid #12263a;
   text-align: center;
   color: black;
+  font-weight: 600;
+  border-right: 1px solid #12263a;
 `;
 
 const BoastPost = styled.div`
   width: 570px;
   height: 370px;
+  background-color: #fff;
+  
 `;
 
 const StLayout = styled.div`
@@ -202,7 +191,9 @@ const FeedContainer = styled.div`
   position: relative;
   width: 1200px;
   min-height: 840px;
-  background-color: #12263a;
+  box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
+  background-color: #fafafa;
+
   display: flex;
   flex-wrap: wrap;
   gap: 20px;

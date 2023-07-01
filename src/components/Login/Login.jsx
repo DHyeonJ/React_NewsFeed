@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Logo } from '../Join/Form';
-import LogoImagSrc from '../../assets/logo_white.png';
+import LogoImagSrc from '../../assets/logo2.png';
 import { styled } from 'styled-components';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -10,7 +10,6 @@ import { loginUser } from '../../redux/modules/user';
 import { db } from '../../firebase';
 import { collection, getDocs, query, addDoc } from 'firebase/firestore';
 import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
-import { getUserInfo } from '../../redux/modules/user.js';
 
 const Login = () => {
   const user = useSelector(state => state.user);
@@ -124,10 +123,9 @@ const Login = () => {
           </ButtonBox>
         </LoginForm>
         <SocialLoginForm onSubmit={onSubmitHandler}>
-          <Button>깃허브로 로그인</Button>
+          <Button onClick={googleSignIn}>구글로 로그인</Button>
           <StyledGoToJoin onClick={goToJoin}>회원가입</StyledGoToJoin>
         </SocialLoginForm>
-        <Button onClick={googleSignIn}>구글로 로그인</Button>
       </FormBox>
     </LoginLayout>
   );
@@ -138,6 +136,7 @@ export default Login;
 const LoginLayout = styled.div`
   display: flex;
   justify-content: center;
+  height: calc(100vh - 300px);
 `;
 export const FormBox = styled.div`
   display: flex;
@@ -151,17 +150,20 @@ const LoginForm = styled.form`
   gap: 20px;
   width: 440px;
   padding: 20px;
-  border: 2px solid #12263a;
   border-radius: 12px;
+  box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
+  background-color: #fafafa;
 `;
 const Input = styled.input`
   width: 400px;
   height: 40px;
   font-size: 18px;
   padding: 3px 20px;
-  border: 1px solid #12263a;
-  border-radius: 8px;
+  border: none;
   outline: none;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: rgba(18, 38, 58, 0.1) 0px 1px 3px 0px, rgba(18, 38, 58, 0.06) 0px 1px 2px 0px;
   &:focus {
     border: 2px solid #f8db5c;
   }
@@ -183,7 +185,7 @@ const Button = styled.button`
   font-size: 18px;
   font-weight: 800;
   border-radius: 10px;
-  outline: none;
+  border: none;
   background-color: #12263a;
   &:hover {
     color: #f8db5c;
@@ -204,4 +206,5 @@ export const SocialLoginForm = styled.form`
 `;
 const StyledGoToJoin = styled.p`
   cursor: pointer;
+  font-weight: 600;
 `;
