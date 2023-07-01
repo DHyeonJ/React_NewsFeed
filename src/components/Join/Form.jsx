@@ -54,7 +54,6 @@ function Form() {
     const { name, value } = event.target;
     setInputValue({ ...inputValue, [name]: value });
   };
-  console.log('🚀 ', inputValue);
 
   const inputCaption = (type, name, placeholder) => ({
     type,
