@@ -51,14 +51,14 @@ function Form({ text, setText, isEdit, setIsEdit, post }) {
   return (
     <section>
       <CommentForm onSubmit={onSubmitCommentHandler}>
-        <CommentInput
+        <CommentTextArea
           placeholder="댓글을 입력하세요"
           name="comment"
           value={text}
           onChange={({ target }) => {
             setText(target.value);
           }}
-        ></CommentInput>
+        ></CommentTextArea>
         <CommentBtn type="submit">입력</CommentBtn>
       </CommentForm>
     </section>
@@ -77,7 +77,7 @@ const CommentForm = styled.form`
   align-items: center;
 `;
 
-const CommentInput = styled.textarea`
+const CommentTextArea = styled.textarea`
   width: 500px;
   height: 70px;
   resize: none;
