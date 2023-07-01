@@ -4,6 +4,7 @@ import LogoImgSrc from '../../../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import MyProfile from './MyProfile';
+import { useSelector } from 'react-redux';
 
 function Header() {
   const navigate = useNavigate();

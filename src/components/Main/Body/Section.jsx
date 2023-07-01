@@ -9,7 +9,7 @@ const Section = ({ posts, name }) => {
   const navigate = useNavigate();
 
   return (
-    <HomeSectionLayout>
+    <SectionLayout>
       <SectionTitle>
         <FontAwesomeIcon icon={faPaw} style={{ color: '#12263a' }} />
         &nbsp;
@@ -27,13 +27,13 @@ const Section = ({ posts, name }) => {
           );
         })}
       </PostListBox>
-    </HomeSectionLayout>
+    </SectionLayout>
   );
 };
 
 export default Section;
 
-const HomeSectionLayout = styled.section`
+const SectionLayout = styled.section`
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -62,9 +62,7 @@ const PostBox = styled.div`
   width: 216px;
   height: 300px;
   text-align: center;
-  border: 1px solid #f4d1ae;
   border-radius: 10px 10px 0 0;
-  background-color: #fff;
 `;
 const ImgBox = styled.div`
   display: flex;
@@ -73,6 +71,7 @@ const ImgBox = styled.div`
   width: 216px;
   height: 300px;
   border-radius: 10px 10px 0 0;
+  background-color: #fff;
 `;
 const PostImg = styled.img`
   width: 214px;
@@ -84,6 +83,10 @@ const PostName = styled.p`
   padding: 10px 0;
   font-size: 18px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
   color: #12263a;
   border-top: 1px solid #f4d1ae;
 `;
