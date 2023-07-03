@@ -40,6 +40,7 @@ function TopButton() {
 export default TopButton;
 
 const Btn = styled.button`
+  cursor: pointer;
   background-color: #12263a;
   color: white;
   width: 30px;

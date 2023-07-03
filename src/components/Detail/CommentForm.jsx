@@ -91,6 +91,7 @@ const CommentTextArea = styled.textarea`
 `;
 
 const CommentBtn = styled.button`
+  cursor: pointer;
   width: 100px;
   height: 45px;
   margin-left: 20px;
