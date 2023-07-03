@@ -2,17 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from './Select';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { db, storage } from '../../firebase';
-import { addDoc, collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
-import { getAllPost } from '../../redux/modules/posts';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import currentTime from '../../feature/currentTime';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import uuid from 'react-uuid';
 
 function PostWrite() {
   const [fileName, setFileName] = useState('');
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const param = useParams();
   const post = useSelector(state => {
@@ -32,105 +30,119 @@ function PostWrite() {
       });
     }
   }, []);
+
   const navigate = useNavigate();
+
   const cancelWrite = () => {
     navigate(-1);
   };
-  const fileHandler = async ({ target }) => {
+
+  const fileHandler = ({ target }) => {
     const name = target.value.split('/').pop().split('\\').pop();
     setFileName(name);
   };
 
   const onSubmitHandler = async e => {
-    e.preventDefault();
-    const { category = 0, title = 1, content = 2, img = 3 } = e.target;
-    if (category.value === '0') {
-      alert('카테고리를 선택해 주세요');
-      return false;
-    } else if (title.value === '') {
-      alert('제목을 입력해 주세요');
-      return false;
-    } else if (content.value === '') {
-      alert('내용을 입력해 주세요');
-      return false;
+    try {
+      e.preventDefault();
+      const { category = 0, title = 1, content = 2, img = 3 } = e.target;
+      if (category.value === '0') {
+        alert('카테고리를 선택해 주세요');
+        return false;
+      } else if (title.value === '') {
+        alert('제목을 입력해 주세요');
+        return false;
+      } else if (content.value === '') {
+        alert('내용을 입력해 주세요');
+        return false;
+      }
+
+      const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
+      await uploadBytes(imageRef, img.files[0]);
+      const imgUrl = await getDownloadURL(imageRef);
+
+      const newPost = {
+        category: category.value,
+        userName: user.userName,
+        title: title.value,
+        content: content.value,
+        date: currentTime(),
+        img: img.files[0] === undefined ? null : imgUrl,
+        userEmail: user.email,
+        views: 0,
+        uid: user.uid
+      };
+
+      const collectionRef = collection(db, 'posts');
+      await addDoc(collectionRef, newPost);
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
     }
-
-    const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
-    await uploadBytes(imageRef, img.files[0]);
-    const imgUrl = await getDownloadURL(imageRef);
-
-    const newPost = {
-      category: category.value,
-      userName: user.userName,
-      title: title.value,
-      content: content.value,
-      date: currentTime(),
-      img: img.files[0] === undefined ? null : imgUrl,
-      userEmail: user.email,
-      views: 0,
-      uid: user.uid
-    };
-    const collectionRef = collection(db, 'posts');
-    await addDoc(collectionRef, newPost);
-    navigate(-1);
   };
+
   const onEditSubmitHandler = async e => {
-    e.preventDefault();
-    const { category = 0, title = 1, content = 2, img = 3 } = e.target;
-    if (category.value === '0') {
-      alert('카테고리를 선택해 주세요');
-      return false;
-    } else if (title.value === '') {
-      alert('제목을 입력해 주세요');
-      return false;
-    } else if (content.value === '') {
-      alert('내용을 입력해 주세요');
-      return false;
+    try {
+      e.preventDefault();
+      const { category = 0, title = 1, content = 2, img = 3 } = e.target;
+      if (category.value === '0') {
+        alert('카테고리를 선택해 주세요');
+        return false;
+      } else if (title.value === '') {
+        alert('제목을 입력해 주세요');
+        return false;
+      } else if (content.value === '') {
+        alert('내용을 입력해 주세요');
+        return false;
+      }
+
+      const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
+      await uploadBytes(imageRef, img.files[0]);
+      const imgUrl = await getDownloadURL(imageRef);
+
+      const changedPost = {
+        category: category.value,
+        userName: user.userName,
+        title: title.value,
+        content: content.value,
+        date: post.date,
+        userEmail: user.email,
+        uid: user.uid
+      };
+
+      const collectionRef = doc(db, 'posts', post.id);
+      await updateDoc(collectionRef, {
+        img: img.files[0] ? imgUrl : post.img,
+        ...changedPost
+      });
+
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
     }
-
-    const imageRef = ref(storage, `postImg/${user.uid}/${uuid()}`);
-    await uploadBytes(imageRef, img.files[0]);
-    const imgUrl = await getDownloadURL(imageRef);
-
-    const changedPost = {
-      category: category.value,
-      userName: user.userName,
-      title: title.value,
-      content: content.value,
-      date: post.date,
-      userEmail: user.email,
-      uid: user.uid
-    };
-    const collectionRef = doc(db, 'posts', post.id);
-    await updateDoc(collectionRef, {
-      img: img.files[0] ? imgUrl : post.img,
-      ...changedPost
-    });
-
-    navigate(-1);
   };
 
   return (
-    <StForm onSubmit={param.id === '1' ? onSubmitHandler : onEditSubmitHandler}>
-      <FormHeader>
+    <PostWriteForm onSubmit={param.id === '1' ? onSubmitHandler : onEditSubmitHandler}>
+      <FormHeaderBox>
         <Select />
-        <StInput
+        <TitleInput
           placeholder="제목을 입력하세요"
           name="title"
           value={postContent.title}
           onChange={({ target }) => setPostContent({ title: target.value })}
-        ></StInput>
-      </FormHeader>
-      <StyledTextarea
+        ></TitleInput>
+      </FormHeaderBox>
+      <ContentTextarea
         placeholder="내용을 입력하세요"
         name="content"
         value={postContent.content}
         onChange={({ target }) => setPostContent({ content: target.value })}
         rows="30"
         cols="118"
-      ></StyledTextarea>
-      <FormBottom>
-        <FileField>
+      ></ContentTextarea>
+      <FormBottomBox>
+        <FileFieldBox>
           <FileLabel>
             파일 추가하기
             <input
@@ -141,9 +153,9 @@ function PostWrite() {
               onChange={fileHandler}
             />
           </FileLabel>
-          <File>{fileName}</File>
-        </FileField>
-        <ButtonArea>
+          <FileSpan>{fileName}</FileSpan>
+        </FileFieldBox>
+        <ButtonBox>
           {param.id === '1' ? (
             <>
               <Button type="submit">작성하기</Button>
@@ -159,19 +171,21 @@ function PostWrite() {
               </Button>
             </>
           )}
-        </ButtonArea>
-      </FormBottom>
-    </StForm>
+        </ButtonBox>
+      </FormBottomBox>
+    </PostWriteForm>
   );
 }
+
 export default PostWrite;
-const FormHeader = styled.div`
+
+const FormHeaderBox = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
   width: 100%;
 `;
-const ButtonArea = styled.div`
+const ButtonBox = styled.div`
   margin-left: 100px;
 `;
 const Button = styled.button`
@@ -187,16 +201,16 @@ const Button = styled.button`
     color: #f8db5c;
   }
 `;
-const FileField = styled.div`
+const FileFieldBox = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
 `;
-const File = styled.span`
+const FileSpan = styled.span`
   padding: 0 10px;
   border-right: 0.5px solid #dcdcdc;
 `;
-const FormBottom = styled.div`
+const FormBottomBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -213,7 +227,7 @@ const FileLabel = styled.label`
     background-color: #c5d8d1;
   }
 `;
-const StForm = styled.form`
+const PostWriteForm = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -222,7 +236,7 @@ const StForm = styled.form`
   width: 100%;
   margin-top: 50px;
 `;
-const StyledTextarea = styled.textarea`
+const ContentTextarea = styled.textarea`
   resize: none;
   width: 100%;
   height: 500px;
@@ -231,7 +245,7 @@ const StyledTextarea = styled.textarea`
   outline: none;
   border: 0.5px solid #dcdcdc;
 `;
-const StInput = styled.input`
+const TitleInput = styled.input`
   width: 85%;
   height: 60px;
   padding: 3px 20px;

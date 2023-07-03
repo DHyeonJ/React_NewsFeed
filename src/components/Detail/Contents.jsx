@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { css, styled } from 'styled-components';
+import React from 'react';
+import { styled } from 'styled-components';
 import pet2 from '../../assets/pet2.png';
 import loading from '../../assets/loadingW.png';
 import { useSelector } from 'react-redux';
@@ -10,36 +10,36 @@ function Contents({ post, param }) {
   if (post === undefined) {
     return (
       <Section>
-        <TitleWrapper>
-          <Writer></Writer>
+        <ContentsBox>
+          <WriterSpan></WriterSpan>
           <Title></Title>
-          <Views></Views>
-        </TitleWrapper>
-        <ContentWrapper style={{ display: 'flex', justifyContent: 'center' }}>
+          <ViewsParagraph></ViewsParagraph>
+        </ContentsBox>
+        <ContentWrapperBox style={{ display: 'flex', justifyContent: 'center' }}>
           <img src={loading} width="250px" height="230px" />
-        </ContentWrapper>
+        </ContentWrapperBox>
         <Img src={pet2}></Img>
       </Section>
     );
   }
-  
+
   return (
     <>
       <Section>
-        <TitleWrapper>
+        <ContentsBox>
           <TitleInnerWrapper>
-            <Writer>{post.userName}</Writer>
+            <WriterSpan>{post.userName}</WriterSpan>
             <Title>{post.title}</Title>
           </TitleInnerWrapper>
           <ContentRightSide>
-            <Views>조회수&nbsp;{post.views}</Views>
+            <ViewsParagraph>조회수&nbsp;{post.views}</ViewsParagraph>
             {user.email === post.userEmail && <Dots param={param} />}
           </ContentRightSide>
-        </TitleWrapper>
-        <ContentWrapper>
+        </ContentsBox>
+        <ContentWrapperBox>
           {post.img !== undefined ? <ContentImg src={post.img} /> : <></>}
           <p>{post.content}</p>
-        </ContentWrapper>
+        </ContentWrapperBox>
         <Img src={pet2}></Img>
       </Section>
     </>
@@ -61,7 +61,7 @@ const TitleInnerWrapper = styled.div`
   align-items: center;
   gap: 20px;
 `;
-const TitleWrapper = styled.div`
+const ContentsBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -70,21 +70,34 @@ const TitleWrapper = styled.div`
   margin-top: 40px;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fafafa;
+
 `;
-const Writer = styled.span`
+const WriterSpan = styled.span`
+  width: 120px;
   margin: 0 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
 const Title = styled.h3`
+  width: 800px;
   font-size: 22px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
-const ContentWrapper = styled.div`
+const ContentWrapperBox = styled.div`
   width: 100%;
   min-height: 400px;
   margin-top: 20px;
   padding: 20px;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fafafa;
 `;
 const ContentImg = styled.img`
   max-width: 500px;
@@ -96,7 +109,7 @@ const Section = styled.section`
   position: relative;
 `;
 
-const Views = styled.p`
+const ViewsParagraph = styled.p`
   cursor: default;
   font-size: 16px;
   font-weight: 500;

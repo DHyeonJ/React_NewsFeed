@@ -1,27 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { db } from '../../firebase';
-import { collection, deleteDoc, doc, getDocs, query } from 'firebase/firestore';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteComment, getAllComment } from '../../redux/modules/comments';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { useSelector } from 'react-redux';
+import { deleteComment } from '../../redux/modules/comments';
 import { useParams } from 'react-router-dom';
 import TopButton from '../TopButton/TopButton';
 
 function CommentsList({ editCommentBtnHandler }) {
   const comments = useSelector(state => state.comments);
-  // console.log('aefwaef', comments);
   const user = useSelector(state => state.user);
   const param = useParams();
-  const dispatch = useDispatch();
   const deleteBtnHandler = async item => {
-    const { id } = item;
-    const check = window.confirm('정말 삭제하시겠습니까?');
-    if (!check) {
-      return false;
+    try {
+      const { id } = item;
+      const check = window.confirm('정말 삭제하시겠습니까?');
+      if (!check) {
+        return false;
+      }
+      const commentRef = doc(db, 'comment', id);
+      deleteComment(id);
+      await deleteDoc(commentRef);
+    } catch (error) {
+      console.log(error);
     }
-    const commentRef = doc(db, 'comment', id);
-    deleteComment(id);
-    await deleteDoc(commentRef);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,38 +66,40 @@ function CommentsList({ editCommentBtnHandler }) {
         })
         .map(item => {
           return (
-            <Comment key={item.id}>
+            <CommentBox key={item.id}>
               <div>
-                <CommentWriter>{item.userName ? item.userName : item.userId}</CommentWriter>
+                <CommentWriterParagraph>
+                  {item.userName ? item.userName : item.userId}
+                </CommentWriterParagraph>
                 <p>{item.comment}</p>
-                <CommentTime>{item.time}</CommentTime>
+                <CommentTimeParagraph>{item.time}</CommentTimeParagraph>
               </div>
               {item.userId === user.email && (
-                <ButtonWrapper>
+                <ButtonBox>
                   <Button onClick={() => editCommentBtnHandler(item)}>수정하기</Button>
                   <Button onClick={() => deleteBtnHandler(item)}>삭제하기</Button>
-                </ButtonWrapper>
+                </ButtonBox>
               )}
-            </Comment>
+            </CommentBox>
           );
         })
         .slice(0, offset + 10)}
       <div ref={divRef}></div>
-      <MoveButtonArea>
+      <TopButtonBox>
         <TopButton />
-      </MoveButtonArea>
+      </TopButtonBox>
     </section>
   );
 }
 
 export default CommentsList;
 
-const CommentTime = styled.p`
+const CommentTimeParagraph = styled.p`
   margin-top: 5px;
   font-size: 13px;
   color: #a99d9d;
 `;
-const Comment = styled.div`
+const CommentBox = styled.div`
   background-color: #12263a;
   color: white;
   padding: 20px;
@@ -108,11 +112,11 @@ const Comment = styled.div`
   border-radius: 8px;
 `;
 
-const CommentWriter = styled.p`
+const CommentWriterParagraph = styled.p`
   font-size: 20px;
   margin-bottom: 8px;
 `;
-const ButtonWrapper = styled.div`
+const ButtonBox = styled.div`
   display: flex;
   gap: 10px;
 `;
@@ -127,7 +131,7 @@ const Button = styled.button`
     background-color: #f8db5c;
   }
 `;
-const MoveButtonArea = styled.div`
+const TopButtonBox = styled.div`
   position: fixed;
   right: 40px;
   bottom: 100px;

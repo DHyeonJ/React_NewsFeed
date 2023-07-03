@@ -2,6 +2,9 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 import Section from './Section';
+import bgdog from '../../../assets/bgfamily.png';
+import sideCat from '../../../assets/sidecat.png';
+import Banner from './Banner';
 
 function Home() {
   const posts = useSelector(state => state.postDatas);
@@ -17,20 +20,43 @@ function Home() {
     .slice(0, 5);
 
   return (
-    <HomeLayout>
-      <Section posts={hitPosts} name={'인기 게시글'} />
-      <Section posts={orderedDate} name={'최신 게시글'} />
-    </HomeLayout>
+    <>
+      <Banner />
+      <Section posts={hitPosts} name={'Popular'} />
+      <Section posts={orderedDate} name={'New'} />
+      <SideCatImg src={sideCat} />
+    </>
   );
 }
 
 export default Home;
 
 const HomeLayout = styled.article`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin-top: 120px;
-  background-color: #12263a;
+  background-color: #fffeee;
+`;
+const BgDogImg = styled.img`
+  position: absolute;
+  top: -430px;
+  right: 60px;
+  width: 700px;
+  height: 430px;
+`;
+const SideCatImg = styled.img`
+  position: absolute;
+  bottom: 410px;
+  left: -400px;
+  width: 400px;
+`;
+const Text = styled.p`
+  position: absolute;
+  top: -370px;
+  left: 60px;
+  color: #222;
+  font-size: 44px;
+  font-weight: 700;
 `;

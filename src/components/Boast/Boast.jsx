@@ -8,7 +8,9 @@ import noneImg from '../../assets/noneImg.png';
 
 function Boast() {
   const posts = useSelector(state => state.postDatas);
+  const [inputValue, setInputValue] = useState('');
 
+  const divRef = useRef();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   const offset = (currentPage - 1) * limit;
@@ -32,7 +34,7 @@ function Boast() {
       ...option
     }
   );
-  const divRef = useRef();
+
   useEffect(() => {
     observer.observe(divRef.current);
   }, []);
@@ -51,15 +53,22 @@ function Boast() {
   };
 
   return (
-    <>
-      <Search>
+    <BoastLayout>
+      <BoastSearchBox>
         <Input src={InputImgSrc}></Input>
-        <Keyword type="text" placeholder="입력하세요"></Keyword>
-      </Search>
-      <StLayout>
-        <PostWrite>
-          <PostWriteLink onClick={goToWrite}>글쓰기</PostWriteLink>
-        </PostWrite>
+        <Keyword
+          type="text"
+          placeholder="입력하세요"
+          value={inputValue}
+          onChange={({ target }) => {
+            setInputValue(target.value);
+          }}
+        ></Keyword>
+      </BoastSearchBox>
+      <Content>
+        <PostWriteBox>
+          <PostWriteButton onClick={goToWrite}>글쓰기</PostWriteButton>
+        </PostWriteBox>
         <FeedContainer>
           {posts
             .toSorted((a, b) => {
@@ -71,62 +80,72 @@ function Boast() {
             .filter(post => {
               return post.category === '자랑 게시판';
             })
+            .filter(post => {
+              if (inputValue) {
+                return post.title.includes(inputValue);
+              } else {
+                return post;
+              }
+            })
             .map(post => {
-              return (
-                <BoastPost
-                  key={post.id}
-                  onClick={() => {
-                    return navigate(`/detailPage/${post.id}`);
-                  }}
-                >
-                  <PostImgWrapper>
-                    {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
-                  </PostImgWrapper>
-                  <PostInfo>
-                    <PostTitleBox>
-                      <PostWriter>{post.userName}</PostWriter>
-                    </PostTitleBox>
-                    <PostTitle>{post.title}</PostTitle>
-                  </PostInfo>
-                </BoastPost>
-              );
+              if (post.length !== 0 && post !== null) {
+                return (
+                  <BoastPostBox
+                    key={post.id}
+                    onClick={() => {
+                      return navigate(`/detailPage/${post.id}`);
+                    }}
+                  >
+                    <PostImgBox>
+                      {post.img === null ? <PostImg src={noneImg} /> : <PostImg src={post.img} />}
+                    </PostImgBox>
+                    <PostInfoBox>
+                      <PostTitleBox>
+                        <PostWriter>{post.userName}</PostWriter>
+                      </PostTitleBox>
+                      <PostTitle>{post.title}</PostTitle>
+                    </PostInfoBox>
+                  </BoastPostBox>
+                );
+              }
             })
             .slice(0, offset + 10)}
           <div ref={divRef}></div>
         </FeedContainer>
-        <MoveButtonArea>
+        <MoveButtonBox>
           <TopButton />
-        </MoveButtonArea>
-      </StLayout>
-    </>
+        </MoveButtonBox>
+      </Content>
+    </BoastLayout>
   );
 }
 
 export default Boast;
 
-const MoveButtonArea = styled.div`
+const MoveButtonBox = styled.div`
   position: fixed;
   right: 40px;
   bottom: 100px;
 `;
-
 const PostTitleBox = styled.div`
   width: 150px;
 `;
 const PostTitle = styled.p`
   font-size: 20px;
-  margin-left: 20px;
   color: black;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
-const PostWrite = styled.div`
+const PostWriteBox = styled.div`
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
   height: 40px;
   margin-bottom: 10px;
 `;
-
-const PostWriteLink = styled.button`
+const PostWriteButton = styled.button`
   width: 100px;
   height: 40px;
   color: #fff;
@@ -138,41 +157,46 @@ const PostWriteLink = styled.button`
     font-weight: 600;
   }
 `;
-const PostImgWrapper = styled.div`
+const BoastLayout = styled.div``;
+const PostImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 570px;
   height: 300px;
   margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
 `;
 const PostImg = styled.img`
-  min-width: 200px;
-  max-width: 570px;
-  min-height: 200px;
-  max-height: 300px;
+  width: 570px;
+  height: 300px;
+  object-fit: cover;
 `;
-
-const PostInfo = styled.div`
+const PostInfoBox = styled.div`
   width: 570px;
   height: 50px;
-  background-color: white;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  gap: 20px;
+  background-color: #fff;
 `;
 const PostWriter = styled.p`
-  border-right: 2px solid #12263a;
   text-align: center;
   color: black;
+  font-weight: 600;
+  border-right: 1px solid #12263a;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
-
-const BoastPost = styled.div`
+const BoastPostBox = styled.div`
   width: 570px;
   height: 370px;
+  background-color: #fff;
 `;
-
-const StLayout = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -182,19 +206,19 @@ const StLayout = styled.div`
   flex-wrap: wrap;
   margin-bottom: 100px;
 `;
-
 const FeedContainer = styled.div`
   position: relative;
   width: 1200px;
   min-height: 840px;
-  background-color: #12263a;
+  box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
+  background-color: #fafafa;
+
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
 `;
-
-const Search = styled.div`
+const BoastSearchBox = styled.div`
   width: 100%;
   margin-bottom: 70px;
   margin-top: 30px;
@@ -202,7 +226,6 @@ const Search = styled.div`
   justify-content: center;
   position: relative;
 `;
-
 const Input = styled.img`
   width: 182px;
   height: 58px;
@@ -211,7 +234,6 @@ const Input = styled.img`
   align-items: center;
   position: absolute;
 `;
-
 const Keyword = styled.input`
   border-radius: 15px;
   width: 560px;
