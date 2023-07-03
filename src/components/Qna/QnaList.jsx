@@ -88,6 +88,7 @@ const QPostWriteBox = styled.div`
 `;
 
 const QPostWriteBtn = styled.button`
+  cursor: pointer;
   width: 100px;
   height: 40px;
   color: #fff;
@@ -114,6 +115,7 @@ const QTable = styled.table`
 `;
 
 const QTHeadTr = styled.tr`
+  cursor: default;
   text-align: center;
   border-radius: 12px;
   margin: 10px 0;
