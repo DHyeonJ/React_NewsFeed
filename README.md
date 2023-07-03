@@ -1,5 +1,6 @@
 # 내일배움캠프 React 뉴스피드 프로젝트
 2023.06.26 ~ 2023.07.03 SPA 뉴스피드 프로젝트
+배포 주소 : https://pinfo-five.vercel.app/
 
 ## 프로젝트 소개
 우리 애완동물의 이야기를 담을 수 있는 ”Pinfo” (pet Infomation)
