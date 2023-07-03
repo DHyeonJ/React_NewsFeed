@@ -133,6 +133,10 @@ const PostTitleBox = styled.div`
 const PostTitle = styled.p`
   font-size: 20px;
   color: black;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
 const PostWriteBox = styled.div`
   display: flex;
@@ -182,6 +186,10 @@ const PostWriter = styled.p`
   color: black;
   font-weight: 600;
   border-right: 1px solid #12263a;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
 const BoastPostBox = styled.div`
   width: 570px;
