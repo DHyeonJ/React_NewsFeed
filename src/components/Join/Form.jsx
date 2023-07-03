@@ -89,7 +89,7 @@ function Form() {
 const FormContainer = styled.div`
   width: 1200px;
   margin: 0 auto;
-  height: 1080px;
+  min-height: calc(100vh - 300px);
   display: flex;
   flex-direction: column;
   align-items: center;

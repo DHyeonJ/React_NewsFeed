@@ -74,7 +74,7 @@ const ContentsBox = styled.div`
 
 `;
 const WriterSpan = styled.span`
-  width: 60px;
+  width: 120px;
   margin: 0 20px;
   white-space: nowrap;
   overflow: hidden;
