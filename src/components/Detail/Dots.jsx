@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { db } from '../../firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllPost } from '../../redux/modules/posts';
+import { deleteComment } from '../../redux/modules/comments';
 
 const Dots = ({ param }) => {
+  const comments = useSelector(state => state.comments);
   const [isOpen, setIsOpen] = useState(false);
   const isOpenHandler = () => {
     setIsOpen(true);
@@ -40,8 +42,23 @@ const Dots = ({ param }) => {
 
       const postRef = doc(db, 'posts', id);
       await deleteDoc(postRef);
+      await deleteComments(id);
       await afterSubmit();
       navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteComments = async postId => {
+    try {
+      comments.forEach(async comment => {
+        if (comment.postId === postId) {
+          const commentRef = doc(db, 'comment', comment.id);
+          deleteComment(comment.id);
+          await deleteDoc(commentRef);
+        }
+      });
     } catch (error) {
       console.log(error);
     }
