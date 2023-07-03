@@ -121,6 +121,7 @@ const ButtonBox = styled.div`
   gap: 10px;
 `;
 const Button = styled.button`
+  cursor: pointer;
   width: 80px;
   height: 40px;
   font-weight: 600;

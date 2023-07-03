@@ -146,6 +146,7 @@ const PostWriteBox = styled.div`
   margin-bottom: 10px;
 `;
 const PostWriteButton = styled.button`
+  cursor: pointer;
   width: 100px;
   height: 40px;
   color: #fff;
@@ -192,6 +193,7 @@ const PostWriter = styled.p`
   text-overflow: ellipsis;
 `;
 const BoastPostBox = styled.div`
+  cursor: pointer;
   width: 570px;
   height: 370px;
   background-color: #fff;
