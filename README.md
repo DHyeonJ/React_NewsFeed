@@ -6,7 +6,7 @@
 
 ## 프로젝트 소개
 
-✔︎ 우리 애완동물의 이야기를 담을 수 있는 ”Pinfo” (pet Infomation)
+✔︎ 우리 애완동물의 이야기를 담을 수 있는 `”Pinfo” (pet Infomation)`
 
 ✔︎ 자신의 애완동물 사진과 애완동물에 대한 정보를 공유할 수 있는 사이트
 
@@ -21,7 +21,7 @@
   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
   <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
   <img src="https://img.shields.io/badge/fontawesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white">
-   <img src="https://img.shields.io/badge/vercel-F05032?style=for-the-badge&logo=git&logoColor=white">
+  <img src="https://img.shields.io/badge/vercel-A9A9A9?style=for-the-badge&logo=vercel&logoColor=white">
 </div>
 
 ## 구현기능
