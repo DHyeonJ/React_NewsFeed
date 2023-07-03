@@ -11,11 +11,14 @@ const MyProfile = () => {
   const user = useSelector(state => {
     return state.user;
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [imageUrl, setImageUrl] = useState({});
+  const [imageUrl, setImageUrl] = useState({ url: '' });
+  const defaultUrl =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZg8gsF4JtAjXwz-kiGjrOZeUOt3H5tvdc-HsEXfA&s';
   useEffect(() => {
-    setImageUrl({url: user.photoURL});
+    setImageUrl({ url: user.photoURL });
   }, [user.photoURL]);
   const logoutHandler = async () => {
     try {
@@ -26,15 +29,22 @@ const MyProfile = () => {
       console.log(error);
     }
   };
-
+  console.log(imageUrl.url);
   return (
     <MyProfileLayout>
-      <MyProfileImg
-        imageurl={imageUrl.url}
-        onClick={() => {
-          navigate('/userpage');
-        }}
-      ></MyProfileImg>
+      {user.isLogin === 'member' && (
+        <MyProfileImg
+          imageurl={imageUrl.url == '' ? defaultUrl : imageUrl.url}
+          onClick={() => {
+            if (user.isLogin === 'guest') {
+              alert('Login First!');
+              navigate('/login');
+            } else {
+              navigate('/userpage');
+            }
+          }}
+        />
+      )}
       <LoginBox>
         {user.isLogin === 'guest' && (
           <>
@@ -42,13 +52,12 @@ const MyProfile = () => {
             <HeaderLink to="/join">Join</HeaderLink>
           </>
         )}
-        {user.isLogin === 'member' && <LogOut onClick={logoutHandler}>로그아웃</LogOut>}
+        {user.isLogin === 'member' && <LogOut onClick={logoutHandler}>Log Out</LogOut>}
         {user.isLogin === 'wait' && <WaitLoginImg src={time} />}
       </LoginBox>
     </MyProfileLayout>
   );
 };
-
 export default MyProfile;
 
 const MyProfileLayout = styled.div`
@@ -58,7 +67,7 @@ const MyProfileLayout = styled.div`
   gap: 20px;
 `;
 
-const MyProfileImg = styled.div`
+const MyProfileImg = styled.img`
   cursor: pointer;
   width: 50px;
   height: 50px;
@@ -91,10 +100,11 @@ const HeaderLink = styled(Link)`
 
 const LogOut = styled.p`
   cursor: pointer;
-  font-size: 16px;
+  font-size: 21px;
+  font-weight: 800;
   &:hover {
-    color: #f8db5c;
-    font-weight: 500;
+    color: #b54242;
+    font-weight: 800;
   }
 `;
 

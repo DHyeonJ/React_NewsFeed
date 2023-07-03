@@ -10,7 +10,7 @@ function UserProfile() {
       <UserProfileImg />
       <ul>
         <UserProfileParagraph>닉네임 : {userName}</UserProfileParagraph>
-        <UserProfileParagraph>이메일 : {email}</UserProfileParagraph>
+        <UserProfileParagraph>이메일 : {email} </UserProfileParagraph>
       </ul>
     </UserProfileBox>
   );

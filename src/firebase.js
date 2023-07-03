@@ -9,12 +9,12 @@ import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCa-TqkqnfugBdHNvlUwHcoF5Jkt9sNg_E',
-  authDomain: 'fir-test-fe5bf.firebaseapp.com',
-  projectId: 'fir-test-fe5bf',
-  storageBucket: 'fir-test-fe5bf.appspot.com',
-  messagingSenderId: '382815658287',
-  appId: '1:382815658287:web:13ff1c3eb48cff526441da'
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGIN_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 // Initialize Firebase
