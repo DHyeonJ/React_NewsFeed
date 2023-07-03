@@ -223,6 +223,7 @@ const FileLabel = styled.label`
   width: 140px;
   height: 40px;
   border: 0.5px solid #dcdcdc;
+  background-color: #fafafa;
   &:hover {
     background-color: #c5d8d1;
   }

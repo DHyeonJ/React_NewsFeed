@@ -8,6 +8,7 @@ function Layout({ children }) {
 export default Layout;
 
 const Container = styled.main`
+  position: relative;
   width: 1200px;
   margin: 0 auto;
   /* height: 1080px; */

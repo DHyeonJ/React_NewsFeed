@@ -55,6 +55,7 @@ const PostListBox = styled.div`
   gap: 20px;
 `;
 const PostBox = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
