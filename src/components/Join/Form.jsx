@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LogoImagSrc from '../../assets/logo_white.png';
+import LogoImagSrc from '../../assets/logo2.png';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -9,35 +9,34 @@ import { FormBox, SocialLoginBox } from '../Login/Login';
 import { addDoc, collection } from 'firebase/firestore';
 
 function Form() {
-  const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userPw, setUserPw] = useState('');
-  const [confirmPw, setConfirmPw] = useState('');
   const [failMsg, setFailMsg] = useState('');
+  const [inputValue, setInputValue] = useState('');
   let regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const navigate = useNavigate();
 
   const onClickJoinHandler = async e => {
     e.preventDefault();
-
     /// 비밀번호 확인
-    if (userPw !== confirmPw) {
+    if (inputValue.password !== inputValue.passwordConfirm) {
       setFailMsg('비밀번호가 일치하지 않습니다.');
-    } else if (!regex.test(userEmail)) {
+    } else if (!regex.test(inputValue.email)) {
       setFailMsg('유효한 이메일을 입력해주세요');
     } else {
       //DB에 저장, 로그인페이지로 이동
+      const { email, name, password } = inputValue;
       try {
-        await createUserWithEmailAndPassword(auth, userEmail, userPw);
-        navigate('/login');
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert('Welcome!');
+        navigate('/');
         const newUser = {
-          userEmail,
-          userName,
+          userEmail: email,
+          userName: name,
           uid: auth.currentUser.uid,
           photoUrl: '',
-          userPw
+          userPw: password
         };
+
         const usersRef = collection(db, 'users');
         addDoc(usersRef, newUser);
       } catch (error) {
@@ -48,69 +47,39 @@ function Form() {
       }
     }
   };
-  const [inputValue, setInputValue] = useState();
 
   const onChange = event => {
     const { name, value } = event.target;
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  const inputCaption = (type, name, placeholder) => ({
+  const inputCaption = (type, name) => ({
     type,
     name,
-    placeholder,
+    placeholder: name,
     value: inputValue[name],
     onChange,
     required: 'required'
   });
-
+  const types = [
+    ['email', 'email'],
+    ['text', 'name'],
+    ['password', 'password'],
+    ['password', 'passwordConfirm']
+  ];
   return (
     <FormContainer>
       <FormBox>
         <Logo src={LogoImagSrc}></Logo>
-        <StForm onSubmit={e => onClickJoinHandler(e)}>
-          <StInput {...inputCaption('email', 'email', '이메일')}></StInput>
-          <StInput {...inputCaption('text', 'title', '이름')}></StInput>
-          <StInput {...inputCaption('password', 'password', '비밀번호')}></StInput>
-          <StInput {...inputCaption('password', 'passwordConfirm', '비밀번호 확인')}></StInput>
-
-          <StInput
-            value={userEmail}
-            onChange={e => setUserEmail(e.target.value)}
-            type="email"
-            required
-            placeholder="이메일"
-          ></StInput>
-          <StInput
-            value={userName}
-            onChange={e => setUserName(e.target.value)}
-            type="text"
-            required
-            placeholder="이름"
-          />
-          <StInput
-            type="password"
-            value={userPw}
-            minLength="8"
-            required
-            onChange={e => setUserPw(e.target.value)}
-            placeholder="비밀번호"
-          />
-          <StInput
-            type="password"
-            value={confirmPw}
-            required
-            onChange={e => setConfirmPw(e.target.value)}
-            placeholder="비밀번호 확인"
-          />
+        <JoinForm onSubmit={e => onClickJoinHandler(e)}>
+          {types.map(type => {
+            return <JoinInput {...inputCaption(type[0], type[1])}></JoinInput>;
+          })}
           {failMsg && <WarningMsg>{failMsg}</WarningMsg>}
           <JoinButton type="submit">회원가입</JoinButton>
-        </StForm>
-
+        </JoinForm>
         <SocialLoginBox>
-          {/* <JoinButton onClick={googleSignIn}>구글 아이디로 회원가입</JoinButton> */}
-
-          <StLink to="/login">로그인하기</StLink>
+          <LoginLink to="/login">로그인하기</LoginLink>
         </SocialLoginBox>
       </FormBox>
     </FormContainer>
@@ -124,29 +93,29 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid;
 `;
 
-const StForm = styled.form`
+const JoinForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   width: 440px;
   padding: 20px;
-  border: 2px solid #12263a;
   border-radius: 12px;
-  box-shadow: rgba(18, 38, 58, 0.3) 0px 1px 3px 0px, rgba(18, 38, 58, 0.1) 0px 1px 2px 0px;
+  box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
+  background-color: #fafafa;
 `;
 
-const StInput = styled.input`
+const JoinInput = styled.input`
   width: 400px;
   height: 40px;
   font-size: 18px;
   padding: 3px 20px;
-  border: 1px solid #12263a;
-  border-radius: 8px;
+  border: none;
   outline: none;
+  border-radius: 8px;
+  background-color: #fff;
   box-shadow: rgba(18, 38, 58, 0.1) 0px 1px 3px 0px, rgba(18, 38, 58, 0.06) 0px 1px 2px 0px;
   &:focus {
     border: 2px solid #f8db5c;
@@ -156,9 +125,11 @@ const StInput = styled.input`
   }
 `;
 
-const StLink = styled(Link)`
+const LoginLink = styled(Link)`
   text-decoration-line: none;
   color: black;
+  cursor: pointer;
+  font-weight: 600;
 `;
 
 const JoinButton = styled.button`
@@ -188,12 +159,6 @@ export const Logo = styled.img`
   align-items: center;
   margin-left: 0px;
 `;
-
-// const Sthr = styled.hr`
-// width: 100%;
-// border: 1px solid rgba(0, 0, 0, 0.1);
-// margin: 15px 0px;
-// `;
 
 const WarningMsg = styled.h3`
   color: red;

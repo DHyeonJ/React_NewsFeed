@@ -9,15 +9,15 @@ import { changePhoto } from '../../redux/modules/user';
 function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-
+  const defaultUrl =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZg8gsF4JtAjXwz-kiGjrOZeUOt3H5tvdc-HsEXfA&s';
   const updateImg = async file => {
     try {
       // 파일을 받아 스토리지에 저장
       const imageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
       await uploadBytes(imageRef, file);
       // 스토리지에 저장된 파일의 url을 받아와 변수에 저장.
-      const newImageRef = ref(storage, `profileImg/${auth.currentUser.email}`);
-      const url = await getDownloadURL(newImageRef);
+      const url = await getDownloadURL(imageRef);
       // 받아온 url을 db users에 저장시킨다.
       const collectionRef = doc(db, 'users', user.docId);
       await updateDoc(collectionRef, { photoUrl: url });
@@ -34,7 +34,7 @@ function UserProfile() {
 
   return (
     <FileBox>
-      <ProfileImg profileimg={user.photoURL} />
+      <ProfileImg profileimg={user.photoURL || defaultUrl} />
       <FileLabel>
         프로필 사진 변경
         <input
@@ -50,8 +50,8 @@ function UserProfile() {
 }
 
 const ProfileImg = styled.img`
-  width: 240px;
-  height: 240px;
+  width: 170px;
+  height: 170px;
 
   border: 1px solid;
   border-radius: 100%;
@@ -63,12 +63,13 @@ const FileBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
 `;
 const FileLabel = styled.label`
   width: 140px;
   height: 40px;
 
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 7px;
 
   font-size: 16px;

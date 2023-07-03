@@ -77,7 +77,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      alert('환영합니다');
+      alert('Welcome');
       dispatch(loginUser({ password }));
       navigate('/');
     } catch (error) {
@@ -136,7 +136,8 @@ export default Login;
 const LoginLayout = styled.div`
   display: flex;
   justify-content: center;
-  height: calc(100vh - 300px);
+  min-height: calc(100vh - 300px);
+  height: 100%;
 `;
 export const FormBox = styled.div`
   display: flex;
