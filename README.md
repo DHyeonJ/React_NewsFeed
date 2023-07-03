@@ -1,12 +1,15 @@
 # 내일배움캠프 React 뉴스피드 프로젝트
+
 2023.06.26 ~ 2023.07.03 SPA 뉴스피드 프로젝트
 
-배포 주소 : https://pinfo-five.vercel.app/
+🔗 https://pinfo-five.vercel.app/
 
 ## 프로젝트 소개
-우리 애완동물의 이야기를 담을 수 있는 ”Pinfo” (pet Infomation)
 
-자신의 애완동물 사진과 애완동물에 대한 정보를 공유할 수 있는 사이트
+✔︎ 우리 애완동물의 이야기를 담을 수 있는 `”Pinfo” (pet Infomation)`
+
+✔︎ 자신의 애완동물 사진과 애완동물에 대한 정보를 공유할 수 있는 사이트
+
 ## 기술스택
 <div align=left>
   <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
@@ -14,12 +17,17 @@
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
   <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
   <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
   <img src="https://img.shields.io/badge/fontawesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white">
+  <img src="https://img.shields.io/badge/vercel-A9A9A9?style=for-the-badge&logo=vercel&logoColor=white">
 </div>
 
 ## 구현기능
+
 - 회원가입 / 로그인
+- 마이페이지
+- 프로필 이미지 변경
 - 게시글 작성
 - 게시글 조회
 - 게시글 수정
