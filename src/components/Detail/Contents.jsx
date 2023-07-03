@@ -70,13 +70,25 @@ const ContentsBox = styled.div`
   margin-top: 40px;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fafafa;
+
 `;
 const WriterSpan = styled.span`
+  width: 60px;
   margin: 0 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
 const Title = styled.h3`
+  width: 800px;
   font-size: 22px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
 const ContentWrapperBox = styled.div`
   width: 100%;
@@ -85,6 +97,7 @@ const ContentWrapperBox = styled.div`
   padding: 20px;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fafafa;
 `;
 const ContentImg = styled.img`
   max-width: 500px;

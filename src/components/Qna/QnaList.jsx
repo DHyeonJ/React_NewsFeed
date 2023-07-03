@@ -104,17 +104,21 @@ const QBoardAreaBox = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  border-radius: 12px;
 `;
 
 const QTable = styled.table`
   width: 100%;
   height: 100%;
+  border-radius: 12px;
 `;
 
 const QTHeadTr = styled.tr`
   text-align: center;
   border-radius: 12px;
+  margin: 10px 0;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fafafa;
 `;
 
 const QTBodyTr = styled.tr`
@@ -123,6 +127,8 @@ const QTBodyTr = styled.tr`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   text-align: center;
   height: 80px;
+  margin: 10px 0;
+  background-color: #fafafa;
 `;
 
 const QTBodyTdNum = styled.td`
@@ -131,10 +137,16 @@ const QTBodyTdNum = styled.td`
 `;
 
 const QTBodyTdOther = styled.td`
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const QTBodyTdTitle = styled.td`
+  max-width: 600px;
+  padding: 0 10px;
   font-size: 20px;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 `;
