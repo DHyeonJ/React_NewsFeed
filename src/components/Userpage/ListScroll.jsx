@@ -29,7 +29,7 @@ function ListScroll({ datas, type }) {
 
 const ListScrollBox = styled.div`
   padding: 15px;
-  height: 250px;
+  height: 220px;
   overflow: auto;
   width: 100%;
   &::-webkit-scrollbar {
