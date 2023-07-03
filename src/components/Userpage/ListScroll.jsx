@@ -3,14 +3,20 @@ import { useNavigate } from 'react-router-dom';
 
 function ListScroll({ datas, type }) {
   const navigate = useNavigate();
-
+  console.log(datas);
   return (
     <ListScrollBox>
       {datas.map(data => {
         return (
           <MyPostCommentList key={data.id}>
             <Category>{data.category}</Category>
-            <MyTitleComment onClick={() => navigate(`/detailPage/${data.postId}`)}>
+            <MyTitleComment
+              onClick={() => {
+                type === 'post'
+                  ? navigate(`/detailPage/${data.id}`)
+                  : navigate(`/detailPage/${data.postId}`);
+              }}
+            >
               {type === 'post' ? data.title : data.comment}
             </MyTitleComment>
             <Time>{type === 'post' ? data.date : data.time}</Time>

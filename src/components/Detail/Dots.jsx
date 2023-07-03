@@ -108,7 +108,7 @@ const DotsWrapperBtn = styled.button`
   height: 40px;
   border: none;
   margin-right: 10px;
-  background-color: #fff;
+  background-color: #fafafa;
 `;
 const DotAreaBox = styled.div`
   position: relative;
