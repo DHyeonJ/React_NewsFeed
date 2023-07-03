@@ -11,7 +11,6 @@
 ✔︎ 자신의 애완동물 사진과 애완동물에 대한 정보를 공유할 수 있는 사이트
 
 ## 기술스택
-
 <div align=left>
   <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
   <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
@@ -51,3 +50,4 @@
 | Style     | 코드 자체의 변경이 없는 경우 |
 | Design    | HTML, CSS 등 디자인 관련     |
 | Chore     | 기타 모두                    |
+
