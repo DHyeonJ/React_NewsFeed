@@ -1,5 +1,6 @@
 # 내일배움캠프 React 뉴스피드 프로젝트
 2023.06.26 ~ 2023.07.03 SPA 뉴스피드 프로젝트
+
 ## 프로젝트 소개
 우리 애완동물의 이야기를 담을 수 있는 ”Pinfo” (pet Infomation)
 
@@ -14,6 +15,7 @@
   <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
   <img src="https://img.shields.io/badge/fontawesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white">
 </div>
+
 ## 구현기능
 - 회원가입 / 로그인
 - 게시글 작성
