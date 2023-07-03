@@ -10,7 +10,7 @@ function ListScroll({ datas, type }) {
         return (
           <MyPostCommentList key={data.id}>
             <Category>{data.category}</Category>
-            <MyTitleComment onClick={() => navigate(`/detailPage/${data.id}`)}>
+            <MyTitleComment onClick={() => navigate(`/detailPage/${data.postId}`)}>
               {type === 'post' ? data.title : data.comment}
             </MyTitleComment>
             <Time>{type === 'post' ? data.date : data.time}</Time>
@@ -35,9 +35,9 @@ const MyPostCommentList = styled.div`
   justify-content: flex-start;
   width: 700px;
   margin: 10px auto auto auto;
-  /* text-align: center; */
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fafafa;
 `;
 const Category = styled.p`
   padding: 10px;
